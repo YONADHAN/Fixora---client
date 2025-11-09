@@ -4,7 +4,9 @@ import {
   venderProfileInfoUpdate,
   vendorLogout,
   vendorProfileInfo,
+  vendorVerificationDocStatusCheck,
 } from '@/services/vendor/vendor.service'
+import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
 
 export const useVendorLogout = () => {
   return useMutation({
@@ -24,12 +26,22 @@ export const useVendorProfileInfo = () => {
 
 export const useVenderProfileInfoUpdate = () => {
   return useMutation({
-    mutationFn: (data: any) => venderProfileInfoUpdate(data),
+    mutationFn: (data) => venderProfileInfoUpdate(data),
   })
 }
 
 export const useUploadVendorDocuments = () => {
   return useMutation({
     mutationFn: (files: File[]) => uploadVerificationDocuments(files),
+  })
+}
+
+export const useVendorVerificationDocStatusCheck = () => {
+  return useQuery<VendorVerificationStatus>({
+    queryKey: ['vendorVerificationDocStatusCheck'],
+    queryFn: vendorVerificationDocStatusCheck,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   })
 }

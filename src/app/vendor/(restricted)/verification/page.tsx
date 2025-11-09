@@ -1,25 +1,52 @@
 'use client'
 
 import React from 'react'
-import { useSelector } from 'react-redux'
-import type { RootState } from '@/store/store'
 import UploadSection from '@/components/pages/vendor-verification/UploadSection'
 import PendingSection from '@/components/pages/vendor-verification/PendingSection'
 import RejectedSection from '@/components/pages/vendor-verification/RejectedSection'
+import { useVendorVerificationDocStatusCheck } from '@/lib/hooks/useVendor'
 
 export default function VendorVerificationPage() {
-  const { vendor } = useSelector((state: RootState) => state.vendor)
+  const { data: vendorResponse, isLoading } =
+    useVendorVerificationDocStatusCheck()
 
-  const verificationStatus = vendor?.isVerified?.status // 'pending' | 'accepted' | 'rejected'
-  const rejectionReason = vendor?.isVerified?.description || ''
+  if (isLoading) return <div>Loading...</div>
 
-  if (!verificationStatus || verificationStatus === 'pending') {
-    return <UploadSection />
-  }
+  // ✅ Properly access the nested data
+  const vendor = vendorResponse
+  const verificationStatus = vendor?.status
+  const rejectionReason = vendor?.description || ''
+  const docsCount = vendor?.documentCount || 0
 
+  console.log('Vendor verification data =>', vendor)
+
+  // 🟢 Case 1: Rejected
   if (verificationStatus === 'rejected') {
     return <RejectedSection reason={rejectionReason} />
   }
 
+  // 🟢 Case 2: Docs uploaded but pending
+  if (docsCount > 0 && verificationStatus === 'pending') {
+    return <PendingSection />
+  }
+
+  // 🟢 Case 3: No docs uploaded yet
+  if (
+    docsCount === 0 &&
+    (!verificationStatus || verificationStatus === 'pending')
+  ) {
+    return <UploadSection />
+  }
+
+  // 🟢 Case 4: Approved
+  if (verificationStatus === 'accepted') {
+    return (
+      <div className='p-4 text-green-600 font-semibold'>
+        ✅ Your documents are verified successfully.
+      </div>
+    )
+  }
+
+  // 🟢 Default fallback
   return <PendingSection />
 }

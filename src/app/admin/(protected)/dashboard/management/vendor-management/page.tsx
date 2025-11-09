@@ -30,8 +30,7 @@ const VendorPage = () => {
   const { data, isLoading, refetch } = useGetAllVendors({
     page: currentPage,
     limit,
-    search: appliedSearch, // 👈 only changes when user clicks Search
-    role: 'vendor',
+    search: appliedSearch,
   })
 
   const vendors: Vendor[] = data?.data?.data || []

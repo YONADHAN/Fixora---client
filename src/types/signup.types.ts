@@ -22,7 +22,7 @@ export interface SignupData {
   zipcode?: string
   location?: {
     type: 'Point'
-    coordinates: [number, number] // [lng, lat]
+    coordinates: [number, number]
     name?: string
     displayName?: string
     zipCode?: string

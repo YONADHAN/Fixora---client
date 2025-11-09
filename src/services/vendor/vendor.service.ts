@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/api/interceptor'
+import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
 
 import { VENDOR_ROUTES } from '@/utils/constants/api.routes'
 export const vendorLogout = async () => {
@@ -36,3 +37,9 @@ export const uploadVerificationDocuments = async (files: File[]) => {
   )
   return response.data
 }
+
+export const vendorVerificationDocStatusCheck =
+  async (): Promise<VendorVerificationStatus> => {
+    const response = await axiosInstance.get(VENDOR_ROUTES.STATUS_CHECK)
+    return response.data.data
+  }

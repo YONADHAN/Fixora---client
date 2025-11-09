@@ -14,6 +14,7 @@ export const VENDOR_ROUTES = {
   GET_PROFILE_INFO: `${BASE_URL.VENDOR}/profile-info`,
   UPDATE_PROFILE_INFO: `${BASE_URL.VENDOR}/update-profile-info`,
   UPLOAD_VERIFICATION_DOCUMENT: `${BASE_URL.VENDOR}/upload_verification_document`,
+  STATUS_CHECK: `${BASE_URL.VENDOR}/status`,
 }
 
 export const CUSTOMER_ROUTES = {

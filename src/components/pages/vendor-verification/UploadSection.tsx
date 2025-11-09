@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { useUploadVendorDocuments } from '@/lib/hooks/useVendor'
-import { FileIcon, ImageIcon, UploadCloudIcon, XIcon } from 'lucide-react'
+import { FileIcon, UploadCloudIcon, XIcon } from 'lucide-react'
 import Image from 'next/image'
+import { AxiosError } from 'axios'
 
 export default function UploadSection() {
   const [files, setFiles] = useState<File[]>([])
@@ -65,8 +66,9 @@ export default function UploadSection() {
         toast.success(res?.message || 'Documents uploaded successfully')
         setFiles([])
       },
-      onError: (err: any) => {
-        toast.error(err?.response?.data?.message || 'Upload failed')
+      onError: (err) => {
+        if (err instanceof AxiosError)
+          toast.error(err?.response?.data?.message || 'Upload failed')
       },
     })
   }
