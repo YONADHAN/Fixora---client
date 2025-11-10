@@ -2,7 +2,15 @@
 import React from 'react'
 import UploadSection from './UploadSection'
 
-export default function RejectedSection({ reason }: { reason: string }) {
+//
+
+export default function RejectedSection({
+  reason,
+  docsCount,
+}: {
+  reason: string
+  docsCount: number
+}) {
   return (
     <div className='max-w-md mx-auto mt-16 p-6 rounded-2xl shadow bg-white'>
       <h2 className='text-xl font-semibold text-red-600 mb-2'>
@@ -15,7 +23,7 @@ export default function RejectedSection({ reason }: { reason: string }) {
         Please re-upload valid documents to continue your verification.
       </p>
 
-      <UploadSection />
+      <UploadSection docsCount={docsCount} />
     </div>
   )
 }

@@ -6,10 +6,11 @@ import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { useUploadVendorDocuments } from '@/lib/hooks/useVendor'
 import { FileIcon, UploadCloudIcon, XIcon } from 'lucide-react'
+
 import Image from 'next/image'
 import { AxiosError } from 'axios'
 
-export default function UploadSection() {
+export default function UploadSection({ docsCount }: { docsCount: number }) {
   const [files, setFiles] = useState<File[]>([])
   const { mutate: uploadDocs, isPending } = useUploadVendorDocuments()
 
@@ -22,10 +23,46 @@ export default function UploadSection() {
   const maxSizeMB = 5
   const maxFiles = 3
 
+  //functin to understand the document counts on the database and if the doc count < 3 allow to upload files according to that
+  //but put maximum upload to  3
+  // const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFiles = Array.from(e.target.files || [])
+  //   const validFiles: File[] = []
+  //   const invalidFiles: string[] = []
+
+  //   selectedFiles.forEach((file) => {
+  //     if (!allowedTypes.includes(file.type)) {
+  //       invalidFiles.push(`${file.name} (Invalid type)`)
+  //       return
+  //     }
+  //     if (file.size > maxSizeMB * 1024 * 1024) {
+  //       invalidFiles.push(`${file.name} (Exceeds ${maxSizeMB}MB)`)
+  //       return
+  //     }
+  //     validFiles.push(file)
+  //   })
+
+  //   if (invalidFiles.length > 0)
+  //     toast.error(`Some files were rejected:\n${invalidFiles.join('\n')}`)
+
+  //   const newFiles = [...files, ...validFiles]
+  //   if (newFiles.length > maxFiles) {
+  //     toast.error(`You can upload up to ${maxFiles} files only.`)
+  //     setFiles(newFiles.slice(0, maxFiles))
+  //   } else {
+  //     setFiles(newFiles)
+  //   }
+  // }
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
     const validFiles: File[] = []
     const invalidFiles: string[] = []
+
+    // Check if user already has 3 docs in DB
+    if (docsCount >= maxFiles) {
+      toast.error(`You’ve already uploaded ${maxFiles} documents.`)
+      return
+    }
 
     selectedFiles.forEach((file) => {
       if (!allowedTypes.includes(file.type)) {
@@ -39,15 +76,18 @@ export default function UploadSection() {
       validFiles.push(file)
     })
 
-    if (invalidFiles.length > 0)
+    if (invalidFiles.length > 0) {
       toast.error(`Some files were rejected:\n${invalidFiles.join('\n')}`)
+    }
 
-    const newFiles = [...files, ...validFiles]
-    if (newFiles.length > maxFiles) {
-      toast.error(`You can upload up to ${maxFiles} files only.`)
-      setFiles(newFiles.slice(0, maxFiles))
+    // Total allowed remaining
+    const remainingSlots = maxFiles - docsCount
+
+    if (files.length + validFiles.length > remainingSlots) {
+      toast.error(`You can only upload ${remainingSlots} more document(s).`)
+      setFiles([...files, ...validFiles].slice(0, remainingSlots))
     } else {
-      setFiles(newFiles)
+      setFiles([...files, ...validFiles])
     }
   }
 

@@ -1,10 +1,24 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  QueryKey,
+  useMutation,
+  useQuery,
+  UseQueryResult,
+} from '@tanstack/react-query'
 import {
   adminLogout,
   changeMyUserBlockStatus,
   getAllCustomers,
   getAllVendors,
+  getVendorRequests,
 } from '@/services/admin/admin.service'
+interface UsePaginatedParams {
+  page: number
+  limit: number
+  search: string
+}
+
+import { PaginatedVendorRequests } from '@/types/users/admin/vendor_request.types'
 
 export const useAdminLogout = () => {
   return useMutation({
@@ -33,11 +47,7 @@ export const useGetAllVendors = ({
   page,
   limit,
   search,
-}: {
-  page: number
-  limit: number
-  search: string
-}) => {
+}: UsePaginatedParams) => {
   return useQuery({
     queryKey: ['admin-vendors', page, limit, search],
     queryFn: () => getAllVendors({ page, limit, search }),
@@ -55,5 +65,22 @@ export const useChangeMyUserBlockStatus = ({
 }) => {
   return useMutation({
     mutationFn: async () => changeMyUserBlockStatus({ role, userId, status }),
+  })
+}
+
+export const useVendorRequests = ({
+  page,
+  limit,
+  search,
+}: UsePaginatedParams): UseQueryResult<PaginatedVendorRequests, Error> => {
+  return useQuery<
+    PaginatedVendorRequests,
+    Error,
+    PaginatedVendorRequests,
+    QueryKey
+  >({
+    queryKey: ['vendor-requests', page, limit, search],
+    queryFn: () => getVendorRequests(page, limit, search),
+    placeholderData: keepPreviousData,
   })
 }

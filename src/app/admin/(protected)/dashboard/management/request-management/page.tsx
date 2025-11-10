@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ResponsiveTable } from '@/components/shared-ui/resusable_components/table/table'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,34 +11,14 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
-
-// -------- Interface --------
-interface VendorRequest {
-  _id: string
-  name: string
-  email: string
-  status: 'Pending' | 'Verified' | 'Rejected'
-  documents: string[]
-  [key: string]: unknown
-}
+import { useVendorRequests } from '@/lib/hooks/useAdmin'
+import type { VendorRequest } from '@/types/users/admin/vendor_request.types'
+import { Download, X } from 'lucide-react'
 
 // -------- Component --------
 const VendorVerificationPage = () => {
-  // Dummy Data
-  const allVendorRequests: VendorRequest[] = Array.from(
-    { length: 24 },
-    (_, i) => ({
-      _id: `req-${i + 1}`,
-      name: `Vendor ${i + 1}`,
-      email: `vendor${i + 1}@mail.com`,
-      status: i % 3 === 0 ? 'Verified' : i % 3 === 1 ? 'Pending' : 'Rejected',
-      documents: ['/admin/login.jpg', '/admin/adminLogin.jpg', '/vercel.svg'],
-    })
-  )
-
-  // States
-  const [vendors, setVendors] = useState<VendorRequest[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  // ------- States -------
+  const [page, setPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedVendor, setSelectedVendor] = useState<VendorRequest | null>(
     null
@@ -46,29 +26,24 @@ const VendorVerificationPage = () => {
   const [showDialog, setShowDialog] = useState(false)
   const [rejectionReason, setRejectionReason] = useState('')
   const [updatingItems, setUpdatingItems] = useState<Set<string>>(new Set())
+  const [selectedImage, setSelectedImage] = useState<string | null>(null) // 👈 new
+  const [showImageDialog, setShowImageDialog] = useState(false) // 👈 new
 
-  const limit = 10
-  const totalPages = Math.ceil(allVendorRequests.length / limit)
+  const { data, isLoading, isFetching, refetch } = useVendorRequests({
+    page,
+    limit: 10,
+    search: searchTerm,
+  })
 
-  // ------- Pagination + Search -------
-  useEffect(() => {
-    const filtered = allVendorRequests.filter(
-      (v) =>
-        v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.email.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const start = (currentPage - 1) * limit
-    const end = start + limit
-    setVendors(filtered.slice(start, end))
-  }, [currentPage, searchTerm])
+  const vendors = data?.data ?? []
+  const totalPages = data?.totalPages ?? 1
 
-  // ------- Handlers -------
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
 
   const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') setCurrentPage(1)
+    if (e.key === 'Enter') setPage(1)
   }
 
   const handleViewClick = (vendor: VendorRequest) => {
@@ -77,65 +52,107 @@ const VendorVerificationPage = () => {
     setShowDialog(true)
   }
 
-  const handleApprove = () => {
+  const handleApprove = async () => {
     if (!selectedVendor) return
-    updateVendorStatus(selectedVendor._id, 'Verified')
-    setShowDialog(false)
+    try {
+      setUpdatingItems((prev) => new Set(prev).add(selectedVendor.userId))
+      // TODO: call approve API here
+      console.log('Approved:', selectedVendor.userId)
+      setShowDialog(false)
+      await refetch()
+    } finally {
+      setUpdatingItems((prev) => {
+        const next = new Set(prev)
+        next.delete(selectedVendor.userId)
+        return next
+      })
+    }
   }
 
-  const handleReject = () => {
+  const handleReject = async () => {
     if (!selectedVendor) return
     if (!rejectionReason.trim()) {
       alert('Please enter a rejection reason before rejecting.')
       return
     }
-    updateVendorStatus(selectedVendor._id, 'Rejected')
-    setShowDialog(false)
-  }
-
-  const updateVendorStatus = (
-    id: string,
-    newStatus: 'Verified' | 'Rejected'
-  ) => {
-    setUpdatingItems((prev) => new Set(prev).add(id))
-    setTimeout(() => {
-      setVendors((prev) =>
-        prev.map((v) => (v._id === id ? { ...v, status: newStatus } : v))
+    try {
+      setUpdatingItems((prev) => new Set(prev).add(selectedVendor.userId))
+      // TODO: call reject API here
+      console.log(
+        'Rejected:',
+        selectedVendor.userId,
+        'Reason:',
+        rejectionReason
       )
+      setShowDialog(false)
+      await refetch()
+    } finally {
       setUpdatingItems((prev) => {
         const next = new Set(prev)
-        next.delete(id)
+        next.delete(selectedVendor.userId)
         return next
       })
-    }, 800)
+    }
   }
 
-  const handleCloseDialog = () => {
-    setShowDialog(false)
+  // Download handler
+  const handleDownload = async () => {
+    if (!selectedImage) return
+    try {
+      const response = await fetch(selectedImage)
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `fixora-vendor-doc-${Date.now()}.jpg`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Download failed:', error)
+      alert('Failed to download image')
+    }
   }
 
-  // ------- Columns -------
-  const columns: { key: keyof VendorRequest; header: string }[] = [
-    { key: '_id', header: 'ID' },
+  const handleCloseDialog = () => setShowDialog(false)
+
+  // Image open handler 👇
+  const handleImageClick = (url: string) => {
+    setSelectedImage(url)
+    setShowImageDialog(true)
+  }
+
+  const columns: {
+    key: keyof VendorRequest | string
+    header: string
+    render?: (item: VendorRequest) => React.ReactNode
+  }[] = [
+    { key: 'userId', header: 'User ID' },
     { key: 'name', header: 'Name' },
     { key: 'email', header: 'Email' },
-    { key: 'status', header: 'Status' },
+    {
+      key: 'verificationStatus',
+      header: 'Verification Status',
+      render: (item: VendorRequest) => {
+        return item.isVerified?.status || 'N/A'
+      },
+    },
   ]
 
-  // ------- Render -------
   return (
     <div className='p-6'>
       <ResponsiveTable<VendorRequest>
         data={vendors}
-        loading={false}
+        loading={isLoading || isFetching}
         updatingItems={updatingItems}
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onPageChange={setPage}
         searchTerm={searchTerm}
         onSearchTermChange={handleSearchTermChange}
         onSearchKeyPress={handleSearchKeyPress}
-        onSearchClick={() => setCurrentPage(1)}
+        onSearchClick={() => setPage(1)}
         entityType='vendor-request'
         columns={columns}
         showLabelsOnMobile
@@ -158,7 +175,6 @@ const VendorVerificationPage = () => {
         )}
       />
 
-      {/* -------- Vendor Verification Dialog -------- */}
       {selectedVendor && (
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogContent className='max-w-lg'>
@@ -168,7 +184,7 @@ const VendorVerificationPage = () => {
 
             <div className='space-y-3'>
               <p>
-                <strong>ID:</strong> {selectedVendor._id}
+                <strong>User ID:</strong> {selectedVendor.userId}
               </p>
               <p>
                 <strong>Name:</strong> {selectedVendor.name}
@@ -182,9 +198,10 @@ const VendorVerificationPage = () => {
                 {selectedVendor.documents.map((doc, index) => (
                   <img
                     key={index}
-                    src={doc}
-                    alt={`doc-${index}`}
-                    className='w-full h-24 object-cover rounded border'
+                    src={doc.url}
+                    alt={doc.name}
+                    className='w-full h-24 object-cover rounded border cursor-pointer hover:scale-105 transition'
+                    onClick={() => handleImageClick(doc.url)}
                   />
                 ))}
               </div>
@@ -213,6 +230,46 @@ const VendorVerificationPage = () => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* -------- Full Image Preview Dialog -------- */}
+      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+        <DialogContent className='max-w-[95vw] max-h-[95vh] w-full h-full p-0 border-0 bg-black overflow-hidden'>
+          <div className='relative w-full h-full flex items-center justify-center p-4'>
+            {/* Close Button */}
+            <button
+              className='absolute top-4 right-4 z-10 text-white bg-red-600 hover:bg-red-700 rounded-full p-3 transition-colors shadow-lg'
+              onClick={() => setShowImageDialog(false)}
+              aria-label='Close'
+            >
+              <X size={28} />
+            </button>
+
+            {/* Download Button */}
+            {selectedImage && (
+              <button
+                onClick={handleDownload}
+                className='absolute top-4 left-4 z-10 text-white bg-blue-600 hover:bg-blue-700 rounded-full p-3 transition-colors shadow-lg flex items-center gap-2'
+                title='Download image'
+                aria-label='Download'
+              >
+                <Download size={24} />
+              </button>
+            )}
+
+            {/* Image - Now with zoom capability */}
+            {selectedImage && (
+              <div className='w-full h-full flex items-center justify-center'>
+                <img
+                  src={selectedImage}
+                  alt='Full Preview'
+                  className='max-w-full max-h-full w-auto h-auto object-contain cursor-zoom-in'
+                  style={{ maxHeight: 'calc(95vh - 2rem)' }}
+                />
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -6,6 +6,7 @@ export const ADMIN_ROUTES = {
   GET_ALL_CUSTOMERS: `${BASE_URL.ADMIN}/get-all-customers`,
   GET_ALL_VENDORS: `${BASE_URL.ADMIN}/get-all-vendors`,
   CHANGE_MY_USER_BLOCK_STATUS: `${BASE_URL.ADMIN}/change-my-user-block-status`,
+  GET_VENDOR_REQUESTS: `${BASE_URL.ADMIN}/get_vendor_requests`,
 }
 
 export const VENDOR_ROUTES = {

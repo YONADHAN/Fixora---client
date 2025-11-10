@@ -12,7 +12,6 @@ export default function VendorVerificationPage() {
 
   if (isLoading) return <div>Loading...</div>
 
-  // ✅ Properly access the nested data
   const vendor = vendorResponse
   const verificationStatus = vendor?.status
   const rejectionReason = vendor?.description || ''
@@ -20,33 +19,28 @@ export default function VendorVerificationPage() {
 
   console.log('Vendor verification data =>', vendor)
 
-  // 🟢 Case 1: Rejected
   if (verificationStatus === 'rejected') {
-    return <RejectedSection reason={rejectionReason} />
+    return <RejectedSection reason={rejectionReason} docsCount={docsCount} />
   }
 
-  // 🟢 Case 2: Docs uploaded but pending
   if (docsCount > 0 && verificationStatus === 'pending') {
     return <PendingSection />
   }
 
-  // 🟢 Case 3: No docs uploaded yet
   if (
     docsCount === 0 &&
     (!verificationStatus || verificationStatus === 'pending')
   ) {
-    return <UploadSection />
+    return <UploadSection docsCount={docsCount} />
   }
 
-  // 🟢 Case 4: Approved
   if (verificationStatus === 'accepted') {
     return (
       <div className='p-4 text-green-600 font-semibold'>
-        ✅ Your documents are verified successfully.
+        Your documents are verified successfully.
       </div>
     )
   }
 
-  // 🟢 Default fallback
   return <PendingSection />
 }

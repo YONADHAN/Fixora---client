@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/api/interceptor'
-
 import { ADMIN_ROUTES } from '@/utils/constants/api.routes'
+import { PaginatedVendorRequests } from '@/types/users/admin/vendor_request.types'
+
 export const adminLogout = async () => {
   const response = await axiosInstance.post(`${ADMIN_ROUTES.LOGOUT}`)
   return response
@@ -55,4 +56,15 @@ export const changeMyUserBlockStatus = async ({
     { role, userId, status }
   )
   return response
+}
+
+export const getVendorRequests = async (
+  page: number = 1,
+  limit: number = 10,
+  search: string = ''
+): Promise<PaginatedVendorRequests> => {
+  const response = await axiosInstance.get(ADMIN_ROUTES.GET_VENDOR_REQUESTS, {
+    params: { page, limit, search },
+  })
+  return response.data.data as PaginatedVendorRequests
 }
