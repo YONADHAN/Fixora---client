@@ -1,50 +1,37 @@
 'use client'
 
-import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import type { RootState } from '@/store/store'
 import AuthLoader from './AuthLoader'
+import { useVendorVerificationDocStatusCheck } from '@/lib/hooks/useVendor'
 
-interface VerificationGuardProps {
-  children: React.ReactNode
-  role: 'vendor'
-}
+type VendorVerificationStatus = 'pending' | 'accepted' | 'rejected' | undefined
 
 export default function VerificationGuard({
   children,
-  role,
-}: VerificationGuardProps) {
+}: {
+  children: React.ReactNode
+}) {
   const router = useRouter()
-  const { vendor } = useSelector((state: RootState) => state.vendor)
+  const {
+    data: vendor,
+    isLoading,
+    isFetched,
+  } = useVendorVerificationDocStatusCheck()
 
-  const isLoggedIn = Boolean(vendor)
-  const verificationStatus = vendor?.isVerified?.status // 'pending' | 'accepted' | 'rejected'
+  const status: VendorVerificationStatus = vendor?.status
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace(`/${role}/signin`)
-      return
-    }
+    if (!isFetched) return
 
-    if (isLoggedIn && verificationStatus === 'accepted') {
-      router.replace(`/${role}/dashboard`)
-      return
+    if (status === 'accepted') {
+      router.replace('/vendor/dashboard')
+    } else if (status === 'pending' || status === 'rejected' || !status) {
+      router.replace('/vendor/verification')
     }
+  }, [status, isFetched, router])
 
-    if (isLoggedIn && verificationStatus === 'rejected') {
-      router.replace(`/${role}/rejected`)
-      return
-    }
-  }, [isLoggedIn, verificationStatus, role, router])
-
-  if (
-    !isLoggedIn ||
-    verificationStatus === 'accepted' ||
-    verificationStatus === 'rejected'
-  ) {
-    return <AuthLoader />
-  }
+  if (isLoading || !isFetched) return <AuthLoader />
 
   return <>{children}</>
 }

@@ -7,5 +7,5 @@ export default function RestrictedLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <VerificationGuard role='vendor'>{children}</VerificationGuard>
+  return <VerificationGuard>{children}</VerificationGuard>
 }
