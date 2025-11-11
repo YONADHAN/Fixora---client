@@ -5,6 +5,7 @@ import UploadSection from '@/components/pages/vendor-verification/UploadSection'
 import PendingSection from '@/components/pages/vendor-verification/PendingSection'
 import RejectedSection from '@/components/pages/vendor-verification/RejectedSection'
 import { useVendorVerificationDocStatusCheck } from '@/lib/hooks/useVendor'
+import SuccessfulSection from '@/components/pages/vendor-verification/SuccessfulSection'
 
 export default function VendorVerificationPage() {
   const { data: vendorResponse, isLoading } =
@@ -16,8 +17,6 @@ export default function VendorVerificationPage() {
   const verificationStatus = vendor?.status
   const rejectionReason = vendor?.description || ''
   const docsCount = vendor?.documentCount || 0
-
-  console.log('Vendor verification data =>', vendor)
 
   if (verificationStatus === 'rejected') {
     return <RejectedSection reason={rejectionReason} docsCount={docsCount} />
@@ -35,11 +34,7 @@ export default function VendorVerificationPage() {
   }
 
   if (verificationStatus === 'accepted') {
-    return (
-      <div className='p-4 text-green-600 font-semibold'>
-        Your documents are verified successfully.
-      </div>
-    )
+    return <SuccessfulSection />
   }
 
   return <PendingSection />

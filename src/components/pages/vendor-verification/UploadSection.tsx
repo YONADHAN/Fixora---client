@@ -23,36 +23,6 @@ export default function UploadSection({ docsCount }: { docsCount: number }) {
   const maxSizeMB = 5
   const maxFiles = 3
 
-  //functin to understand the document counts on the database and if the doc count < 3 allow to upload files according to that
-  //but put maximum upload to  3
-  // const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFiles = Array.from(e.target.files || [])
-  //   const validFiles: File[] = []
-  //   const invalidFiles: string[] = []
-
-  //   selectedFiles.forEach((file) => {
-  //     if (!allowedTypes.includes(file.type)) {
-  //       invalidFiles.push(`${file.name} (Invalid type)`)
-  //       return
-  //     }
-  //     if (file.size > maxSizeMB * 1024 * 1024) {
-  //       invalidFiles.push(`${file.name} (Exceeds ${maxSizeMB}MB)`)
-  //       return
-  //     }
-  //     validFiles.push(file)
-  //   })
-
-  //   if (invalidFiles.length > 0)
-  //     toast.error(`Some files were rejected:\n${invalidFiles.join('\n')}`)
-
-  //   const newFiles = [...files, ...validFiles]
-  //   if (newFiles.length > maxFiles) {
-  //     toast.error(`You can upload up to ${maxFiles} files only.`)
-  //     setFiles(newFiles.slice(0, maxFiles))
-  //   } else {
-  //     setFiles(newFiles)
-  //   }
-  // }
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
     const validFiles: File[] = []
@@ -111,11 +81,13 @@ export default function UploadSection({ docsCount }: { docsCount: number }) {
           toast.error(err?.response?.data?.message || 'Upload failed')
       },
     })
+
+    window.location.reload()
   }
 
   return (
-    <div className='max-w-lg mx-auto mt-16 p-6 rounded-2xl shadow bg-white'>
-      <h2 className='text-2xl font-semibold mb-3 text-center'>
+    <div className='max-w-lg mx-auto mt-2 p-6 rounded-2xl shadow bg-white'>
+      <h2 className='text-2xl font-semibold mb-3 text-center text-green-800'>
         Upload Verification Documents
       </h2>
       <p className='text-gray-500 text-sm text-center mb-4'>

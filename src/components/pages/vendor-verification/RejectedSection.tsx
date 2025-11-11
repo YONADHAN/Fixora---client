@@ -16,10 +16,10 @@ export default function RejectedSection({
       <h2 className='text-xl font-semibold text-red-600 mb-2'>
         Verification Rejected
       </h2>
-      <p className='text-gray-600 mb-4'>
+      <p className='text-gray-600 mb-2'>
         {reason || 'Your documents were not approved.'}
       </p>
-      <p className='text-gray-700 mb-4'>
+      <p className='text-gray-700 mb-0'>
         Please re-upload valid documents to continue your verification.
       </p>
 

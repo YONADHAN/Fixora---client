@@ -68,3 +68,22 @@ export const getVendorRequests = async (
   })
   return response.data.data as PaginatedVendorRequests
 }
+
+export const changeVendorVerificationStatus = async (
+  userId: string,
+  verificationStatus: string,
+
+  description: string
+): Promise<void> => {
+  const response = await axiosInstance.post(
+    ADMIN_ROUTES.CHANGE_VENDOR_VERIFICATION_BLOCK_STATUS,
+    {
+      userId,
+
+      verificationStatus,
+      description,
+    }
+  )
+
+  return response.data
+}

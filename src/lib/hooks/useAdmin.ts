@@ -8,6 +8,7 @@ import {
 import {
   adminLogout,
   changeMyUserBlockStatus,
+  changeVendorVerificationStatus,
   getAllCustomers,
   getAllVendors,
   getVendorRequests,
@@ -82,5 +83,27 @@ export const useVendorRequests = ({
     queryKey: ['vendor-requests', page, limit, search],
     queryFn: () => getVendorRequests(page, limit, search),
     placeholderData: keepPreviousData,
+  })
+}
+
+export const useChangeVendorVerificationStatus = () => {
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      verificationStatus,
+
+      description,
+    }: {
+      userId: string
+      verificationStatus: string
+
+      description: string
+    }) => {
+      return await changeVendorVerificationStatus(
+        userId,
+        verificationStatus,
+        description
+      )
+    },
   })
 }
