@@ -8,6 +8,7 @@ export const ADMIN_ROUTES = {
   CHANGE_MY_USER_BLOCK_STATUS: `${BASE_URL.ADMIN}/change-my-user-block-status`,
   GET_VENDOR_REQUESTS: `${BASE_URL.ADMIN}/get_vendor_requests`,
   CHANGE_VENDOR_VERIFICATION_BLOCK_STATUS: `${BASE_URL.ADMIN}/vendor-verification-status`,
+  CHANGE_PASSWORD: `${BASE_URL.ADMIN}/change-password`,
 }
 
 export const VENDOR_ROUTES = {
@@ -17,6 +18,7 @@ export const VENDOR_ROUTES = {
   UPDATE_PROFILE_INFO: `${BASE_URL.VENDOR}/update-profile-info`,
   UPLOAD_VERIFICATION_DOCUMENT: `${BASE_URL.VENDOR}/upload_verification_document`,
   STATUS_CHECK: `${BASE_URL.VENDOR}/status`,
+  CHANGE_PASSWORD: `${BASE_URL.VENDOR}/change-password`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -24,6 +26,7 @@ export const CUSTOMER_ROUTES = {
   LOGOUT: `${BASE_URL.CUSTOMER}/logout`,
   GET_PROFILE_INFO: `${BASE_URL.CUSTOMER}/profile-info`,
   UPDATE_PROFILE_INFO: `${BASE_URL.CUSTOMER}/update-profile-info`,
+  CHANGE_PASSWORD: `${BASE_URL.CUSTOMER}/change-password`,
 }
 
 export const AUTH_ROUTES = {

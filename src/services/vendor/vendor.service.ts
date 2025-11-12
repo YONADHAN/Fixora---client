@@ -43,3 +43,14 @@ export const vendorVerificationDocStatusCheck =
     const response = await axiosInstance.get(VENDOR_ROUTES.STATUS_CHECK)
     return response.data.data
   }
+
+export const changeVendorPassword = async (
+  currentPassword: string,
+  newPassword: string
+) => {
+  const response = await axiosInstance.post(VENDOR_ROUTES.CHANGE_PASSWORD, {
+    currentPassword,
+    newPassword,
+  })
+  return response
+}

@@ -87,3 +87,14 @@ export const changeVendorVerificationStatus = async (
 
   return response.data
 }
+
+export const changeAdminPassword = async (
+  currentPassword: string,
+  newPassword: string
+) => {
+  const response = await axiosInstance.post(ADMIN_ROUTES.CHANGE_PASSWORD, {
+    currentPassword,
+    newPassword,
+  })
+  return response
+}

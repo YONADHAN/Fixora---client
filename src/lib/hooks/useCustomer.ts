@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {
+  changeCustomerPassword,
   customerLogout,
   customerProfileInfo,
   customerProfileInfoUpdate,
@@ -24,5 +25,12 @@ export const useCustomerProfileInfo = () => {
 export const useCustomerProfileInfoUpdate = () => {
   return useMutation({
     mutationFn: (data: any) => customerProfileInfoUpdate(data),
+  })
+}
+
+export const useChangeCustomerPassword = () => {
+  return useMutation({
+    mutationFn: (data: { currentPassword: string; newPassword: string }) =>
+      changeCustomerPassword(data.currentPassword, data.newPassword),
   })
 }

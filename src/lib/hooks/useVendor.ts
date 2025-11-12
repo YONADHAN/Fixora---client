@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {
+  changeVendorPassword,
   uploadVerificationDocuments,
   venderProfileInfoUpdate,
   vendorLogout,
@@ -43,5 +44,12 @@ export const useVendorVerificationDocStatusCheck = () => {
     refetchOnMount: 'always',
     refetchOnWindowFocus: true,
     staleTime: 0,
+  })
+}
+
+export const useChangeVendorPassword = () => {
+  return useMutation({
+    mutationFn: (data: { currentPassword: string; newPassword: string }) =>
+      changeVendorPassword(data.currentPassword, data.newPassword),
   })
 }

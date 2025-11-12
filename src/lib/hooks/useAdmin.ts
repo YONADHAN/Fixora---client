@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query'
 import {
   adminLogout,
+  changeAdminPassword,
   changeMyUserBlockStatus,
   changeVendorVerificationStatus,
   getAllCustomers,
@@ -105,5 +106,12 @@ export const useChangeVendorVerificationStatus = () => {
         description
       )
     },
+  })
+}
+
+export const useChangeAdminPassword = () => {
+  return useMutation({
+    mutationFn: (data: { currentPassword: string; newPassword: string }) =>
+      changeAdminPassword(data.currentPassword, data.newPassword),
   })
 }

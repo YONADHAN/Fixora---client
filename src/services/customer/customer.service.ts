@@ -21,3 +21,14 @@ export const customerProfileInfoUpdate = async (data: any) => {
   )
   return response.data
 }
+
+export const changeCustomerPassword = async (
+  currentPassword: string,
+  newPassword: string
+) => {
+  const response = await axiosInstance.post(CUSTOMER_ROUTES.CHANGE_PASSWORD, {
+    currentPassword,
+    newPassword,
+  })
+  return response
+}
