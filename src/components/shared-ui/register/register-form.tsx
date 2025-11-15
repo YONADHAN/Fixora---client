@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { EyeClosed, EyeIcon } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -70,7 +71,7 @@ export function RegisterForm({
     defaultLocation || null
   )
   const [mounted, setMounted] = useState(false)
-
+  const [passwordEyeOpen, setPasswordEyeOpen] = useState(false)
   const {
     register,
     handleSubmit,
@@ -168,11 +169,25 @@ export function RegisterForm({
               <div className='grid gap-4 md:grid-cols-2'>
                 <div className='grid gap-2'>
                   <Label htmlFor='password'>Password</Label>
-                  <Input
-                    id='password'
-                    type='password'
-                    {...register('password')}
-                  />
+                  <div className='relative '>
+                    <Input
+                      id='password'
+                      //type='password'
+                      type={passwordEyeOpen == true ? 'text' : 'password'}
+                      {...register('password')}
+                    />
+                    <button
+                      type='button'
+                      className='absolute right-2 top-1/4'
+                      onClick={() => setPasswordEyeOpen((prev) => !prev)}
+                    >
+                      {passwordEyeOpen === true ? (
+                        <EyeClosed size={16} />
+                      ) : (
+                        <EyeIcon size={16} />
+                      )}
+                    </button>
+                  </div>
                   {errors.password && (
                     <p className='text-sm text-red-500'>
                       {errors.password.message}

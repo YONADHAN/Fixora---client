@@ -28,9 +28,11 @@ export interface RoleMenus {
 
 export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
   admin: {
-    topNav: [{ title: 'Dashboard', href: '/admin/dashboard' }],
+    topNav: [
+      //{ title: 'Dashboard', href: '/admin/dashboard' }
+    ],
     sideNav: [
-      { title: 'Dashboard', href: '/admin/dashboard', icon: FaHome },
+      // { title: 'Dashboard', href: '/admin/dashboard', icon: FaHome },
       {
         title: 'Customers',
         href: '/admin/dashboard/management/customer-management',
@@ -48,39 +50,49 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       },
       {
         title: 'Service Categories',
-        href: '/admin/dashboard/service/categories',
+        href: '/admin/dashboard/service_category',
         icon: FaServicestack,
       },
     ],
   },
 
   vendor: {
-    topNav: [{ title: 'Dashboard', href: '/vendor/dashboard' }],
+    topNav: [
+      // { title: 'Dashboard', href: '/vendor/dashboard' },
+      // { title: 'Profile', href: '/vendor/profile' },
+    ],
     sideNav: [
-      { title: 'Dashboard', href: '/vendor/dashboard', icon: FaHome },
       { title: 'Profile', href: '/vendor/profile', icon: User2 },
-
-      { title: 'Customers', href: '/vendor/customers', icon: FaUsers },
 
       {
         title: 'Change Password',
-        href: '/vendor/change_password',
+        href: '/vendor/change-password',
         icon: FaLock,
       },
-      {
-        title: 'Notifications',
-        href: '/vendor/notifications',
-        icon: BiSolidBell,
-      },
+      //{ title: 'Dashboard', href: '/vendor/dashboard', icon: FaHome },
+      // { title: 'Customers', href: '/vendor/customers', icon: FaUsers },
+      // {
+      //   title: 'Notifications',
+      //   href: '/vendor/notifications',
+      //   icon: BiSolidBell,
+      // },
     ],
   },
 
   customer: {
     topNav: [
-      { title: 'Services', href: '/' },
-
-      { title: 'Profile', href: '/customer/profile' },
+      // { title: 'Services', href: '/' },
+      // { title: 'Profile', href: '/customer/profile' },
     ],
-    sideNav: [{ title: 'Profile', href: '/customer/profile', icon: FaUser }],
+    sideNav: [
+      { title: 'Profile', href: '/customer/profile', icon: FaUser },
+      {
+        title: 'Change Password',
+        href: '/customer/change-password',
+        icon: FaLock,
+      },
+      // { title: 'Services', href: '/services', icon: FaServicestack },
+      // { title: 'Dashboard', href: '/customer/dashboard', icon: FaHome },
+    ],
   },
 }

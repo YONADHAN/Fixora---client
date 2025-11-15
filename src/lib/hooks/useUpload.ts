@@ -7,7 +7,7 @@ export const useUpload = () => {
       const { data } = await getPresignedUrl(file.name, file.type, purpose)
       const { url, key, bucket } = data
 
-      //Upload to MinIO/S3
+      //Upload to S3
       const putResponse = await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': file.type },

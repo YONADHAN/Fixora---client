@@ -9,6 +9,11 @@ export const ADMIN_ROUTES = {
   GET_VENDOR_REQUESTS: `${BASE_URL.ADMIN}/get_vendor_requests`,
   CHANGE_VENDOR_VERIFICATION_BLOCK_STATUS: `${BASE_URL.ADMIN}/vendor-verification-status`,
   CHANGE_PASSWORD: `${BASE_URL.ADMIN}/change-password`,
+  CREATE_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category`,
+  EDIT_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category`,
+  GET_ALL_SERVICE_CATEGORIES: `${BASE_URL.ADMIN}/category`,
+  BLOCK_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category/block`,
+  GET_SINGLE_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category`,
 }
 
 export const VENDOR_ROUTES = {

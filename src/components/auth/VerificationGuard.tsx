@@ -29,7 +29,6 @@ export default function VerificationGuard({
 
   const status: VendorVerificationStatus = vendor?.status
 
-  // 🧠 type guard for AxiosError
   function isAxiosError(err: unknown): err is AxiosError<{ message?: string }> {
     return (
       typeof err === 'object' &&

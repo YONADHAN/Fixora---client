@@ -28,11 +28,6 @@ export default function AuthGuard({ children, role }: AuthGuardProps) {
   const isLoggedIn = Boolean(activeRole)
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace(`/${role}/signin`)
-      return
-    }
-
     if (isLoggedIn && activeRole !== role) {
       router.replace(`/${activeRole}/dashboard`)
     }

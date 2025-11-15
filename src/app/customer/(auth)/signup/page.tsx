@@ -36,7 +36,8 @@ export default function CustomerSignupPage() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 409) {
-          toast.error('Failed to send OTP. This email is already registered!')
+          //toast.error('Failed to send OTP. This email is already registered!')
+          toast.error(error.response.data.message)
         } else {
           toast.error('Failed to send OTP. Please try again.')
         }

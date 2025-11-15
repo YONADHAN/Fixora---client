@@ -80,7 +80,7 @@ export default function Navbar({
       }
 
       toast.success(res?.data?.message || 'Logged out successfully')
-      router.push(`/${role}/sigin`)
+      router.push(`/${role}/signin`)
     } catch (error) {
       toast.error('Logout failed')
       console.error(error)

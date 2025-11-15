@@ -45,23 +45,26 @@ export default function GoogleLoginButton({ role }: { role: string }) {
 
               if (response.data.success) {
                 const user = response.data.user
-                console.log('✅ Logged in successfully:', user)
+                console.log(' Logged in successfully:', user)
 
                 if (role === 'vendor') {
                   dispatch(vendorLogin(user))
                 } else if ((role as 'customer' | 'vendor') === 'customer') {
                   dispatch(customerLogin(user))
                 }
-
+                if ((role as 'customer' | 'vendor') === 'customer') {
+                  window.location.href = '/'
+                  return
+                }
                 window.location.href = `/${role}/dashboard`
               } else {
-                console.error('❌ Login failed:', response.data.message)
+                console.error('Login failed:', response.data.message)
               }
             } catch (error) {
               console.error('Google login error:', error)
             }
           }}
-          onError={() => console.error('❌ Google Login Failed')}
+          onError={() => console.error(' Google Login Failed')}
           useOneTap={false}
           theme='outline'
           shape='rectangular'
