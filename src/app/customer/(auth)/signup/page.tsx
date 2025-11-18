@@ -35,6 +35,9 @@ export default function CustomerSignupPage() {
       toast.success('OTP sent successfully!')
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message)
+        }
         if (error.response?.status === 409) {
           //toast.error('Failed to send OTP. This email is already registered!')
           toast.error(error.response.data.message)
@@ -42,6 +45,7 @@ export default function CustomerSignupPage() {
           toast.error('Failed to send OTP. Please try again.')
         }
       } else {
+        //toast.error(error.response.data.message)
         toast.error('An unexpected error occurred.')
       }
     }

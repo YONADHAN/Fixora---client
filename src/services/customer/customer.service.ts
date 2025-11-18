@@ -32,3 +32,20 @@ export const changeCustomerPassword = async (
   })
   return response
 }
+
+export const customerUploadProfileImage = async (file: File) => {
+  const formData = new FormData()
+  formData.append('profileImage', file)
+
+  const response = await axiosInstance.post(
+    CUSTOMER_ROUTES.UPLOAD_PROFILE_IMAGE,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  )
+
+  return response.data
+}

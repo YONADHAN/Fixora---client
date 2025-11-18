@@ -5,6 +5,7 @@ import {
   venderProfileInfoUpdate,
   vendorLogout,
   vendorProfileInfo,
+  vendorUploadProfileImage,
   vendorVerificationDocStatusCheck,
 } from '@/services/vendor/vendor.service'
 import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
@@ -51,5 +52,11 @@ export const useChangeVendorPassword = () => {
   return useMutation({
     mutationFn: (data: { currentPassword: string; newPassword: string }) =>
       changeVendorPassword(data.currentPassword, data.newPassword),
+  })
+}
+
+export const useVendorUploadProfileImage = () => {
+  return useMutation({
+    mutationFn: (file: File) => vendorUploadProfileImage(file),
   })
 }

@@ -12,6 +12,7 @@ import {
   useCustomerProfileInfoUpdate,
 } from '@/lib/hooks/useCustomer'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
+import ProfileUpdatePage from '@/components/shared-ui/forms/profile-form/profile-image-update-form'
 
 const EditCustomerProfilePage = () => {
   const router = useRouter()
@@ -19,6 +20,27 @@ const EditCustomerProfilePage = () => {
   const { mutate: updateProfile, isPending } = useCustomerProfileInfoUpdate()
 
   const handleSubmit = (formData: any) => {
+    const name = formData.name?.trim()
+    const phone = formData.phone?.trim()
+    const zip = formData.location?.zipCode?.trim()
+
+    if (!name || name.length < 3 || !/^[A-Za-z\s]+$/.test(name)) {
+      toast.error(
+        'Please enter a valid name (minimum 3 letters, alphabets only).'
+      )
+      return
+    }
+
+    if (!phone || !/^\d{10}$/.test(phone)) {
+      toast.error('Please enter a valid 10-digit phone number.')
+      return
+    }
+
+    if (!zip || !/^\d{6}$/.test(zip)) {
+      toast.error('Please enter a valid 6-digit ZIP Code (PIN Code).')
+      return
+    }
+
     updateProfile(formData, {
       onSuccess: () => {
         toast.success('Profile updated successfully!')
@@ -69,10 +91,12 @@ const EditCustomerProfilePage = () => {
     <div className='min-h-screen bg-gray-100 flex items-center justify-center p-6'>
       <div className='w-full max-w-3xl bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden'>
         {/* Header */}
+
         <div className='bg-gradient-to-r from-slate-800 via-slate-700 to-gray-800 text-white p-6 flex items-center justify-between'>
           <h2 className='text-lg md:text-xl font-semibold tracking-wide'>
             Edit Profile
           </h2>
+
           <button
             onClick={handleCancel}
             className='flex items-center gap-2 text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-all backdrop-blur-sm'
@@ -81,7 +105,7 @@ const EditCustomerProfilePage = () => {
             Back
           </button>
         </div>
-
+        {/* <ProfileUpdatePage role='customer' /> */}
         {/* Form */}
         <EditProfileForm
           user={user}

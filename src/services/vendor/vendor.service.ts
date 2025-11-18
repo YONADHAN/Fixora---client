@@ -54,3 +54,20 @@ export const changeVendorPassword = async (
   })
   return response
 }
+
+export const vendorUploadProfileImage = async (file: File) => {
+  const formData = new FormData()
+  formData.append('profileImage', file)
+
+  const response = await axiosInstance.post(
+    VENDOR_ROUTES.UPLOAD_PROFILE_IMAGE,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  )
+
+  return response.data
+}

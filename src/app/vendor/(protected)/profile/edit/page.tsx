@@ -13,6 +13,7 @@ import {
   useVenderProfileInfoUpdate,
 } from '@/lib/hooks/useVendor'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
+import ProfileUpdatePage from '@/components/shared-ui/forms/profile-form/profile-image-update-form'
 
 const EditVendorProfilePage = () => {
   const router = useRouter()
@@ -23,6 +24,27 @@ const EditVendorProfilePage = () => {
     useVenderProfileInfoUpdate()
 
   const handleSubmit = (formData: any) => {
+    const name = formData.name?.trim()
+    const phone = formData.phone?.trim()
+    const zip = formData.location?.zipCode?.trim()
+
+    if (!name || name.length < 3 || !/^[A-Za-z\s]+$/.test(name)) {
+      toast.error(
+        'Please enter a valid name (minimum 3 letters, alphabets only).'
+      )
+      return
+    }
+
+    if (!phone || !/^\d{10}$/.test(phone)) {
+      toast.error('Please enter a valid 10-digit phone number.')
+      return
+    }
+
+    if (!zip || !/^\d{6}$/.test(zip)) {
+      toast.error('Please enter a valid 6-digit ZIP Code (PIN Code).')
+      return
+    }
+
     updateVendorProfile(formData, {
       onSuccess: () => {
         toast.success('Vendor profile updated successfully!')
@@ -77,6 +99,7 @@ const EditVendorProfilePage = () => {
           <h2 className='text-lg md:text-xl font-semibold tracking-wide'>
             Edit Vendor Profile
           </h2>
+
           <button
             onClick={handleCancel}
             className='flex items-center gap-2 text-sm bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-all backdrop-blur-sm'
@@ -85,7 +108,7 @@ const EditVendorProfilePage = () => {
             Back
           </button>
         </div>
-
+        {/* <ProfileUpdatePage role='vendor' /> */}
         {/* Form */}
         <EditProfileForm
           user={vendor}

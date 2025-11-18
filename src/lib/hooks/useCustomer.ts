@@ -4,6 +4,7 @@ import {
   customerLogout,
   customerProfileInfo,
   customerProfileInfoUpdate,
+  customerUploadProfileImage,
 } from '@/services/customer/customer.service'
 
 export const useCustomerLogout = () => {
@@ -32,5 +33,11 @@ export const useChangeCustomerPassword = () => {
   return useMutation({
     mutationFn: (data: { currentPassword: string; newPassword: string }) =>
       changeCustomerPassword(data.currentPassword, data.newPassword),
+  })
+}
+
+export const useCustomerUploadProfileImage = () => {
+  return useMutation({
+    mutationFn: (file: File) => customerUploadProfileImage(file),
   })
 }

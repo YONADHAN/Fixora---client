@@ -31,14 +31,13 @@ interface FormData {
 interface EditProfileFormProps {
   user: User
   role: string
-  onSubmit: (formData: FormData) => void // Changed: accepts formData, not event
-  onCancel: () => void // Changed: no parameters needed
+  onSubmit: (formData: FormData) => void
+  onCancel: () => void
   isPending: boolean
 }
 
 export const EditProfileForm = ({
   user,
-  role,
   onSubmit,
   onCancel,
   isPending,
@@ -90,12 +89,14 @@ export const EditProfileForm = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onSubmit(formData) // Pass formData, not event
+
+    onSubmit(formData)
   }
 
   return (
     <form onSubmit={handleSubmit} className='p-6 space-y-6 text-gray-700'>
       {/* Basic Info */}
+
       <div>
         <label className='block text-sm font-medium mb-1'>Name</label>
         <input

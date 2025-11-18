@@ -24,6 +24,7 @@ export const VENDOR_ROUTES = {
   UPLOAD_VERIFICATION_DOCUMENT: `${BASE_URL.VENDOR}/upload_verification_document`,
   STATUS_CHECK: `${BASE_URL.VENDOR}/status`,
   CHANGE_PASSWORD: `${BASE_URL.VENDOR}/change-password`,
+  UPLOAD_PROFILE_IMAGE: `${BASE_URL.VENDOR}/avatar`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -32,6 +33,7 @@ export const CUSTOMER_ROUTES = {
   GET_PROFILE_INFO: `${BASE_URL.CUSTOMER}/profile-info`,
   UPDATE_PROFILE_INFO: `${BASE_URL.CUSTOMER}/update-profile-info`,
   CHANGE_PASSWORD: `${BASE_URL.CUSTOMER}/change-password`,
+  UPLOAD_PROFILE_IMAGE: `${BASE_URL.CUSTOMER}/avatar`,
 }
 
 export const AUTH_ROUTES = {
