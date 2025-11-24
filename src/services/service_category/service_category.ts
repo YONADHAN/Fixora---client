@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/api/interceptor'
-import { ADMIN_ROUTES } from '@/utils/constants/api.routes'
+import { ADMIN_ROUTES, CUSTOMER_ROUTES } from '@/utils/constants/api.routes'
 import { ServiceCategoryItem } from '@/types/service_category/service_category'
 
 // Backend structure from API
@@ -14,6 +14,7 @@ interface BackendServiceCategory {
 // Returned to frontend
 export interface GetAllCategoriesResponse {
   categories: ServiceCategoryItem[]
+  currentPage: number
   totalPages: number
 }
 
@@ -63,15 +64,20 @@ export const getAllServiceCategories = async (
 ): Promise<GetAllCategoriesResponse> => {
   const response = await axiosInstance.get<{
     success: boolean
-    response: BackendServiceCategory[]
+    response: {
+      data: BackendServiceCategory[]
+      currentPage: number
+      totalPages: number
+    }
   }>(ADMIN_ROUTES.GET_ALL_SERVICE_CATEGORIES, {
     params: { page, limit, search },
   })
 
-  const raw = response.data.response
+  const { data, currentPage, totalPages } = response.data.response
 
-  const mapped: ServiceCategoryItem[] = raw.map((cat) => ({
-    userId: cat.serviceCategoryId,
+  const mapped: ServiceCategoryItem[] = data.map((cat) => ({
+    id: cat.serviceCategoryId,
+    categoryId: cat.serviceCategoryId,
     name: cat.name,
     description: cat.description,
     bannerUrl: cat.bannerImage,
@@ -80,7 +86,8 @@ export const getAllServiceCategories = async (
 
   return {
     categories: mapped,
-    totalPages: 1,
+    currentPage,
+    totalPages,
   }
 }
 
@@ -98,4 +105,8 @@ export const getSingleServiceCategory = async (categoryId: string) => {
   return axiosInstance.get(
     `${ADMIN_ROUTES.GET_SINGLE_SERVICE_CATEGORY}/${categoryId}`
   )
+}
+
+export const getActiveServiceCategories = async () => {
+  return axiosInstance.get(`${CUSTOMER_ROUTES.GET_ACTIVE_SERVICE_CATEGORIES}`)
 }

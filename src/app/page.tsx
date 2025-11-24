@@ -1,35 +1,22 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-  Search,
-  Wrench,
-  Zap,
-  Droplet,
-  Scissors,
-  PaintBucket,
-  Home,
-  CheckCircle,
-  Clock,
-  Shield,
-  Star,
-} from 'lucide-react'
-
+import { Search, CheckCircle, Clock, Shield, Star } from 'lucide-react'
+import Image from 'next/image'
+import { useGetActiveServiceCategories } from '@/lib/hooks/userServiceCategory'
+interface TypeCategoryItem {
+  serviceCategoryId: string
+  name: string
+  description: string
+  bannerImage: string
+}
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState('')
 
-  const services = [
-    { icon: Zap, name: 'Electrician', color: 'from-yellow-400 to-orange-500' },
-    { icon: Droplet, name: 'Plumber', color: 'from-blue-400 to-cyan-500' },
-    { icon: Wrench, name: 'Carpenter', color: 'from-amber-400 to-orange-600' },
-    {
-      icon: PaintBucket,
-      name: 'Painter',
-      color: 'from-purple-400 to-pink-500',
-    },
-    { icon: Scissors, name: 'Tailor', color: 'from-rose-400 to-red-500' },
-    { icon: Home, name: 'Cleaning', color: 'from-green-400 to-emerald-500' },
-  ]
+  // ⬇ Fetch active categories from backend
+  const { data, isLoading } = useGetActiveServiceCategories()
+  console.log('Data ', data?.data.response.data)
+  const activeCategories = data?.data.response.data || []
 
   const features = [
     {
@@ -58,7 +45,7 @@ export default function Page() {
     <div className='flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-white'>
       {/* HERO SECTION */}
       <section className='relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden'>
-        {/* Animated background elements */}
+        {/* Animated background */}
         <div className='absolute inset-0 overflow-hidden'>
           <div className='absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse'></div>
           <div
@@ -68,13 +55,11 @@ export default function Page() {
         </div>
 
         <div className='relative z-10 max-w-5xl mx-auto text-center space-y-8'>
-          {/* Badge */}
           <div className='inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm text-blue-700 font-medium'>
             <span className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></span>
             Trusted by 50,000+ happy customers
           </div>
 
-          {/* Main heading */}
           <h1 className='text-5xl md:text-7xl font-bold text-gray-900 leading-tight'>
             Your Home Services,
             <span className='block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2'>
@@ -87,7 +72,7 @@ export default function Page() {
             needs. Fast, reliable, and affordable.
           </p>
 
-          {/* Enhanced Search Bar */}
+          {/* SEARCH BAR */}
           <div className='max-w-2xl mx-auto mt-12'>
             <div className='relative group'>
               <div className='absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300'></div>
@@ -107,7 +92,7 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Popular searches */}
+          {/* POPULAR SEARCHES */}
           <div className='flex flex-wrap items-center justify-center gap-3 text-sm'>
             <span className='text-gray-500'>Popular:</span>
             {['Electrician', 'Plumber', 'Cleaning', 'AC Repair'].map((term) => (
@@ -122,35 +107,49 @@ export default function Page() {
         </div>
       </section>
 
-      {/* POPULAR SERVICES */}
-      <section className='py-24 px-4 bg-white'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16'>
-            <h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
-              Popular Services
-            </h2>
-            <p className='text-xl text-gray-600'>
-              Book the most in-demand home services
-            </p>
-          </div>
+      {/* ACTIVE SERVICE CATEGORIES (LIVE API) */}
+      {!isLoading && activeCategories.length > 0 && (
+        <section className='py-24 px-4 bg-white'>
+          <div className='max-w-7xl mx-auto'>
+            <div className='text-center mb-16'>
+              <h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+                Popular Services
+              </h2>
+              <p className='text-xl text-gray-600'>
+                Book the most in-demand home services
+              </p>
+            </div>
 
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6'>
-            {services.map((service, idx) => (
-              <div key={idx} className='group cursor-pointer'>
-                <div className='relative overflow-hidden rounded-2xl p-6 h-40 flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2'>
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                  ></div>
-                  <service.icon className='relative z-10 w-12 h-12 text-gray-700 group-hover:text-white transition-colors duration-300' />
-                  <span className='relative z-10 mt-3 font-semibold text-gray-800 group-hover:text-white transition-colors duration-300'>
-                    {service.name}
-                  </span>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6'>
+              {activeCategories.map((cat: TypeCategoryItem) => (
+                <div
+                  key={cat.serviceCategoryId}
+                  className='group cursor-pointer pb-1 text-center bg-gray-50 p-2 rounded-3xl'
+                >
+                  <div className='relative overflow-hidden rounded-2xl h-40 flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl'>
+                    {/* Background Image */}
+                    <Image
+                      src={cat.bannerImage}
+                      alt={cat.name}
+                      fill
+                      className='object-cover transition-transform duration-300 group-hover:scale-110'
+                    />
+
+                    {/* Dark gradient overlay */}
+                    <div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/20 group-hover:from-black/50 group-hover:to-black/40 transition-all'></div>
+
+                    {/* TEXT */}
+                    <span className='relative z-10 text-white font-semibold text-lg drop-shadow-md'>
+                      {cat.name}
+                    </span>
+                  </div>
+                  {cat.description}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FEATURES SECTION */}
       <section className='py-24 px-4 bg-gradient-to-b from-gray-50 to-white'>
@@ -186,7 +185,6 @@ export default function Page() {
       {/* CTA SECTION */}
       <section className='relative py-24 px-4 overflow-hidden'>
         <div className='absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700'></div>
-        <div className='absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")]'></div>
 
         <div className='relative z-10 max-w-4xl mx-auto text-center text-white'>
           <h2 className='text-4xl md:text-6xl font-bold mb-6'>

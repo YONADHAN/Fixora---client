@@ -5,6 +5,7 @@ import {
   createServiceCategories,
   blockServiceCategory,
   getSingleServiceCategory,
+  getActiveServiceCategories,
 } from '@/services/service_category/service_category'
 
 import {
@@ -67,6 +68,15 @@ export const useGetAllServiceCategories = (
   return useQuery<GetAllCategoriesResponse>({
     queryKey: ['serviceCategories', page, limit, search],
     queryFn: () => getAllServiceCategories(page, limit, search),
+  })
+}
+/* ---------------------------
+   GET ACTIVE SERVICE CATEGORIES
+---------------------------- */
+export const useGetActiveServiceCategories = () => {
+  return useQuery({
+    queryKey: ['activeServiceCategories'],
+    queryFn: () => getActiveServiceCategories(),
   })
 }
 

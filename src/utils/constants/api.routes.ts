@@ -34,6 +34,7 @@ export const CUSTOMER_ROUTES = {
   UPDATE_PROFILE_INFO: `${BASE_URL.CUSTOMER}/update-profile-info`,
   CHANGE_PASSWORD: `${BASE_URL.CUSTOMER}/change-password`,
   UPLOAD_PROFILE_IMAGE: `${BASE_URL.CUSTOMER}/avatar`,
+  GET_ACTIVE_SERVICE_CATEGORIES: `${BASE_URL.CUSTOMER}/service_category`,
 }
 
 export const AUTH_ROUTES = {

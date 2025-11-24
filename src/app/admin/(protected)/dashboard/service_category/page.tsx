@@ -2,82 +2,87 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useGetAllServiceCategories } from '@/lib/hooks/userServiceCategory'
-import { useBlockServiceCategory } from '@/lib/hooks/userServiceCategory'
+import { Button } from '@/components/ui/button'
+import {
+  useGetAllServiceCategories,
+  useBlockServiceCategory,
+} from '@/lib/hooks/userServiceCategory'
+import { useDebounce } from '@/lib/hooks/useDebounce'
+
 import {
   ResponsiveTable,
   ColumnDefinition,
-} from '@/components/shared-ui/resusable_components/table/table'
-import { Button } from '@/components/ui/button'
+} from '@/components/shared-ui/resusable_components/table/TableWithPagination'
+
+import { ConfirmDialog } from '@/components/shared-ui/resusable_components/DialogBox/confirmationPopup'
 import { ServiceCategoryItem } from '@/types/service_category/service_category'
-import { useDebounce } from '@/lib/hooks/useDebounce'
+
 export default function ServiceCategoryListPage() {
   const router = useRouter()
 
-  // State
+  /* -------------------------------
+      State & Data Fetching
+  ---------------------------------*/
   const [page, setPage] = useState(1)
-  const [limit] = useState(10)
-  const [search, setSearch] = useState('')
-
-  //debouncing logic
+  const [limit] = useState(4)
   const [searchInput, setSearchInput] = useState('')
+
   const debouncedSearch = useDebounce(searchInput, 500)
+
   const { data, isLoading } = useGetAllServiceCategories(
     page,
     limit,
     debouncedSearch
   )
 
-  const [confirmDialog, setConfirmDialog] = useState({
-    isOpen: false,
-    item: null as ServiceCategoryItem | null,
-    action: 'block' as 'block' | 'unblock',
-  })
-
-  const updatingItems = new Set<string>()
-
-  const blockMutation = useBlockServiceCategory()
-  console.log('Response data from page is ', data)
   const categories = data?.categories || []
   const totalPages = data?.totalPages || 1
 
-  const handleBlockUnblockClick = (item: ServiceCategoryItem) => {
+  /* -------------------------------
+      Confirm Dialog
+  ---------------------------------*/
+  const [confirmDialog, setConfirmDialog] = useState({
+    open: false,
+    item: null as ServiceCategoryItem | null,
+    action: '' as 'block' | 'unblock',
+  })
+
+  const blockMutation = useBlockServiceCategory()
+
+  const handleOpenConfirm = (item: ServiceCategoryItem) => {
     setConfirmDialog({
-      isOpen: true,
+      open: true,
       item,
       action: item.status === 'active' ? 'block' : 'unblock',
     })
   }
 
-  const handleConfirmAction = () => {
+  const handleConfirm = () => {
     if (!confirmDialog.item) return
 
     blockMutation.mutate(
       {
-        categoryId: confirmDialog.item.userId,
+        categoryId: confirmDialog.item.categoryId,
         status: confirmDialog.action === 'block' ? 'inactive' : 'active',
       },
       {
         onSuccess: () => {
-          setConfirmDialog({ isOpen: false, item: null, action: 'block' })
+          setConfirmDialog({ open: false, item: null, action: 'block' })
         },
       }
     )
   }
 
-  const handleCancelAction = () => {
-    setConfirmDialog({ isOpen: false, item: null, action: 'block' })
+  const handleCancel = () => {
+    setConfirmDialog({ open: false, item: null, action: 'block' })
   }
 
+  /* -------------------------------
+      Table Columns
+  ---------------------------------*/
   const columns: ColumnDefinition<ServiceCategoryItem>[] = [
-    {
-      key: 'name',
-      header: 'Category Name',
-    },
-    {
-      key: 'description',
-      header: 'Description',
-    },
+    { key: 'name', header: 'Category Name' },
+    { key: 'description', header: 'Description' },
     {
       key: 'bannerUrl',
       header: 'Banner',
@@ -106,6 +111,9 @@ export default function ServiceCategoryListPage() {
     },
   ]
 
+  /* -------------------------------
+      Row Actions
+  ---------------------------------*/
   const customActions = (item: ServiceCategoryItem) => (
     <div className='flex gap-2 justify-center'>
       <Button
@@ -121,7 +129,7 @@ export default function ServiceCategoryListPage() {
       <Button
         size='sm'
         variant={item.status === 'active' ? 'destructive' : 'default'}
-        onClick={() => handleBlockUnblockClick(item)}
+        onClick={() => handleOpenConfirm(item)}
       >
         {item.status === 'active' ? 'Block' : 'Unblock'}
       </Button>
@@ -130,49 +138,44 @@ export default function ServiceCategoryListPage() {
 
   return (
     <main className='min-h-screen bg-background'>
-      <div className='border-b border-border bg-card'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
-          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
-            <div>
-              <h1 className='text-3xl font-bold text-foreground'>
-                Service Categories
-              </h1>
-              <p className='text-sm text-muted-foreground mt-1'>
-                Manage and organize your service categories
-              </p>
-            </div>
-            <Button
-              onClick={() => router.push('service_category/add')}
-              className='w-full sm:w-auto'
-            >
-              Add Category
-            </Button>
-          </div>
-        </div>
-      </div>
-
+      {/* Content */}
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
         <ResponsiveTable<ServiceCategoryItem>
+          title='Categories'
           data={categories}
           loading={isLoading}
-          updatingItems={updatingItems}
+          columns={columns}
+          actions={customActions}
           currentPage={page}
           totalPages={totalPages}
           onPageChange={setPage}
           searchTerm={searchInput}
           onSearchTermChange={(e) => setSearchInput(e.target.value)}
-          onSearchKeyPress={(e) => {
-            if (e.key === 'Enter') setSearch(searchInput)
-          }}
-          onSearchClick={() => setSearch(searchInput)}
-          onBlockUnblockClick={handleBlockUnblockClick}
-          confirmDialog={confirmDialog}
-          onConfirmAction={handleConfirmAction}
-          onCancelAction={handleCancelAction}
-          entityType='service category'
-          columns={columns}
-          customActions={customActions}
-          showActionsColumn={true}
+          onSearchClick={() => setPage(1)}
+          headerActions={
+            <Button onClick={() => router.push('service_category/add')}>
+              Add Category
+            </Button>
+          }
+        />
+
+        {/* Confirm Dialog */}
+        <ConfirmDialog
+          open={confirmDialog.open}
+          title={
+            confirmDialog.action === 'block'
+              ? 'Block Category'
+              : 'Unblock Category'
+          }
+          description={
+            confirmDialog.item
+              ? `Are you sure you want to ${confirmDialog.action} "${confirmDialog.item.name}"?`
+              : ''
+          }
+          confirmLabel={confirmDialog.action === 'block' ? 'Block' : 'Unblock'}
+          confirmColor={confirmDialog.action === 'block' ? 'red' : 'green'}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
         />
       </div>
     </main>
