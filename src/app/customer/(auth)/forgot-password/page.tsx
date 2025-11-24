@@ -3,7 +3,7 @@ import ForgotPassword from '@/components/shared-ui/forgot-password/page'
 import { useForgotPassword } from '@/lib/hooks/useAuth'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
-
+import { useRouter } from 'next/navigation'
 function ForgotPasswordPage() {
   const forgotPasswordMutation = useForgotPassword()
 

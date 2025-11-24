@@ -9,14 +9,13 @@ const Page = () => {
   const resetPassword = useResetPassword()
   const { token } = useParams()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const formData = new FormData(e.currentTarget)
-
-    const newPassword = formData.get('newPassword') as string
-    const confirmPassword = formData.get('confirmPassword') as string
-
+  const handleSubmit = async ({
+    newPassword,
+    confirmPassword,
+  }: {
+    newPassword: string
+    confirmPassword: string
+  }) => {
     if (newPassword !== confirmPassword) {
       toast.error('New Password and Confirm Password must match')
       return

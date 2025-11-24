@@ -1,6 +1,6 @@
 'use client'
 import ResetPassword from '@/components/shared-ui/reset-password/page'
-import { toast } from "sonner";t'
+import { toast } from 'sonner'
 import { useResetPassword } from '@/lib/hooks/useAuth'
 import { useParams } from 'next/navigation'
 import { AxiosError } from 'axios'
@@ -9,14 +9,13 @@ const Page = () => {
   const resetPassword = useResetPassword()
   const { token } = useParams()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const formData = new FormData(e.currentTarget)
-
-    const newPassword = formData.get('newPassword') as string
-    const confirmPassword = formData.get('confirmPassword') as string
-
+  const handleSubmit = async ({
+    newPassword,
+    confirmPassword,
+  }: {
+    newPassword: string
+    confirmPassword: string
+  }) => {
     if (newPassword !== confirmPassword) {
       toast.error('New Password and Confirm Password must match')
       return
@@ -38,11 +37,7 @@ const Page = () => {
     }
   }
 
-  return (
-    <div>
-      <ResetPassword role='admin' handleSubmit={handleSubmit} />
-    </div>
-  )
+  return <ResetPassword role='admin' handleSubmit={handleSubmit} />
 }
 
 export default Page
