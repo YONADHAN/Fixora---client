@@ -4,15 +4,15 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-
+import { useRouter } from 'next/navigation'
 const SuccessfulSection = () => {
-  const handleRefresh = () => {
-    window.location.reload()
+  const router = useRouter()
+  const navigateToDashboard = () => {
+    router.push('/vendor/dashboard')
   }
 
   return (
     <div className='flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6'>
-      {/* ✅ Animated success icon */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -21,7 +21,7 @@ const SuccessfulSection = () => {
         <CheckCircle2 className='w-16 h-16 text-green-600' />
       </motion.div>
 
-      {/* ✅ Success message */}
+      {/*Success message */}
       <h2 className='text-2xl font-semibold text-green-700'>
         Documents Verified Successfully!
       </h2>
@@ -31,9 +31,8 @@ const SuccessfulSection = () => {
         vendor dashboard and start managing your business.
       </p>
 
-      {/* ✅ Refresh button */}
       <Button
-        onClick={handleRefresh}
+        onClick={navigateToDashboard}
         className='mt-4 flex items-center gap-2 bg-green-600 hover:bg-green-700'
       >
         <RefreshCw className='w-4 h-4' />

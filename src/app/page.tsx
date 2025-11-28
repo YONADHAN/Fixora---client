@@ -13,10 +13,9 @@ interface TypeCategoryItem {
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState('')
 
-  // ⬇ Fetch active categories from backend
   const { data, isLoading } = useGetActiveServiceCategories()
-  console.log('Data ', data?.data.response.data)
-  const activeCategories = data?.data.response.data || []
+
+  const activeCategories = data?.data?.data?.data || []
 
   const features = [
     {
@@ -131,6 +130,7 @@ export default function Page() {
                     <Image
                       src={cat.bannerImage}
                       alt={cat.name}
+                      sizes=''
                       fill
                       className='object-cover transition-transform duration-300 group-hover:scale-110'
                     />

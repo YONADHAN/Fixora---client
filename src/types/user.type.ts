@@ -5,7 +5,8 @@ export type VendorStatus = 'pending' | 'approved' | 'rejected' | 'blocked'
 export type verificationTypes = 'accepted' | 'rejected' | 'pending'
 export type CustomerStatus = 'active' | 'blocked'
 export type AdminStatus = 'active'
-
+export type statusTypes = 'active' | 'blocked'
+export type TRole = 'customer' | 'admin' | 'vendor'
 export interface User {
   _id?: string
   username: string

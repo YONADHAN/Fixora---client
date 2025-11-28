@@ -54,8 +54,8 @@ export default function VerificationGuard({
     }
 
     if (status === 'accepted') {
-      hasRedirected.current = true
-      router.replace('/vendor/dashboard')
+      // hasRedirected.current = true
+      // router.replace('/vendor/dashboard')
       return
     }
 

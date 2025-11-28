@@ -9,6 +9,7 @@
 // }) {
 //   return <AuthGuard role='vendor'>{children}</AuthGuard>
 // }
+
 'use client'
 
 import AuthGuard from '@/components/auth/AuthGuard'

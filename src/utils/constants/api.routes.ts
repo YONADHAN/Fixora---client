@@ -14,6 +14,12 @@ export const ADMIN_ROUTES = {
   GET_ALL_SERVICE_CATEGORIES: `${BASE_URL.ADMIN}/category`,
   BLOCK_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category/block`,
   GET_SINGLE_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/category`,
+  CREATE_SUB_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/sub-service-category`,
+  GET_ALL_SUB_SERVICE_CATEGORIES: `${BASE_URL.ADMIN}/sub-service-category`,
+  EDIT_SUB_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/sub-service-category`,
+  GET_SINGLE_SUB_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/sub-service-category`,
+  TOGGLE_SUB_SERVICE_CATEGORY_BLOCK_STATUS: `${BASE_URL.ADMIN}/sub-service-category`,
+  TOGGLE_SUB_SERVICE_CATEGORY_VERIFICATION_STATUS: `${BASE_URL.ADMIN}/sub-service-category/verification`,
 }
 
 export const VENDOR_ROUTES = {
@@ -25,6 +31,8 @@ export const VENDOR_ROUTES = {
   STATUS_CHECK: `${BASE_URL.VENDOR}/status`,
   CHANGE_PASSWORD: `${BASE_URL.VENDOR}/change-password`,
   UPLOAD_PROFILE_IMAGE: `${BASE_URL.VENDOR}/avatar`,
+  CREATE_SUB_SERVICE_CATEGORY: `${BASE_URL.VENDOR}/sub-service-category`,
+  GET_VENDOR_SUB_SERVICE_CATEGORIES: `${BASE_URL.VENDOR}/sub-service-category/vendor-created`,
 }
 
 export const CUSTOMER_ROUTES = {

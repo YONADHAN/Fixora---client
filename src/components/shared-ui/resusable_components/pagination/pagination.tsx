@@ -24,7 +24,6 @@ export function Pagination({
     if (currentPage < totalPages) onPageChange(currentPage + 1)
   }
 
-  // Generate nearby page numbers for better UX
   const visiblePages = Array.from(
     { length: totalPages },
     (_, i) => i + 1

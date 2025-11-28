@@ -5,8 +5,9 @@ import {
   FaStore,
   FaLock,
   FaServicestack,
+  FaScrewdriver,
 } from 'react-icons/fa'
-import { BiSolidBell } from 'react-icons/bi'
+
 import { HiDocumentSearch } from 'react-icons/hi'
 import { User2 } from 'lucide-react'
 
@@ -53,6 +54,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         href: '/admin/dashboard/service_category',
         icon: FaServicestack,
       },
+      {
+        title: 'Sub Service Categories',
+        href: '/admin/dashboard/sub-service-category',
+        icon: FaScrewdriver,
+      },
     ],
   },
 
@@ -64,6 +70,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
     sideNav: [
       { title: 'Profile', href: '/vendor/profile', icon: User2 },
 
+      {
+        title: 'Sub Service Category',
+        href: '/vendor/sub-service-category',
+        icon: FaServicestack,
+      },
       {
         title: 'Change Password',
         href: '/vendor/change-password',
