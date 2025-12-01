@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { Search, CheckCircle, Clock, Shield, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useGetActiveServiceCategories } from '@/lib/hooks/userServiceCategory'
+import { useRouter } from 'next/navigation'
+
 interface TypeCategoryItem {
   serviceCategoryId: string
   name: string
@@ -11,6 +13,7 @@ interface TypeCategoryItem {
   bannerImage: string
 }
 export default function Page() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
 
   const { data, isLoading } = useGetActiveServiceCategories()
@@ -123,6 +126,11 @@ export default function Page() {
               {activeCategories.map((cat: TypeCategoryItem) => (
                 <div
                   key={cat.serviceCategoryId}
+                  onClick={() =>
+                    router.push(
+                      `/customer/service_category/${cat.serviceCategoryId}`
+                    )
+                  }
                   className='group cursor-pointer pb-1 text-center bg-gray-50 p-2 rounded-3xl'
                 >
                   <div className='relative overflow-hidden rounded-2xl h-40 flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl'>
