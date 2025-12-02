@@ -33,6 +33,7 @@ export const VENDOR_ROUTES = {
   UPLOAD_PROFILE_IMAGE: `${BASE_URL.VENDOR}/avatar`,
   CREATE_SUB_SERVICE_CATEGORY: `${BASE_URL.VENDOR}/sub-service-category`,
   GET_VENDOR_SUB_SERVICE_CATEGORIES: `${BASE_URL.VENDOR}/sub-service-category/vendor-created`,
+  CREATE_SERVICE: `${BASE_URL.VENDOR}/service`,
 }
 
 export const CUSTOMER_ROUTES = {
