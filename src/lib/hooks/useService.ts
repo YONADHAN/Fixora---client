@@ -4,6 +4,6 @@ import { useMutation } from '@tanstack/react-query'
 
 export const useCreateService = () => {
   return useMutation({
-    mutationFn: (payload: RequestCreateServiceDTO) => createService(payload),
+    mutationFn: (payload: FormData) => createService(payload),
   })
 }
