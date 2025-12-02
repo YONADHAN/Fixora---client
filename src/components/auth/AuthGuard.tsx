@@ -32,7 +32,9 @@ export default function AuthGuard({ children, role }: AuthGuardProps) {
       router.replace(`/${activeRole}/dashboard`)
     }
   }, [isLoggedIn, activeRole, role, router])
-
+  if (!isLoggedIn) {
+    router.replace('/')
+  }
   if (!isLoggedIn || (isLoggedIn && activeRole !== role)) return <AuthLoader />
   return <>{children}</>
 }
