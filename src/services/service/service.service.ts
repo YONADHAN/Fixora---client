@@ -1,7 +1,9 @@
 import { axiosInstance } from '@/api/interceptor'
 import {
+  RequestEditServiceDTO,
   RequestGetAllServicesDTO,
   RequestGetServiceByIdDTO,
+  ResponseEditServiceDTO,
   ResponseGetAllServicesDTO,
   ResponseGetServiceByIdDTO,
 } from '@/dtos/service_dto'
@@ -37,6 +39,17 @@ export const getServiceById = async (
 ): Promise<ResponseGetServiceByIdDTO> => {
   const response = await axiosInstance.get(
     `${CUSTOMER_ROUTES.GET_SERVICES_BY_ID}/${payload.serviceId}`
+  )
+  return response.data.data
+}
+
+export const editServiceById = async (
+  serviceId: string,
+  payload: RequestEditServiceDTO
+): Promise<ResponseEditServiceDTO> => {
+  const response = await axiosInstance.patch(
+    `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
+    payload
   )
   return response.data.data
 }

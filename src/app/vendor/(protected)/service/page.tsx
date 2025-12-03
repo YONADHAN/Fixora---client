@@ -37,7 +37,7 @@ export default function AdminServicesPage() {
 
   const columns = [
     { key: 'title', header: 'Title' },
-    { key: 'description', header: 'Description' },
+    // { key: 'description', header: 'Description' },
     {
       key: 'images',
       header: 'Image',
@@ -79,12 +79,22 @@ export default function AdminServicesPage() {
       onSearchTermChange={(e) => setSearch(e.target.value)}
       onSearchClick={() => setPage(1)}
       actions={(item) => (
-        <Button
-          variant='destructive'
-          onClick={() => console.log('Block service:', item.serviceId)}
-        >
-          Block
-        </Button>
+        <div className='gap-2 flex'>
+          <Button
+            variant='default'
+            onClick={() =>
+              router.push(`/vendor/service/${item.serviceId}/edit`)
+            }
+          >
+            Edit
+          </Button>
+          <Button
+            variant='destructive'
+            onClick={() => console.log('Block service:', item.serviceId)}
+          >
+            Block
+          </Button>
+        </div>
       )}
       headerActions={
         <Button onClick={() => router.push('/vendor/service/add')}>

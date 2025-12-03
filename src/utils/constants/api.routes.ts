@@ -35,6 +35,7 @@ export const VENDOR_ROUTES = {
   GET_VENDOR_SUB_SERVICE_CATEGORIES: `${BASE_URL.VENDOR}/sub-service-category/vendor-created`,
   CREATE_SERVICE: `${BASE_URL.VENDOR}/service`,
   GET_ALL_SERVICES: `${BASE_URL.VENDOR}/service`,
+  EDIT_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
 }
 
 export const CUSTOMER_ROUTES = {

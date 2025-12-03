@@ -1,11 +1,14 @@
 import {
+  RequestEditServiceDTO,
   RequestGetAllServicesDTO,
   RequestGetServiceByIdDTO,
+  ResponseEditServiceDTO,
   ResponseGetAllServicesDTO,
   ResponseGetServiceByIdDTO,
 } from '@/dtos/service_dto'
 import {
   createService,
+  editServiceById,
   getAllServices,
   getServiceById,
 } from '@/services/service/service.service'
@@ -28,5 +31,17 @@ export const useGetServicesById = (payload: RequestGetServiceByIdDTO) => {
   return useQuery<ResponseGetServiceByIdDTO>({
     queryKey: ['getServiceById', payload],
     queryFn: () => getServiceById(payload),
+  })
+}
+
+export const useEditServiceById = () => {
+  return useMutation({
+    mutationFn: ({
+      serviceId,
+      payload,
+    }: {
+      serviceId: string
+      payload: RequestEditServiceDTO
+    }) => editServiceById(serviceId, payload),
   })
 }

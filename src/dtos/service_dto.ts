@@ -93,3 +93,106 @@ export interface ResponseGetServiceByIdDTO {
 
   images: string[]
 }
+
+// export interface RequestEditServiceDTO {
+//   title?: string
+//   description?: string
+//   subServiceCategoryId: string
+//   pricing?: {
+//     pricePerSlot?: number
+//     isAdvanceRequired?: boolean
+//     advanceAmountPerSlot?: number
+//     currency?: string
+//   }
+
+//   isActiveStatusByVendor?: boolean
+//   adminStatusNote?: string
+
+//   schedule?: {
+//     visibilityStartDate?: Date
+//     visibilityEndDate?: Date
+
+//     workStartTime?: string
+//     workEndTime?: string
+
+//     slotDurationMinutes?: number
+
+//     recurrenceType?: recurrenceType
+
+//     weeklyWorkingDays?: number[]
+//     monthlyWorkingDates?: number[]
+//     holidayDates?: Date[]
+//   }
+
+//   images?: File[]
+// }
+export interface RequestEditServiceDTO {
+  subServiceCategoryId: string
+  title?: string
+  description?: string
+
+  pricing?: {
+    pricePerSlot?: string
+    isAdvanceRequired?: 'true' | 'false'
+    advanceAmountPerSlot?: string
+    currency?: string
+  }
+
+  isActiveStatusByVendor?: 'true' | 'false'
+  adminStatusNote?: string
+
+  schedule?: {
+    visibilityStartDate?: string
+    visibilityEndDate?: string
+
+    workStartTime?: string
+    workEndTime?: string
+
+    slotDurationMinutes?: string
+    recurrenceType?: string
+
+    weeklyWorkingDays?: string
+    monthlyWorkingDates?: string
+    holidayDates?: string
+  }
+
+  images?: File[]
+}
+
+export interface ResponseEditServiceDTO {
+  serviceId: string
+
+  title: string
+  description: string
+
+  pricing: {
+    pricePerSlot: number
+    isAdvanceRequired: boolean
+    advanceAmountPerSlot: number
+    currency: string
+  }
+
+  schedule: {
+    visibilityStartDate: Date
+    visibilityEndDate: Date
+
+    workStartTime: string
+    workEndTime: string
+
+    slotDurationMinutes: number
+    recurrenceType: recurrenceType
+
+    weeklyWorkingDays: number[]
+    monthlyWorkingDates: number[]
+    holidayDates: Date[]
+  }
+
+  images: string[]
+
+  isActiveStatusByVendor: boolean
+  isActiveStatusByAdmin: boolean
+  adminStatusNote: string
+
+  createdAt: Date
+  updatedAt: Date
+}
