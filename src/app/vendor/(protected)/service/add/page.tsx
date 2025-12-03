@@ -7,6 +7,7 @@ import { RequestCreateServiceDTO } from '@/dtos/service_dto'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 
 export default function AddServicePage() {
   const router = useRouter()
@@ -19,19 +20,6 @@ export default function AddServicePage() {
       search: '',
     })
 
-  // const handleCreate = async (values: RequestCreateServiceDTO) => {
-  //   console.log('Handle create function in the parent worked', values)
-  //   try {
-  //     await mutateAsync(values)
-  //     router.push('/vendor/services')
-  //   } catch (err) {
-  //     console.error('Service creation failed:', err)
-  //     if (err instanceof AxiosError) {
-  //       const error = JSON.stringify(err)
-  //       console.log(error)
-  //     }
-  //   }
-  // }
   const handleCreate = async (values: RequestCreateServiceDTO) => {
     const fd = new FormData()
 
@@ -87,7 +75,12 @@ export default function AddServicePage() {
 
   return (
     <div className='max-w-4xl mx-auto p-6'>
-      <h1 className='text-2xl font-semibold mb-6'>Add New Service</h1>
+      <h1 className='text-2xl font-semibold mb-6 md:flex justify-between'>
+        <div>Add New Service</div>
+        <Button onClick={() => router.push('/vendor/service')}>
+          Go Back To Service
+        </Button>
+      </h1>
 
       <ServiceFormSection
         initialData={{}}

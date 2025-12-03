@@ -1,3 +1,5 @@
+import { recurrenceType } from '@/utils/constants/constants'
+
 export interface RequestCreateServiceDTO {
   subServiceCategoryId: string
 
@@ -31,4 +33,63 @@ export interface RequestCreateServiceDTO {
   }
 
   images: File[]
+}
+
+export interface RequestGetAllServicesDTO {
+  page: string
+  limit: string
+  search?: string
+}
+export interface GetAllServicesItem {
+  serviceId: string
+  title: string
+  description: string
+  images: string[]
+  isActiveStatusByVendor: boolean
+}
+
+export interface ResponseGetAllServicesDTO {
+  data: GetAllServicesItem[]
+  totalPages: number
+  currentPage: number
+}
+
+export interface RequestGetServiceByIdDTO {
+  serviceId: string
+}
+
+export interface ResponseGetServiceByIdDTO {
+  vendorId: string
+  subServiceCategoryId: string
+
+  title: string
+  description?: string
+
+  pricing: {
+    pricePerSlot: number
+    isAdvanceRequired: boolean
+    advanceAmountPerSlot: number
+    currency?: string
+  }
+
+  isActiveStatusByVendor: boolean
+  isActiveStatusByAdmin?: boolean
+  adminStatusNote?: string
+
+  schedule: {
+    visibilityStartDate?: Date
+    visibilityEndDate?: Date
+
+    workStartTime?: string
+    workEndTime?: string
+
+    slotDurationMinutes?: number
+    recurrenceType?: recurrenceType
+
+    weeklyWorkingDays?: number[]
+    monthlyWorkingDates?: number[]
+    holidayDates?: Date[]
+  }
+
+  images: string[]
 }

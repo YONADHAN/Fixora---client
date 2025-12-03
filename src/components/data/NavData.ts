@@ -1,5 +1,4 @@
 import {
-  FaHome,
   FaUser,
   FaUsers,
   FaStore,
@@ -69,6 +68,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
     ],
     sideNav: [
       { title: 'Profile', href: '/vendor/profile', icon: User2 },
+      {
+        title: 'Service',
+        href: '/vendor/service',
+        icon: FaScrewdriver,
+      },
 
       {
         title: 'Sub Service Category',
@@ -80,6 +84,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         href: '/vendor/change-password',
         icon: FaLock,
       },
+
       //{ title: 'Dashboard', href: '/vendor/dashboard', icon: FaHome },
       // { title: 'Customers', href: '/vendor/customers', icon: FaUsers },
       // {

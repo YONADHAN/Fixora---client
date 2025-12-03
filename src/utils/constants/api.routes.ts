@@ -34,6 +34,7 @@ export const VENDOR_ROUTES = {
   CREATE_SUB_SERVICE_CATEGORY: `${BASE_URL.VENDOR}/sub-service-category`,
   GET_VENDOR_SUB_SERVICE_CATEGORIES: `${BASE_URL.VENDOR}/sub-service-category/vendor-created`,
   CREATE_SERVICE: `${BASE_URL.VENDOR}/service`,
+  GET_ALL_SERVICES: `${BASE_URL.VENDOR}/service`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -44,6 +45,7 @@ export const CUSTOMER_ROUTES = {
   CHANGE_PASSWORD: `${BASE_URL.CUSTOMER}/change-password`,
   UPLOAD_PROFILE_IMAGE: `${BASE_URL.CUSTOMER}/avatar`,
   GET_ACTIVE_SERVICE_CATEGORIES: `${BASE_URL.CUSTOMER}/service_category`,
+  GET_SERVICES_BY_ID: `${BASE_URL.CUSTOMER}/service`,
 }
 
 export const AUTH_ROUTES = {
