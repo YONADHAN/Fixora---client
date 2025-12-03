@@ -4,14 +4,10 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { ServiceFormSection } from '@/components/shared-ui/forms/service/service-form'
 import { useGetServicesById, useEditServiceById } from '@/lib/hooks/useService'
-import {
-  RequestCreateServiceDTO,
-  RequestEditServiceDTO,
-} from '@/dtos/service_dto'
+import { RequestCreateServiceDTO } from '@/dtos/service_dto'
 import { toast } from 'sonner'
 import { getAllSubServiceCategories } from '@/services/sub_service_category/sub_service_category'
 import { AxiosError } from 'axios'
-import { recurrenceType } from '@/utils/constants/constants'
 
 export default function EditServicePage() {
   const params = useParams()
@@ -87,7 +83,7 @@ export default function EditServicePage() {
 
       pricing: {
         pricePerSlot: String(values.pricing.pricePerSlot),
-        isAdvanceRequired: values.pricing.isAdvanceRequired, // already "true" | "false"
+        isAdvanceRequired: values.pricing.isAdvanceRequired,
         advanceAmountPerSlot: String(values.pricing.advanceAmountPerSlot),
         currency: values.pricing.currency ?? 'INR',
       },
@@ -107,7 +103,7 @@ export default function EditServicePage() {
         holidayDates: values.schedule.holidayDates ?? '',
       },
 
-      images: values.images, // this part stays the same
+      images: values.images,
     }
     editMutation.mutate(
       { serviceId, payload: editPayload },

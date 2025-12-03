@@ -2,15 +2,18 @@ import {
   RequestEditServiceDTO,
   RequestGetAllServicesDTO,
   RequestGetServiceByIdDTO,
+  RequestToggleBlockServiceDTO,
   ResponseEditServiceDTO,
   ResponseGetAllServicesDTO,
   ResponseGetServiceByIdDTO,
+  ResponseToggleBlockServiceDTO,
 } from '@/dtos/service_dto'
 import {
   createService,
   editServiceById,
   getAllServices,
   getServiceById,
+  toggleServiceById,
 } from '@/services/service/service.service'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -43,5 +46,15 @@ export const useEditServiceById = () => {
       serviceId: string
       payload: RequestEditServiceDTO
     }) => editServiceById(serviceId, payload),
+  })
+}
+
+export const useToggleServiceById = () => {
+  return useMutation<
+    ResponseToggleBlockServiceDTO,
+    Error,
+    RequestToggleBlockServiceDTO
+  >({
+    mutationFn: (payload) => toggleServiceById(payload),
   })
 }

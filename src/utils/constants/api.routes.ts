@@ -36,6 +36,7 @@ export const VENDOR_ROUTES = {
   CREATE_SERVICE: `${BASE_URL.VENDOR}/service`,
   GET_ALL_SERVICES: `${BASE_URL.VENDOR}/service`,
   EDIT_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
+  TOGGLE_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
 }
 
 export const CUSTOMER_ROUTES = {

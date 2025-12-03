@@ -3,9 +3,11 @@ import {
   RequestEditServiceDTO,
   RequestGetAllServicesDTO,
   RequestGetServiceByIdDTO,
+  RequestToggleBlockServiceDTO,
   ResponseEditServiceDTO,
   ResponseGetAllServicesDTO,
   ResponseGetServiceByIdDTO,
+  ResponseToggleBlockServiceDTO,
 } from '@/dtos/service_dto'
 import { CUSTOMER_ROUTES, VENDOR_ROUTES } from '@/utils/constants/api.routes'
 
@@ -43,13 +45,85 @@ export const getServiceById = async (
   return response.data.data
 }
 
+// export const editServiceById = async (
+//   serviceId: string,
+//   payload: RequestEditServiceDTO
+// ): Promise<ResponseEditServiceDTO> => {
+//   const response = await axiosInstance.patch(
+//     `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
+//     payload,
+//     {
+//       headers: { 'Content-Type': 'multipart/form-data' },
+//     }
+//   )
+//   return response.data.data
+// }
 export const editServiceById = async (
   serviceId: string,
   payload: RequestEditServiceDTO
 ): Promise<ResponseEditServiceDTO> => {
+  const formData = new FormData()
+
+  // Basic fields
+  formData.append('subServiceCategoryId', payload.subServiceCategoryId)
+  if (payload.title) formData.append('title', payload.title)
+  if (payload.description) formData.append('description', payload.description)
+
+  // Pricing
+  if (payload.pricing) {
+    if (payload.pricing.pricePerSlot !== undefined) {
+      formData.append('pricing.pricePerSlot', payload.pricing.pricePerSlot)
+    }
+    if (payload.pricing.isAdvanceRequired !== undefined) {
+      formData.append(
+        'pricing.isAdvanceRequired',
+        payload.pricing.isAdvanceRequired
+      )
+    }
+    if (payload.pricing.advanceAmountPerSlot !== undefined) {
+      formData.append(
+        'pricing.advanceAmountPerSlot',
+        payload.pricing.advanceAmountPerSlot
+      )
+    }
+    if (payload.pricing.currency !== undefined) {
+      formData.append('pricing.currency', payload.pricing.currency)
+    }
+  }
+
+  // Schedule
+  if (payload.schedule) {
+    Object.entries(payload.schedule).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(`schedule.${key}`, value as string)
+      }
+    })
+  }
+
+  // Images
+  if (payload.images?.length) {
+    payload.images.forEach((f) => formData.append('images', f))
+  }
+
   const response = await axiosInstance.patch(
     `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
-    payload
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }
   )
+
+  return response.data.data
+}
+
+export const toggleServiceById = async (
+  payload: RequestToggleBlockServiceDTO
+): Promise<ResponseToggleBlockServiceDTO> => {
+  const { serviceId } = payload
+
+  const response = await axiosInstance.patch(
+    `${VENDOR_ROUTES.TOGGLE_SERVICE_BY_ID}/${serviceId}/toggleblock`
+  )
+
   return response.data.data
 }
