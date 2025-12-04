@@ -55,8 +55,15 @@ export default function SubServiceCategoryForm({
 
   // Fetch active categories
   const { data, isLoading } = useGetActiveServiceCategories()
-  const categories: ActiveServiceCategoryItem[] =
-    data?.data?.response?.data ?? []
+  console.log('Actual category response:', JSON.stringify(data))
+  console.log(
+    'What I think categories are:',
+    JSON.stringify(data?.data?.response?.data)
+  )
+
+  // const categories: ActiveServiceCategoryItem[] =
+  //   data?.data?.response?.data ?? []
+  const categories: ActiveServiceCategoryItem[] = data?.data?.data?.data ?? []
 
   // Update category name based on selected ID
   const handleCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -134,7 +141,11 @@ export default function SubServiceCategoryForm({
 
           {!isLoading &&
             categories.map((cat) => (
-              <option key={cat.serviceCategoryId} value={cat.serviceCategoryId}>
+              <option
+                key={cat.serviceCategoryId}
+                value={cat.serviceCategoryId}
+                className='text-black'
+              >
                 {cat.name}
               </option>
             ))}

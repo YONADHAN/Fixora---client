@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Pagination } from '@/components/shared-ui/resusable_components/pagination/pagination'
+import EmptySubServices from '@/components/pages/service-category/Empty-subservices'
 
 export default function ServiceCategoryDetailsPage() {
   const { id: serviceCategoryId } = useParams()
@@ -30,6 +31,14 @@ export default function ServiceCategoryDetailsPage() {
   const subs = data?.data || []
   const totalPages = data?.totalPages || 0
   const currentPage = data?.currentPage || 1
+
+  if (subs.length === 0) {
+    return (
+      <div>
+        <EmptySubServices />
+      </div>
+    )
+  }
 
   return (
     <div className='p-6 space-y-6'>

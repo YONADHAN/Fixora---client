@@ -120,7 +120,9 @@ export default function ServiceCategoryListPage() {
         size='sm'
         variant='secondary'
         onClick={() =>
-          router.push(`/admin/dashboard/service_category/${item.userId}/edit`)
+          router.push(
+            `/admin/dashboard/service_category/${item.categoryId}/edit`
+          )
         }
       >
         Edit

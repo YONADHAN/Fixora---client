@@ -97,14 +97,21 @@ export default function Page() {
           {/* POPULAR SEARCHES */}
           <div className='flex flex-wrap items-center justify-center gap-3 text-sm'>
             <span className='text-gray-500'>Popular:</span>
-            {['Electrician', 'Plumber', 'Cleaning', 'AC Repair'].map((term) => (
-              <button
-                key={term}
-                className='px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 hover:border-blue-400 hover:text-blue-600 transition'
-              >
-                {term}
-              </button>
-            ))}
+            {activeCategories.map(
+              (serviceCategories: TypeCategoryItem, index: string) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    router.push(
+                      `/customer/service_category/${serviceCategories.serviceCategoryId}`
+                    )
+                  }
+                  className='px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 hover:border-blue-400 hover:text-blue-600 transition'
+                >
+                  {serviceCategories.name}
+                </button>
+              )
+            )}
           </div>
         </div>
       </section>

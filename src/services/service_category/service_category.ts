@@ -50,11 +50,15 @@ export const editServiceCategories = async (
     formData.append('bannerImage', bannerImage)
   }
 
-  return axiosInstance.patch(ADMIN_ROUTES.EDIT_SERVICE_CATEGORY, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+  return axiosInstance.patch(
+    `${ADMIN_ROUTES.EDIT_SERVICE_CATEGORY}/${categoryId}`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  )
 }
 
 export const getAllServiceCategories = async (
