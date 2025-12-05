@@ -11,7 +11,7 @@ export type SubServiceCategoryFormValues = {
   name: string
   description: string
   serviceCategoryId: string
-  serviceCategoryName: string
+  //serviceCategoryName: string
   bannerImage: File | null
 }
 
@@ -32,7 +32,7 @@ export default function SubServiceCategoryForm({
     name: '',
     description: '',
     serviceCategoryId: '',
-    serviceCategoryName: '',
+    //serviceCategoryName: '',
     bannerImage: null,
   })
 
@@ -48,7 +48,7 @@ export default function SubServiceCategoryForm({
         name: initialValues.name || '',
         description: initialValues.description || '',
         serviceCategoryId: initialValues.serviceCategoryId || '',
-        serviceCategoryName: initialValues.serviceCategoryName || '',
+        // serviceCategoryName: initialValues.serviceCategoryName || '',
       }))
     }
   }, [initialValues])
@@ -74,7 +74,7 @@ export default function SubServiceCategoryForm({
     setFormValues((prev) => ({
       ...prev,
       serviceCategoryId: e.target.value,
-      serviceCategoryName: selected?.name ?? '',
+      //serviceCategoryName: selected?.name ?? '',
     }))
   }
 

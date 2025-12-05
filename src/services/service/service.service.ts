@@ -45,19 +45,6 @@ export const getServiceById = async (
   return response.data.data
 }
 
-// export const editServiceById = async (
-//   serviceId: string,
-//   payload: RequestEditServiceDTO
-// ): Promise<ResponseEditServiceDTO> => {
-//   const response = await axiosInstance.patch(
-//     `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
-//     payload,
-//     {
-//       headers: { 'Content-Type': 'multipart/form-data' },
-//     }
-//   )
-//   return response.data.data
-// }
 export const editServiceById = async (
   serviceId: string,
   payload: RequestEditServiceDTO

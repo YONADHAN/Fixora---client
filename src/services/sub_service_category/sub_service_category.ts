@@ -25,7 +25,7 @@ export const admin_createSubServiceCategories = async (
   formData.append('name', payload.name)
   formData.append('description', payload.description)
   formData.append('serviceCategoryId', payload.serviceCategoryId)
-  formData.append('serviceCategoryName', payload.serviceCategoryName)
+  // formData.append('serviceCategoryName', payload.serviceCategoryName)
   formData.append('SubServiceCategoryImage', payload.bannerImage)
 
   const response = await axiosInstance.post(
@@ -48,7 +48,7 @@ export const vendor_createSubServiceCategories = async (
   formData.append('name', payload.name)
   formData.append('description', payload.description)
   formData.append('serviceCategoryId', payload.serviceCategoryId)
-  formData.append('serviceCategoryName', payload.serviceCategoryName)
+  // formData.append('serviceCategoryName', payload.serviceCategoryName)
   formData.append('SubServiceCategoryImage', payload.bannerImage)
 
   const response = await axiosInstance.post(

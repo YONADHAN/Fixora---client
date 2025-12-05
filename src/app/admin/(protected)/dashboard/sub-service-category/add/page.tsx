@@ -18,7 +18,7 @@ export default function AddSubCategoryPage() {
         description: values.description,
         bannerImage: values.bannerImage as File,
         serviceCategoryId: values.serviceCategoryId,
-        serviceCategoryName: values.serviceCategoryName,
+        // serviceCategoryName: values.serviceCategoryName,
       },
       {
         onSuccess: () => {

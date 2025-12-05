@@ -6,7 +6,7 @@ export interface RequestCreateSubServiceCategoryDTO {
   description: string
   bannerImage: File
   serviceCategoryId: string
-  serviceCategoryName: string
+  //serviceCategoryName: string
 }
 
 export interface ResponseCreateSubServiceCategoryDTO {
