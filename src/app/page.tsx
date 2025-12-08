@@ -47,7 +47,6 @@ export default function Page() {
     <div className='flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-white'>
       {/* HERO SECTION */}
       <section className='relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden'>
-        {/* Animated background */}
         <div className='absolute inset-0 overflow-hidden'>
           <div className='absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse'></div>
           <div
@@ -116,7 +115,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ACTIVE SERVICE CATEGORIES (LIVE API) */}
+      {/* ACTIVE SERVICE CATEGORIES  */}
       {!isLoading && activeCategories.length > 0 && (
         <section className='py-24 px-4 bg-white'>
           <div className='max-w-7xl mx-auto'>
@@ -141,7 +140,6 @@ export default function Page() {
                   className='group cursor-pointer pb-1 text-center bg-gray-50 p-2 rounded-3xl'
                 >
                   <div className='relative overflow-hidden rounded-2xl h-40 flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl'>
-                    {/* Background Image */}
                     <Image
                       src={cat.bannerImage}
                       alt={cat.name}
@@ -150,10 +148,8 @@ export default function Page() {
                       className='object-cover transition-transform duration-300 group-hover:scale-110'
                     />
 
-                    {/* Dark gradient overlay */}
                     <div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/20 group-hover:from-black/50 group-hover:to-black/40 transition-all'></div>
 
-                    {/* TEXT */}
                     <span className='relative z-10 text-white font-semibold text-lg drop-shadow-md'>
                       {cat.name}
                     </span>
@@ -166,7 +162,6 @@ export default function Page() {
         </section>
       )}
 
-      {/* FEATURES SECTION */}
       <section className='py-24 px-4 bg-gradient-to-b from-gray-50 to-white'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-16'>
@@ -197,7 +192,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
       <section className='relative py-24 px-4 overflow-hidden'>
         <div className='absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700'></div>
 
