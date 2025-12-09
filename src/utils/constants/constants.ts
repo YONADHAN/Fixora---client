@@ -1,5 +1,4 @@
 export type recurrenceType = 'daily' | 'weekly' | 'monthly'
-export type RecurrenceType = 'daily' | 'weekly' | 'monthly'
 
 export interface ServiceSchedule {
   visibilityStartDate?: Date

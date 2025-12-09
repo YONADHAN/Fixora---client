@@ -8,6 +8,7 @@ import {
   ResponseGetServiceByIdDTO,
   ResponseToggleBlockServiceDTO,
 } from '@/dtos/service_dto'
+import { mapFormToCreateServiceFormData } from '@/mapper/service/createService.mapper'
 import {
   createService,
   editServiceById,
@@ -15,11 +16,14 @@ import {
   getServiceById,
   toggleServiceById,
 } from '@/services/service/service.service'
+import { IServiceFormValues } from '@/types/service_feature/service.types'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
 export const useCreateService = () => {
   return useMutation({
-    mutationFn: (payload: FormData) => createService(payload),
+    mutationFn: (values: IServiceFormValues) => {
+      const fd = mapFormToCreateServiceFormData(values)
+      return createService(fd)
+    },
   })
 }
 

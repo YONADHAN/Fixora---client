@@ -9,15 +9,25 @@ import {
   ResponseGetServiceByIdDTO,
   ResponseToggleBlockServiceDTO,
 } from '@/dtos/service_dto'
+
 import { CUSTOMER_ROUTES, VENDOR_ROUTES } from '@/utils/constants/api.routes'
+
+// export const createService = async (formData: IServiceFormValues) => {
+//   const response = await axiosInstance.post(
+//     VENDOR_ROUTES.CREATE_SERVICE,
+//     formData,
+//     {
+//       headers: { 'Content-Type': 'multipart/form-data' },
+//     }
+//   )
+
+//   return response.data
+// }
 
 export const createService = async (formData: FormData) => {
   const response = await axiosInstance.post(
     VENDOR_ROUTES.CREATE_SERVICE,
-    formData,
-    {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }
+    formData
   )
 
   return response.data
