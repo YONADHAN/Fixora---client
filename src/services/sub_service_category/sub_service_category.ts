@@ -164,3 +164,11 @@ export const getAllSubServiceCategoriesBasedOnServiceCategoryId = async (
   console.log('response', response.data.data)
   return response.data.data
 }
+
+export const getActiveSubServiceCategories = async () => {
+  const response = await axiosInstance.get(
+    `${BASE_URL.VENDOR}/sub-service-category/active`
+  )
+
+  return response.data.data.data
+}

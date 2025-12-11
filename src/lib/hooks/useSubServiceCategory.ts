@@ -9,6 +9,7 @@ import {
   toggleVerificationStatusOfSubServiceCategory,
   getAllVendorSubServiceCategories,
   getAllSubServiceCategoriesBasedOnServiceCategoryId,
+  getActiveSubServiceCategories,
 } from '@/services/sub_service_category/sub_service_category'
 import {
   RequestAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
@@ -81,7 +82,7 @@ export const useGetSingleSubServiceCategory = (
 // ---------------------------------------------------------------
 // EDIT SUB SERVICE CATEGORY
 // ---------------------------------------------------------------
-// hooks/useSubServiceCategory.ts
+
 export const useEditSubServiceCategory = () => {
   return useMutation({
     mutationFn: (formData: FormData) => editSubServiceCategories(formData),
@@ -202,5 +203,15 @@ export const useToggleVerificationStatus = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['subServiceCategories'] })
     },
+  })
+}
+
+// ---------------------------------------------------------------
+// GET ACTIVE SUB SERVICE CATEGORIES
+// ---------------------------------------------------------------
+export const useGetActiveSubServiceCategories = () => {
+  return useQuery({
+    queryKey: ['ActiveSubServiceCategories'],
+    queryFn: () => getActiveSubServiceCategories(),
   })
 }

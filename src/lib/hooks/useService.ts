@@ -2,6 +2,7 @@ import {
   RequestEditServiceDTO,
   RequestGetAllServicesDTO,
   RequestGetServiceByIdDTO,
+  RequestSearchServicesForCustomerDTO,
   RequestToggleBlockServiceDTO,
   ResponseEditServiceDTO,
   ResponseGetAllServicesDTO,
@@ -14,6 +15,7 @@ import {
   editServiceById,
   getAllServices,
   getServiceById,
+  searchServicesForCustomer,
   toggleServiceById,
 } from '@/services/service/service.service'
 import { IServiceFormValues } from '@/types/service_feature/service.types'
@@ -60,5 +62,14 @@ export const useToggleServiceById = () => {
     RequestToggleBlockServiceDTO
   >({
     mutationFn: (payload) => toggleServiceById(payload),
+  })
+}
+
+export const useSearchServicesForCustomer = (
+  payload: RequestSearchServicesForCustomerDTO
+) => {
+  return useQuery({
+    queryKey: ['searchServicesForCustomer', payload],
+    queryFn: () => searchServicesForCustomer(payload),
   })
 }

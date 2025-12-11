@@ -46,4 +46,5 @@ export interface IServiceFormValues {
   }
 
   images: File[]
+  mainImage?: string
 }

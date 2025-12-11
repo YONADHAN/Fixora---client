@@ -1,237 +1,200 @@
 'use client'
 
-import { useParams } from 'next/navigation'
-import { useState, useEffect, useMemo } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import { useGetServicesById } from '@/lib/hooks/useService'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { getAvailableDates } from '@/utils/helpers/getAvailableDates'
-import { generateSlotsForDate } from '@/utils/helpers/slotGenerator'
-import { Clock, Calendar, Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Star, MapPin, Clock } from 'lucide-react'
 
 export default function ServiceDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const serviceId = params.id as string
 
-  const { data, isLoading } = useGetServicesById({ serviceId })
+  const { data, isLoading, isError } = useGetServicesById({ serviceId })
 
-  const [datesByMonth, setDatesByMonth] = useState<Record<string, string[]>>({})
-  const [monthKey, setMonthKey] = useState<string | null>(null)
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
-
-  const [slots, setSlots] = useState<Date[]>([])
-  const [selectedSlots, setSelectedSlots] = useState<Date[]>([])
-
-  // Load data
-  useEffect(() => {
-    if (!data) return
-
-    const map = getAvailableDates(data.schedule)
-    setDatesByMonth(map)
-
-    const monthKeys = Object.keys(map).sort()
-    if (monthKeys.length > 0) {
-      setMonthKey(monthKeys[0])
-      setSelectedDate(map[monthKeys[0]][0])
-    }
-  }, [data])
-
-  // Generate slots
-  useEffect(() => {
-    if (!selectedDate || !data) return
-
-    const generated = generateSlotsForDate(
-      new Date(selectedDate),
-      data.schedule
-    )
-    setSlots(generated)
-    setSelectedSlots([])
-  }, [selectedDate, data])
-
-  if (isLoading) return <p className='p-6'>Loading…</p>
-  if (!data) return <p className='p-6'>Service not found.</p>
+  if (isLoading) return <p className='p-6'>Loading service details…</p>
+  if (isError || !data) return <p className='p-6'>Service not found.</p>
 
   const price = data.pricing.pricePerSlot
   const advance = data.pricing.advanceAmountPerSlot
 
-  // Selected totals
-  const totalPrice = selectedSlots.length * price
-  const totalAdvance = selectedSlots.length * advance
+  const vendor = data.populatedValues?.vendor
+  const subCategory = data.populatedValues?.subServiceCategory
+  const schedule = data.schedule
 
-  // Month formatting
-  const formatMonth = (key: string) => {
-    const [year, month] = key.split('-')
-    return new Date(Number(year), Number(month) - 1).toLocaleDateString(
-      'en-US',
-      {
-        month: 'long',
-        year: 'numeric',
-      }
-    )
-  }
-
-  const monthKeys = Object.keys(datesByMonth).sort()
-
-  const handlePrevMonth = () => {
-    const index = monthKeys.indexOf(monthKey!)
-    if (index > 0) {
-      const newKey = monthKeys[index - 1]
-      setMonthKey(newKey)
-      setSelectedDate(datesByMonth[newKey][0])
-    }
-  }
-
-  const handleNextMonth = () => {
-    const index = monthKeys.indexOf(monthKey!)
-    if (index < monthKeys.length - 1) {
-      const newKey = monthKeys[index + 1]
-      setMonthKey(newKey)
-      setSelectedDate(datesByMonth[newKey][0])
-    }
-  }
-
-  const toggleSlot = (slot: Date) => {
-    setSelectedSlots((prev) => {
-      const exists = prev.some((s) => s.getTime() === slot.getTime())
-      if (exists) {
-        return prev.filter((s) => s.getTime() !== slot.getTime())
-      }
-      return [...prev, slot]
+  // Format date safely
+  const formatDate = (date?: string) => {
+    if (!date) return '-'
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     })
   }
 
-  const formatTime = (d: Date) =>
-    d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-
   return (
-    <div className='max-w-5xl mx-auto p-6 space-y-10'>
-      {/* Header */}
+    <div className='max-w-5xl mx-auto p-6 space-y-10 pb-28'>
+      {/* -------------------------------------- */}
+      {/* HERO SECTION */}
+      {/* -------------------------------------- */}
+
       <div className='grid md:grid-cols-2 gap-6'>
-        <img
-          src={data.images[0]}
-          className='rounded-xl h-80 w-full object-cover'
-        />
+        <div className='w-full h-80 rounded-xl overflow-hidden bg-muted'>
+          <img
+            src={data.mainImage}
+            alt={data.name}
+            className='w-full h-full object-cover'
+          />
+        </div>
 
         <div className='space-y-4'>
-          <h1 className='text-3xl font-bold'>{data.title}</h1>
+          {/* CATEGORY */}
+          {subCategory?.name && (
+            <span className='inline-block px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-600'>
+              {subCategory.name}
+            </span>
+          )}
 
+          {/* TITLE */}
+          <h1 className='text-3xl font-bold leading-tight'>{data.name}</h1>
+
+          {/* RATING - STATIC FOR NOW */}
           <div className='flex items-center gap-2 text-yellow-500'>
             <Star size={18} />
             <span className='text-sm text-gray-600'>4.8 (42 reviews)</span>
           </div>
 
-          <p className='text-gray-600'>{data.description}</p>
+          {/* DESCRIPTION */}
+          <p className='text-gray-600 text-sm leading-relaxed'>
+            {data.description}
+          </p>
 
-          <p className='text-3xl font-semibold'>₹ {price}</p>
+          <div className='w-full flex justify-between place-items-center'>
+            {/* PRICING */}
+            <div className='space-y-1'>
+              <p className='text-sm text-muted-foreground'>Starting from</p>
+              <p className='text-4xl font-bold text-primary'>₹{price}</p>
+              <p className='text-xs text-gray-500'>
+                Advance payment: ₹{advance}
+              </p>
+            </div>
+
+            {/* Desktop button */}
+            <div className='hidden md:flex justify-end'>
+              <Button
+                size='lg'
+                className='px-10 py-6 text-lg'
+                onClick={() =>
+                  router.push(`/customer/service/${serviceId}/book`)
+                }
+              >
+                Book This Service
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Date selector */}
+      {/* -------------------------------------- */}
+      {/* SERVICE AVAILABILITY */}
+      {/* -------------------------------------- */}
+
       <Card className='p-6 space-y-4'>
-        <div className='flex justify-between items-center'>
-          <Button
-            variant='ghost'
-            onClick={handlePrevMonth}
-            disabled={monthKeys.indexOf(monthKey!) === 0}
-          >
-            <ChevronLeft />
-          </Button>
+        <h2 className='text-xl font-semibold'>Service Availability</h2>
 
-          <h2 className='text-xl font-semibold flex items-center gap-2'>
-            <Calendar size={20} /> {monthKey && formatMonth(monthKey)}
-          </h2>
+        <div className='space-y-2 text-sm text-gray-700'>
+          <p>
+            <span className='font-medium'>Available From:</span>{' '}
+            {formatDate(schedule.visibilityStartDate)}
+          </p>
 
-          <Button
-            variant='ghost'
-            onClick={handleNextMonth}
-            disabled={monthKeys.indexOf(monthKey!) === monthKeys.length - 1}
-          >
-            <ChevronRight />
-          </Button>
+          <p>
+            <span className='font-medium'>Available Until:</span>{' '}
+            {formatDate(schedule.visibilityEndDate)}
+          </p>
         </div>
 
-        <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3'>
-          {monthKey &&
-            datesByMonth[monthKey].map((d) => {
-              const dateObj = new Date(d)
-              const isSelected = selectedDate === d
-
-              return (
-                <Button
-                  key={d}
-                  variant={isSelected ? 'default' : 'outline'}
-                  className='
-    flex flex-col items-center justify-center
-    py-2 px-2
-    min-h-[60px]
-    rounded-lg border
-    transition-all
-  '
-                  onClick={() => setSelectedDate(d)}
-                >
-                  <span className='text-base font-semibold'>
-                    {dateObj.getDate()}
-                  </span>
-                  <span className='text-[10px] text-gray-700'>
-                    {dateObj.toLocaleDateString('en-US', { month: 'short' })}
-                  </span>
-                </Button>
-              )
-            })}
+        {/* Slot duration */}
+        <div className='flex items-center gap-2'>
+          <Clock size={20} className='text-primary' />
+          <p className='text-sm text-gray-700'>
+            Duration per slot: {schedule.slotDurationMinutes} minutes
+          </p>
         </div>
+
+        {/* Working hours */}
+        {schedule.dailyWorkingWindows?.map((win, idx) => (
+          <p key={idx} className='text-sm'>
+            <span className='font-medium'>Working Hours:</span> {win.startTime}{' '}
+            – {win.endTime}
+          </p>
+        ))}
+
+        {/* Recurrence */}
+        {schedule.recurrenceType && (
+          <p className='text-sm'>
+            <span className='font-medium'>Recurrence:</span>{' '}
+            {schedule.recurrenceType}
+          </p>
+        )}
       </Card>
 
-      {/* Time Slots */}
-      <Card className='p-6 space-y-4'>
-        <h2 className='text-xl font-semibold flex items-center gap-2'>
-          <Clock size={20} /> Select Time Slots
-        </h2>
+      {/* -------------------------------------- */}
+      {/* PROVIDER INFO */}
+      {/* -------------------------------------- */}
 
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
-          {slots.map((slot) => {
-            const isActive = selectedSlots.some(
-              (s) => s.getTime() === slot.getTime()
-            )
-            return (
-              <Button
-                key={slot.toISOString()}
-                variant={isActive ? 'default' : 'outline'}
-                className='rounded-full'
-                onClick={() => toggleSlot(slot)}
-              >
-                {formatTime(slot)}
-              </Button>
-            )
-          })}
-        </div>
-      </Card>
+      {vendor && (
+        <Card className='p-6 space-y-4'>
+          <h2 className='text-xl font-semibold'>Provided By</h2>
 
-      {/* Summary */}
-      {selectedSlots.length > 0 && (
-        <Card className='p-6 bg-primary/5 border border-primary/40'>
-          <p className='text-lg font-semibold'>Booking Summary</p>
-          <p className='text-gray-700 mt-2'>
-            Slots selected: {selectedSlots.length}
-          </p>
-          <p className='text-gray-800 mt-1 font-medium'>
-            Total Price: ₹ {totalPrice}
-          </p>
-          <p className='text-gray-800 mt-1 font-medium'>
-            Total Advance: ₹ {totalAdvance}
-          </p>
+          <div className='flex items-center gap-4'>
+            <div className='w-14 h-14 rounded-full bg-muted overflow-hidden'>
+              <img
+                src={vendor.profileImage || '/placeholder.svg'}
+                className='w-full h-full object-cover'
+              />
+            </div>
+
+            <div>
+              <p className='font-semibold text-lg'>{vendor.name}</p>
+
+              <p className='text-xs text-gray-500'>Verified Professional</p>
+
+              {vendor.location?.displayName && (
+                <p className='text-sm text-gray-600 flex items-center gap-1'>
+                  <MapPin size={16} /> {vendor.location.displayName}
+                </p>
+              )}
+            </div>
+          </div>
         </Card>
       )}
 
-      {/* Final Button */}
-      <Button
-        size='lg'
-        className='w-full md:w-auto px-10 text-lg'
-        disabled={selectedSlots.length === 0}
-      >
-        {selectedSlots.length > 0
-          ? 'Proceed to Booking'
-          : 'Select Slots to Continue'}
-      </Button>
+      {/* -------------------------------------- */}
+      {/* BOOKING BUTTONS */}
+      {/* -------------------------------------- */}
+
+      {/* Mobile sticky */}
+      <div className='fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden'>
+        <Button
+          className='w-full py-6 text-lg font-semibold'
+          onClick={() => router.push(`/customer/service/${serviceId}/book`)}
+        >
+          Book This Service
+        </Button>
+      </div>
+
+      {/* Desktop button */}
+      <div className='hidden md:flex justify-end'>
+        <Button
+          size='lg'
+          className='px-10 py-6 text-lg'
+          onClick={() => router.push(`/customer/service/${serviceId}/book`)}
+        >
+          Book This Service
+        </Button>
+      </div>
     </div>
   )
 }

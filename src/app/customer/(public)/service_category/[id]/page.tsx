@@ -9,8 +9,9 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { Pagination } from '@/components/shared-ui/resusable_components/pagination/pagination'
 import EmptySubServices from '@/components/pages/service-category/Empty-subservices'
-
+import { useRouter } from 'next/navigation'
 export default function ServiceCategoryDetailsPage() {
+  const router = useRouter()
   const { id: serviceCategoryId } = useParams()
 
   // Pagination + search
@@ -38,6 +39,10 @@ export default function ServiceCategoryDetailsPage() {
         <EmptySubServices />
       </div>
     )
+  }
+
+  const navigateToSearchPage = (subCatId: string) => {
+    router.push(`/customer/sub_service_category/${subCatId}`)
   }
 
   return (
@@ -71,6 +76,7 @@ export default function ServiceCategoryDetailsPage() {
         {subs.map((sub) => (
           <Card
             key={sub.subServiceCategoryId}
+            onClick={() => navigateToSearchPage(sub.subServiceCategoryId)}
             className='
         group 
         border rounded-xl overflow-hidden 

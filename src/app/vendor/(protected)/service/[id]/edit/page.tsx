@@ -1,13 +1,12 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
-import { ServiceFormSection } from '@/components/shared-ui/forms/service/service-form'
+import { useMemo } from 'react'
+import ServiceWizard from '@/components/shared-ui/forms/service/wizard/serviceWizard'
+import { IServiceFormValues } from '@/types/service_feature/service.types'
+import { initialServiceFormValues } from '@/components/shared-ui/forms/service/service-form'
 import { useGetServicesById, useEditServiceById } from '@/lib/hooks/useService'
-import { RequestCreateServiceDTO } from '@/dtos/service_dto'
 import { toast } from 'sonner'
-import { getAllSubServiceCategories } from '@/services/sub_service_category/sub_service_category'
-import { AxiosError } from 'axios'
 
 export default function EditServicePage() {
   const params = useParams()
@@ -15,106 +14,86 @@ export default function EditServicePage() {
   const serviceId = params.id as string
 
   const { data, isLoading } = useGetServicesById({ serviceId })
-  console.log('The data service is : ', data)
-
   const editMutation = useEditServiceById()
 
-  const [subCategories, setSubCategories] = useState<
-    Array<{ subServiceCategoryId: string; name: string }>
-  >([])
-
-  useEffect(() => {
-    getAllSubServiceCategories({
-      page: 1,
-      limit: 100,
-      search: '',
-    }).then((res) => setSubCategories(res.data))
-  }, [])
-
-  const initialFormData = useMemo<Partial<RequestCreateServiceDTO>>(() => {
-    if (!data) return {}
+  /**
+   * ✅ Convert API Response → Wizard Initial Values
+   */
+  const initialValues = useMemo<IServiceFormValues>(() => {
+    if (!data) return initialServiceFormValues
 
     return {
+      ...initialServiceFormValues,
+
+      // ✅ BASIC INFO
+      serviceId: data.serviceId,
+      name: data.name,
+      description: data.description ?? '',
       subServiceCategoryId: data.subServiceCategoryId,
-      title: data.title,
-      description: data.description,
 
+      // ✅ VARIANTS
+      serviceVariants: data.serviceVariants ?? [],
+
+      // ✅ PRICING
       pricing: {
-        pricePerSlot: String(data.pricing.pricePerSlot),
-        isAdvanceRequired: data.pricing.isAdvanceRequired ? 'true' : 'false',
-        advanceAmountPerSlot: String(data.pricing.advanceAmountPerSlot),
-        currency: data.pricing.currency ?? 'INR',
+        pricePerSlot: data.pricing.pricePerSlot,
+        advanceAmountPerSlot: data.pricing.advanceAmountPerSlot,
       },
 
+      // ✅ SCHEDULE
       schedule: {
-        visibilityStartDate: data.schedule.visibilityStartDate
-          ? data.schedule.visibilityStartDate.toString().slice(0, 10)
-          : '',
+        visibilityStartDate: data.schedule.visibilityStartDate,
+        visibilityEndDate: data.schedule.visibilityEndDate,
 
-        visibilityEndDate: data.schedule.visibilityEndDate
-          ? data.schedule.visibilityEndDate.toString().slice(0, 10)
-          : '',
+        dailyWorkingWindows:
+          data.schedule.dailyWorkingWindows?.length > 0
+            ? data.schedule.dailyWorkingWindows
+            : [{ startTime: '', endTime: '' }],
 
-        workStartTime: data.schedule.workStartTime ?? '',
-        workEndTime: data.schedule.workEndTime ?? '',
-        slotDurationMinutes: String(data.schedule.slotDurationMinutes ?? ''),
+        slotDurationMinutes: data.schedule.slotDurationMinutes,
 
-        recurrenceType: data.schedule.recurrenceType ?? '',
+        recurrenceType: data.schedule.recurrenceType,
+        weeklyWorkingDays: data.schedule.weeklyWorkingDays ?? [],
+        monthlyWorkingDates: data.schedule.monthlyWorkingDates ?? [],
 
-        weeklyWorkingDays: data.schedule.weeklyWorkingDays?.join(',') ?? '',
-
-        monthlyWorkingDates: data.schedule.monthlyWorkingDates?.join(',') ?? '',
-
-        holidayDates:
-          data.schedule.holidayDates
-            ?.map((d) => d.toString().slice(0, 10))
-            .join(',') ?? '',
+        overrideBlock: data.schedule.overrideBlock ?? [],
+        overrideCustom: data.schedule.overrideCustom ?? [],
       },
 
+      // ✅ IMAGES (KEEP EMPTY — ONLY FOR NEW UPLOADS)
       images: [],
+      mainImage: data.mainImage,
     }
   }, [data])
 
-  const handleSubmit = (values: RequestCreateServiceDTO) => {
-    const editPayload = {
-      subServiceCategoryId: values.subServiceCategoryId,
-      title: values.title,
-      description: values.description,
+  /**
+   * ✅ SUBMIT EDIT (USES SAME PAYLOAD AS CREATE)
+   */
+  const handleEditService = (values: IServiceFormValues) => {
+    // ✅ Remove preview-only field
+    const { mainImage, ...payloadWithoutPreview } = values
 
-      pricing: {
-        pricePerSlot: String(values.pricing.pricePerSlot),
-        isAdvanceRequired: values.pricing.isAdvanceRequired,
-        advanceAmountPerSlot: String(values.pricing.advanceAmountPerSlot),
-        currency: values.pricing.currency ?? 'INR',
-      },
-
-      schedule: {
-        visibilityStartDate: values.schedule.visibilityStartDate,
-        visibilityEndDate: values.schedule.visibilityEndDate,
-
-        workStartTime: values.schedule.workStartTime,
-        workEndTime: values.schedule.workEndTime,
-
-        slotDurationMinutes: String(values.schedule.slotDurationMinutes),
-        recurrenceType: values.schedule.recurrenceType,
-
-        weeklyWorkingDays: values.schedule.weeklyWorkingDays ?? '',
-        monthlyWorkingDates: values.schedule.monthlyWorkingDates ?? '',
-        holidayDates: values.schedule.holidayDates ?? '',
-      },
-
-      images: values.images,
+    // ✅ Only send real File objects (PATCH-safe)
+    const safePayload = {
+      ...payloadWithoutPreview,
+      images: values.images?.filter((img) => img instanceof File),
     }
+
+    console.log('✅ FINAL PAYLOAD TO API:', safePayload)
+    console.log('in json,', JSON.stringify(safePayload))
+
     editMutation.mutate(
-      { serviceId, payload: editPayload },
+      {
+        serviceId,
+        payload: safePayload,
+      },
       {
         onSuccess: () => {
-          toast.success('Service updated successfully!')
+          toast.success('Service updated successfully')
           router.push('/vendor/service')
         },
-        onError: (err: unknown) => {
-          if (err instanceof AxiosError)
-            toast.error(err?.response?.data?.message ?? 'Update failed.')
+        onError: () => {
+          toast.error('Failed to update service')
         },
       }
     )
@@ -125,15 +104,23 @@ export default function EditServicePage() {
   }
 
   return (
-    <div className='max-w-5xl mx-auto p-6'>
-      <h1 className='text-2xl font-bold mb-6'>Edit Service</h1>
+    <div className='min-h-screen flex flex-col bg-gray-50'>
+      <div className='flex-1 overflow-hidden'>
+        <div className='max-w-5xl mx-auto px-4 py-6'>
+          <ServiceWizard
+            initialValues={initialValues}
+            onSubmit={handleEditService}
+          />
 
-      <ServiceFormSection
-        initialData={initialFormData}
-        onSubmit={handleSubmit}
-        subCategories={subCategories}
-        isLoading={editMutation.isPending}
-      />
+          {editMutation.isPending && (
+            <div className='fixed inset-0 bg-black/30 flex items-center justify-center z-50'>
+              <div className='bg-white px-6 py-3 rounded shadow text-sm font-medium'>
+                Updating service...
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

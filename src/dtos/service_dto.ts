@@ -1,3 +1,4 @@
+import { statusTypes } from '@/types/user.type'
 import { recurrenceType } from '@/utils/constants/constants'
 
 // export interface RequestCreateServiceDTO {
@@ -91,9 +92,9 @@ export interface RequestGetAllServicesDTO {
 }
 export interface GetAllServicesItem {
   serviceId: string
-  title: string
+  name: string
   description: string
-  images: string[]
+  mainImage: string
   isActiveStatusByVendor: boolean
 }
 
@@ -108,39 +109,50 @@ export interface RequestGetServiceByIdDTO {
 }
 
 export interface ResponseGetServiceByIdDTO {
-  vendorId: string
-  subServiceCategoryId: string
-
-  title: string
+  serviceId: string
+  name: string
   description?: string
+  subServiceCategoryId: string
+  serviceVariants?: {
+    name: string
+    description?: string
+    price?: number
+  }[]
 
   pricing: {
     pricePerSlot: number
-    isAdvanceRequired: boolean
     advanceAmountPerSlot: number
-    currency?: string
   }
-
-  isActiveStatusByVendor: boolean
-  isActiveStatusByAdmin?: boolean
-  adminStatusNote?: string
 
   schedule: {
     visibilityStartDate?: Date
     visibilityEndDate?: Date
 
-    workStartTime?: string
-    workEndTime?: string
+    dailyWorkingWindows: {
+      startTime: string
+      endTime: string
+    }[]
 
-    slotDurationMinutes?: number
+    slotDurationMinutes: number
+
     recurrenceType?: recurrenceType
-
     weeklyWorkingDays?: number[]
     monthlyWorkingDates?: number[]
-    holidayDates?: Date[]
-  }
 
-  images: string[]
+    overrideBlock?: {
+      startDateTime: Date
+      endDateTime: Date
+      reason?: string
+    }[]
+
+    overrideCustom?: {
+      startDateTime: Date
+      endDateTime: Date
+      startTime?: string
+      endTime?: string
+    }[]
+  }
+  mainImage: string
 }
 
 // export interface RequestEditServiceDTO {
@@ -175,34 +187,50 @@ export interface ResponseGetServiceByIdDTO {
 
 //   images?: File[]
 // }
-export interface RequestEditServiceDTO {
-  subServiceCategoryId: string
-  title?: string
-  description?: string
 
-  pricing?: {
-    pricePerSlot?: string
-    isAdvanceRequired?: 'true' | 'false'
-    advanceAmountPerSlot?: string
-    currency?: string
+export interface RequestEditServiceDTO {
+  //serviceId: string
+  name: string
+  description?: string
+  subServiceCategoryId: string
+  serviceVariants?: {
+    name: string
+    description?: string
+    price?: number
+  }[]
+
+  pricing: {
+    pricePerSlot: number
+    advanceAmountPerSlot: number
   }
 
-  isActiveStatusByVendor?: 'true' | 'false'
-  adminStatusNote?: string
+  schedule: {
+    visibilityStartDate?: Date
+    visibilityEndDate?: Date
 
-  schedule?: {
-    visibilityStartDate?: string
-    visibilityEndDate?: string
+    dailyWorkingWindows: {
+      startTime: string
+      endTime: string
+    }[]
 
-    workStartTime?: string
-    workEndTime?: string
+    slotDurationMinutes: number
 
-    slotDurationMinutes?: string
-    recurrenceType?: string
+    recurrenceType?: recurrenceType
+    weeklyWorkingDays?: number[]
+    monthlyWorkingDates?: number[]
 
-    weeklyWorkingDays?: string
-    monthlyWorkingDates?: string
-    holidayDates?: string
+    overrideBlock?: {
+      startDateTime: Date
+      endDateTime: Date
+      reason?: string
+    }[]
+
+    overrideCustom?: {
+      startDateTime: Date
+      endDateTime: Date
+      startTime?: string
+      endTime?: string
+    }[]
   }
 
   images?: File[]
@@ -210,37 +238,50 @@ export interface RequestEditServiceDTO {
 
 export interface ResponseEditServiceDTO {
   serviceId: string
-
-  title: string
-  description: string
+  name: string
+  description?: string
+  subServiceCategoryId: string
+  serviceVariants?: {
+    name: string
+    description?: string
+    price?: number
+  }[]
 
   pricing: {
     pricePerSlot: number
-    isAdvanceRequired: boolean
     advanceAmountPerSlot: number
-    currency: string
   }
 
   schedule: {
-    visibilityStartDate: Date
-    visibilityEndDate: Date
+    visibilityStartDate?: Date
+    visibilityEndDate?: Date
 
-    workStartTime: string
-    workEndTime: string
+    dailyWorkingWindows: {
+      startTime: string
+      endTime: string
+    }[]
 
     slotDurationMinutes: number
-    recurrenceType: recurrenceType
 
-    weeklyWorkingDays: number[]
-    monthlyWorkingDates: number[]
-    holidayDates: Date[]
+    recurrenceType?: recurrenceType
+    weeklyWorkingDays?: number[]
+    monthlyWorkingDates?: number[]
+
+    overrideBlock?: {
+      startDateTime: Date
+      endDateTime: Date
+      reason?: string
+    }[]
+
+    overrideCustom?: {
+      startDateTime: Date
+      endDateTime: Date
+      startTime?: string
+      endTime?: string
+    }[]
   }
 
-  images: string[]
-
-  isActiveStatusByVendor: boolean
-  isActiveStatusByAdmin: boolean
-  adminStatusNote: string
+  mainImage: string
 
   createdAt: Date
   updatedAt: Date
@@ -252,4 +293,114 @@ export interface RequestToggleBlockServiceDTO {
 
 export interface ResponseToggleBlockServiceDTO {
   isActiveStatusByVendor: boolean
+}
+
+export interface SubServiceCategoryDTO {
+  subServiceCategoryId: string
+  name: string
+  isActive: statusTypes
+}
+
+export interface VendorDTO {
+  name: string
+  userId: string
+  profileImage?: string | null
+
+  geoLocation?: {
+    type?: 'Point'
+    coordinates?: number[]
+  }
+
+  location?: {
+    name?: string
+    displayName?: string
+    zipCode?: string
+  }
+
+  status?: statusTypes
+}
+
+export interface ScheduleDTO {
+  visibilityStartDate?: Date
+  visibilityEndDate?: Date
+
+  dailyWorkingWindows: {
+    startTime: string
+    endTime: string
+  }[]
+
+  slotDurationMinutes: number
+
+  recurrenceType?: recurrenceType
+  weeklyWorkingDays?: number[]
+  monthlyWorkingDates?: number[]
+
+  overrideBlock?: {
+    startDateTime: Date
+    endDateTime: Date
+    reason?: string
+  }[]
+
+  overrideCustom?: {
+    startDateTime: Date
+    endDateTime: Date
+    startTime?: string
+    endTime?: string
+  }[]
+}
+
+export interface RequestSearchServicesForCustomerDTO {
+  subServiceCategoryId: string
+
+  search: string
+
+  minPrice?: number
+  maxPrice?: number
+
+  availableFrom?: Date
+  availableTo?: Date
+
+  workStartTime?: string
+  workEndTime?: string
+
+  recurrenceType?: 'daily' | 'weekly' | 'monthly'
+
+  weeklyDays?: number[]
+
+  page: number
+  limit: number
+}
+export interface ResponseSearchServicesForCustomerItemDTO {
+  serviceId: string
+
+  name: string
+  description: string
+
+  serviceVariants: {
+    name: string
+    description: string
+    price: number
+  }[]
+
+  pricing: {
+    pricePerSlot: number
+    advanceAmountPerSlot: number
+  }
+
+  mainImage: string
+
+  schedule: ScheduleDTO
+
+  vendor: VendorDTO | null
+
+  subServiceCategory: SubServiceCategoryDTO | null
+}
+
+/* ------------------------------------------------------
+   PAGINATED RESPONSE DTO
+------------------------------------------------------ */
+export interface ResponseSearchServicesForCustomerDTO {
+  data: ResponseSearchServicesForCustomerItemDTO[]
+  totalPages: number
+  currentPage: number
 }
