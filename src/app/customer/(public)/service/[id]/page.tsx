@@ -24,9 +24,12 @@ export default function ServiceDetailPage() {
   const schedule = data.schedule
 
   // Format date safely
-  const formatDate = (date?: string) => {
+  const formatDate = (date?: string | Date) => {
     if (!date) return '-'
-    return new Date(date).toLocaleDateString('en-US', {
+
+    const d = date instanceof Date ? date : new Date(date)
+
+    return d.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
