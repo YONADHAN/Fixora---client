@@ -133,7 +133,6 @@ export const editServiceById = async (
     })
   }
 
-  // ✅ OVERRIDE BLOCK
   if (payload.schedule.overrideBlock?.length) {
     payload.schedule.overrideBlock.forEach((block, index) => {
       formData.append(

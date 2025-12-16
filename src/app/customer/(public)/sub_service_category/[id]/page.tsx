@@ -32,7 +32,7 @@ const SearchPage = ({ params }: { params: { id: string } }) => {
     () => ({
       subServiceCategoryId: params.id,
       page: currentPage,
-      limit: 10,
+      limit: 4,
       search,
       minPrice,
       maxPrice,

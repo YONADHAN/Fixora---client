@@ -49,6 +49,7 @@ export const CUSTOMER_ROUTES = {
   GET_ACTIVE_SERVICE_CATEGORIES: `${BASE_URL.CUSTOMER}/service_category`,
   GET_SERVICES_BY_ID: `${BASE_URL.CUSTOMER}/service`,
   SEARCH_SERVICES_FOR_CUSTOMERS: `${BASE_URL.CUSTOMER}/service/search_services`,
+  GET_AVAILABLE_SLOTS_FOR_CUSTOMERS: `${BASE_URL.CUSTOMER}/booking/slots/availability`,
 }
 
 export const AUTH_ROUTES = {
