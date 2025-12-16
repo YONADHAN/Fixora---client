@@ -8,6 +8,11 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 import { useGetAvailableSlotsForCustomer } from '@/lib/hooks/useBooking'
+import { toast } from 'sonner'
+import SignInModal from './signIn_modal'
+import { RootState } from '@/store/store'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 
 /* ───────────────── TYPES ───────────────── */
 
@@ -27,13 +32,16 @@ type SelectedSlot = {
 export default function BookServicePage() {
   const params = useParams()
   const serviceId = params.id as string
-
+  const router = useRouter()
   /* ───────────── Calendar State (API-driven) ───────────── */
 
   const today = new Date()
   const [year, setYear] = useState<number>(today.getFullYear())
   const [month, setMonth] = useState<number>(today.getMonth())
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [pendingPayment, setPendingPayment] = useState(false)
 
   /* ───────────── Slot State ───────────── */
 
@@ -59,6 +67,7 @@ export default function BookServicePage() {
   })
 
   /* ───────────── Derived Data ───────────── */
+  const customer = useSelector((state: RootState) => state.customer.customer)
 
   const availableDates = Object.keys(slotsByDate)
 
@@ -140,6 +149,30 @@ export default function BookServicePage() {
       setMonth((m) => m + 1)
     }
   }
+  const PayAdvanceButtonClick = () => {
+    try {
+      if (addedSlots.length === 0) {
+        toast.error('Please select at least one slot')
+        return
+      }
+
+      if (!customer) {
+        setPendingPayment(true)
+        setShowLoginModal(true)
+        return
+      }
+
+      console.log('Proceeding to payment with slots:', addedSlots)
+
+      setShowLoginModal(false)
+
+      toast.info('Slot hold & payment will be implemented next')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      }
+    }
+  }
 
   /* ───────────── Guards ───────────── */
 
@@ -151,6 +184,16 @@ export default function BookServicePage() {
   return (
     <div className='max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6'>
       {/* ───────────── LEFT ───────────── */}
+      <SignInModal
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={() => {
+          setShowLoginModal(false)
+          setPendingPayment(false)
+
+          router.push(`/customer/service/${serviceId}/confirm`)
+        }}
+      />
       <div className='space-y-4'>
         {/* Calendar */}
         <Card className='p-3'>
@@ -275,9 +318,16 @@ export default function BookServicePage() {
         </div>
 
         {/* Pay Button */}
+        {totalPrice > 0 && (
+          <div className='text-sm flex gap-1'>
+            <span>Total Slot Price : </span>
+            <span>{totalPrice}</span>
+          </div>
+        )}
         <Button
           className='w-full justify-between'
           disabled={addedSlots.length === 0}
+          onClick={PayAdvanceButtonClick}
         >
           <span>Pay Advance</span>
           <span>₹{totalAdvance}</span>

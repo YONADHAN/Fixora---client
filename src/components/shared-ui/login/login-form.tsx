@@ -16,12 +16,13 @@ import { useState } from 'react'
 interface LoginFormProps extends Omit<React.ComponentProps<'div'>, 'onSubmit'> {
   role: 'customer' | 'vendor' | 'admin'
   onSubmit: (data: LoginFormData) => Promise<void>
+  variant?: 'page' | 'modal'
 }
 
 export function LoginForm({
   role,
   onSubmit,
-
+  variant = 'page',
   className,
   ...props
 }: LoginFormProps) {
@@ -41,7 +42,9 @@ export function LoginForm({
   return (
     <div className={cn('flex flex-col gap-8', className)} {...props}>
       <Card className='overflow-hidden p-0'>
-        <CardContent className='grid p-0 md:grid-cols-2'>
+        <CardContent
+          className={cn('grid p-0', variant === 'page' && 'md:grid-cols-2')}
+        >
           <form
             onSubmit={handleSubmit(handleFormSubmit)}
             className='p-6 md:p-8'
@@ -137,9 +140,11 @@ export function LoginForm({
           </form>
 
           {/* Image Side */}
-          <div className='bg-muted relative hidden md:block'>
-            <Image src={'/admin/login.jpg'} fill alt='signin' />
-          </div>
+          {variant === 'page' && (
+            <div className='bg-muted relative hidden md:block'>
+              <Image src='/admin/login.jpg' fill alt='signin' />
+            </div>
+          )}
         </CardContent>
       </Card>
 
