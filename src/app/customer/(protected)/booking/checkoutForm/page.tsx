@@ -7,7 +7,7 @@ export default function CheckoutForm() {
   const stripe = useStripe()
   const elements = useElements()
   const [loading, setLoading] = useState(false)
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!stripe || !elements) return
@@ -17,12 +17,13 @@ export default function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/payment/success`,
+        return_url: `${window.location.origin}/customer/booking/success`,
       },
     })
 
     if (error) {
-      alert(error.message)
+      setErrorMessage(error.message || 'Payment failed')
+      setLoading(false)
     }
 
     setLoading(false)
@@ -31,6 +32,7 @@ export default function CheckoutForm() {
   return (
     <form onSubmit={handleSubmit} className='space-y-4'>
       <PaymentElement />
+      {errorMessage && <p className='text-sm text-red-600'>{errorMessage}</p>}
       <button
         disabled={!stripe || loading}
         className='w-full bg-black text-white py-2 rounded'
