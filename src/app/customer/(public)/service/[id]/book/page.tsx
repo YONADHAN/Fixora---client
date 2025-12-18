@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import SignInModal from './signIn_modal'
 import { RootState } from '@/store/store'
 import { useSelector } from 'react-redux'
+import { AxiosError } from 'axios'
 
 /* ───────────────── TYPES ───────────────── */
 
@@ -248,11 +249,11 @@ export default function BookServicePage() {
         onSuccess: (data) => {
           console.log('Booking hold created:', data)
 
-          // router.push(`/customer/payment/${data.holdId}`)
+          router.push(`/customer/booking/payment/${data.holdId}`)
         },
-        onError: (error) => {
-          console.error(error)
-          toast.error('Failed to create booking hold')
+        onError: (error: unknown) => {
+          if (error instanceof AxiosError)
+            toast.error(error.response?.data?.message)
         },
       }
     )

@@ -51,6 +51,7 @@ export const CUSTOMER_ROUTES = {
   SEARCH_SERVICES_FOR_CUSTOMERS: `${BASE_URL.CUSTOMER}/service/search_services`,
   GET_AVAILABLE_SLOTS_FOR_CUSTOMERS: `${BASE_URL.CUSTOMER}/booking/slots/availability`,
   CREATE_BOOKING_HOLD: `${BASE_URL.CUSTOMER}/booking/booking-holds`,
+  CREATE_PAYMENT_INTEND: `${BASE_URL.CUSTOMER}/booking/booking-holds`,
 }
 
 export const AUTH_ROUTES = {
