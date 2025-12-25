@@ -20,6 +20,7 @@ export const ADMIN_ROUTES = {
   GET_SINGLE_SUB_SERVICE_CATEGORY: `${BASE_URL.ADMIN}/sub-service-category`,
   TOGGLE_SUB_SERVICE_CATEGORY_BLOCK_STATUS: `${BASE_URL.ADMIN}/sub-service-category`,
   TOGGLE_SUB_SERVICE_CATEGORY_VERIFICATION_STATUS: `${BASE_URL.ADMIN}/sub-service-category/verification`,
+  GET_ADMIN_BOOKINGS: `${BASE_URL.ADMIN}/booking/me`,
 }
 
 export const VENDOR_ROUTES = {
@@ -37,6 +38,9 @@ export const VENDOR_ROUTES = {
   GET_ALL_SERVICES: `${BASE_URL.VENDOR}/service`,
   EDIT_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
   TOGGLE_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
+  GET_VENDOR_BOOKINGS: `${BASE_URL.VENDOR}/booking/me`,
+  GET_BOOKING_DETAILS: `${BASE_URL.VENDOR}/booking`,
+  GET_VENDOR_WALLET: `${BASE_URL.VENDOR}/wallet`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -52,6 +56,10 @@ export const CUSTOMER_ROUTES = {
   GET_AVAILABLE_SLOTS_FOR_CUSTOMERS: `${BASE_URL.CUSTOMER}/booking/slots/availability`,
   CREATE_BOOKING_HOLD: `${BASE_URL.CUSTOMER}/booking/booking-holds`,
   CREATE_PAYMENT_INTEND: `${BASE_URL.CUSTOMER}/booking/booking-holds`,
+  GET_CUSTOMER_BOOKINGS: `${BASE_URL.CUSTOMER}/booking/me`,
+  GET_BOOKING_DETAILS: `${BASE_URL.CUSTOMER}/booking`,
+  CANCEL_CUSTOMER_BOOKING: `${BASE_URL.CUSTOMER}/booking`,
+  GET_CUSTOMER_WALLET: `${BASE_URL.CUSTOMER}/wallet`,
 }
 
 export const AUTH_ROUTES = {

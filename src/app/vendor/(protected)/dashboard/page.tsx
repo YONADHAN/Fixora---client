@@ -61,7 +61,7 @@ export default function VendorDashboardPage() {
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold text-gray-800 dark:text-white'>
-                4.8 ⭐
+                4.8
               </p>
             </CardContent>
           </Card>

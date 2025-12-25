@@ -15,7 +15,7 @@ import {
 import { Pagination } from '../pagination/pagination'
 
 /* --------------------------------------
-   BASE ITEM TYPE (NO ANY)
+   BASE ITEM TYPE 
 -------------------------------------- */
 export interface TableItem {
   id: string | number

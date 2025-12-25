@@ -25,7 +25,6 @@ export default function Page() {
             onSubmit={handleCreateService}
           />
 
-          {/* ✅ LOADING INDICATOR */}
           {isPending && (
             <div className='fixed inset-0 bg-black/30 flex items-center justify-center z-50'>
               <div className='bg-white px-6 py-3 rounded shadow text-sm font-medium'>

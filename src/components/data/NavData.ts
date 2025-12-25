@@ -5,6 +5,11 @@ import {
   FaLock,
   FaServicestack,
   FaScrewdriver,
+  FaRegAddressBook,
+  FaMoneyBill,
+  FaMoneyCheck,
+  FaRegBookmark,
+  FaWallet,
 } from 'react-icons/fa'
 
 import { HiDocumentSearch } from 'react-icons/hi'
@@ -49,6 +54,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         icon: HiDocumentSearch,
       },
       {
+        title: 'wallet',
+        href: '/admin/dashboard/wallet',
+        icon: FaWallet,
+      },
+      {
         title: 'Service Categories',
         href: '/admin/dashboard/service_category',
         icon: FaServicestack,
@@ -67,9 +77,9 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       // { title: 'Profile', href: '/vendor/profile' },
     ],
     sideNav: [
-      { title: 'Profile', href: '/vendor/profile', icon: User2 },
+      { title: 'My profile', href: '/vendor/profile', icon: User2 },
       {
-        title: 'Service',
+        title: 'My services',
         href: '/vendor/service',
         icon: FaScrewdriver,
       },
@@ -80,7 +90,22 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         icon: FaServicestack,
       },
       {
-        title: 'Change Password',
+        title: 'Booking requests',
+        href: '/vendor/booking/list',
+        icon: FaRegBookmark,
+      },
+      {
+        title: 'My Wallet',
+        href: '/vendor/wallet',
+        icon: FaWallet,
+      },
+      {
+        title: 'Payment History',
+        href: '/vendor/payment',
+        icon: FaMoneyCheck,
+      },
+      {
+        title: 'Change my password',
         href: '/vendor/change-password',
         icon: FaLock,
       },
@@ -101,7 +126,18 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       // { title: 'Profile', href: '/customer/profile' },
     ],
     sideNav: [
-      { title: 'Profile', href: '/customer/profile', icon: FaUser },
+      { title: 'My profile', href: '/customer/profile', icon: FaUser },
+      {
+        title: 'My bookings',
+        href: '/customer/booking/list',
+        icon: FaRegAddressBook,
+      },
+      { title: 'My Wallet', href: '/customer/wallet', icon: FaMoneyBill },
+      {
+        title: 'Payment History',
+        href: '/customer/payments',
+        icon: FaMoneyCheck,
+      },
       {
         title: 'Change Password',
         href: '/customer/change-password',
