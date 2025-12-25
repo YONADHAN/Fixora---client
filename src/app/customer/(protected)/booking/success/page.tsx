@@ -13,12 +13,28 @@ export default function PaymentSuccessPage() {
     if (status === 'succeeded') {
       router.replace('/customer/booking/success')
     }
-  }, [])
+  }, [router, searchParams])
 
   return (
-    <div className='max-w-md mx-auto p-6 text-center'>
-      <h1 className='text-2xl font-semibold'>Payment Successful </h1>
-      <p className='mt-2 text-gray-600'>Your booking has been confirmed.</p>
+    <div className='mx-auto mt-20 max-w-md px-6'>
+      <div className='rounded-lg border p-6 text-center'>
+        <h1 className='text-xl font-semibold'>Payment completed</h1>
+
+        <p className='mt-2 text-sm text-gray-600'>
+          Your advance payment was processed successfully.
+        </p>
+
+        <div className='my-6 border-t' />
+
+        <div className='space-y-2 text-sm text-gray-700'>
+          <p>Your booking is now confirmed.</p>
+          <p>You will receive further details in your booking history.</p>
+        </div>
+
+        <p className='mt-6 text-xs text-gray-500'>
+          You can safely close this page.
+        </p>
+      </div>
     </div>
   )
 }
