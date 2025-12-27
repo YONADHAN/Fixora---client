@@ -25,6 +25,7 @@ import { ModeToggle } from '../ui/modeToggle'
 
 import { navData } from '../data/NavData'
 import { toast } from 'sonner'
+import { useNotifications } from '@/lib/hooks/useNotification'
 
 interface NavbarProps {
   role?: 'admin' | 'vendor' | 'customer'
@@ -42,6 +43,9 @@ export default function Navbar({
   const customerLogoutHook = useCustomerLogout()
   const vendorLogoutHook = useVendorLogout()
   const adminLogoutHook = useAdminLogout()
+
+  const { data: notificationData } = useNotifications()
+  const unreadCount = notificationData?.unreadCount ?? 0
 
   const logoutActions = {
     admin: adminLogoutHook,
@@ -242,9 +246,19 @@ export default function Navbar({
           {isAuthenticated ? (
             <>
               <Button variant='outline' className='relative hidden sm:flex'>
-                <div className='w-3 h-3 rounded-full bg-green-500 absolute top-0.5 right-1.5'></div>
-                <BiSolidBell />
+                <BiSolidBell size={20} />
+
+                {unreadCount > 0 && (
+                  <span
+                    className='absolute -top-1 -right-1 min-w-[18px] h-[18px] 
+      rounded-full bg-red-600 text-white text-xs 
+      flex items-center justify-center px-1'
+                  >
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
               </Button>
+
               <Button
                 variant='destructive'
                 onClick={onLogout}

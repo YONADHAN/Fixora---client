@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa'
 
 const Footer = () => {
-  const [year, setYear] = React.useState(2025) // default to any year
+  const [year, setYear] = React.useState(2025)
 
   React.useEffect(() => {
     setYear(new Date().getFullYear())

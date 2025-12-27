@@ -14,3 +14,60 @@ export interface ServiceSchedule {
   monthlyWorkingDates?: number[]
   holidayDates?: Date[]
 }
+
+export const SOCKET_EVENTS = {
+  NOTIFICATION_NEW: 'notifications:new',
+  NOTIFICATION_READ: 'notifications:read',
+  NOTIFICATION_READ_ALL: 'notifications:read-all',
+
+  CHAT_JOIN: 'chat:join',
+  CHAT_LEAVE: 'chat:leave',
+  CHAT_SEND: 'chat:message:send',
+
+  PRESENCE_PING: 'presence:ping',
+}
+
+export type NotificationMetadata =
+  | {
+      type: 'BOOKING'
+      bookingId: string
+      serviceId?: string
+      redirectUrl?: string
+    }
+  | {
+      type: 'PAYMENT'
+      paymentId: string
+      bookingId?: string
+      redirectUrl?: string
+    }
+  | {
+      type: 'ADMIN'
+      redirectUrl?: string
+    }
+
+export interface NotificationPayload {
+  _id?: string
+  notificationId: string
+
+  recipientId: string
+  recipientRole: 'customer' | 'vendor' | 'admin'
+
+  type:
+    | 'BOOKING_CREATED'
+    | 'BOOKING_CANCELLED'
+    | 'BOOKING_CONFIRMED'
+    | 'PAYMENT_SUCCESS'
+    | 'PAYMENT_FAILED'
+    | 'ADMIN_MESSAGE'
+
+  title: string
+  message: string
+
+  metadata?: NotificationMetadata
+
+  isRead: boolean
+  isActive: boolean
+
+  createdAt?: string
+  updatedAt?: string
+}

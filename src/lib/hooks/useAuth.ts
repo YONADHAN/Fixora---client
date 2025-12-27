@@ -1,4 +1,3 @@
-// lib/hooks/useAuth.ts
 import { useMutation } from '@tanstack/react-query'
 import {
   signup,
