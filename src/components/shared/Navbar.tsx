@@ -27,6 +27,8 @@ import { navData } from '../data/NavData'
 import { toast } from 'sonner'
 import { useNotifications } from '@/lib/hooks/useNotification'
 
+import { useNotificationsSocket } from '@/lib/hooks/useNotificationsSocket'
+
 interface NavbarProps {
   role?: 'admin' | 'vendor' | 'customer'
   isAuthenticated: boolean
@@ -39,6 +41,9 @@ export default function Navbar({
   const router = useRouter()
   const dispatch = useDispatch()
   const { topNav, sideNav } = navData[role]
+
+  // Initialize socket listener for notifications
+  useNotificationsSocket()
 
   const customerLogoutHook = useCustomerLogout()
   const vendorLogoutHook = useVendorLogout()

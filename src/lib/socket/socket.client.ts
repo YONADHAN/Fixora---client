@@ -12,7 +12,7 @@ export const getSocket = (): Socket => {
 
   socket = io(process.env.NEXT_PUBLIC_API_URL!, {
     withCredentials: true,
-    transports: ['websocket'],
+    transports: ['websocket', 'polling'],
   })
 
   socket.on('connect', () => {
