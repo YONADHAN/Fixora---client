@@ -10,6 +10,9 @@ import {
 import { useCustomerBookings } from '@/lib/hooks/useBooking'
 
 import { Button } from '@/components/ui/button'
+import { MessageCircle } from 'lucide-react'
+import { chatService } from '@/services/chat/chat.service'
+import { toast } from 'sonner'
 
 interface BookingTableItem {
   id: string
@@ -39,6 +42,16 @@ export default function BookingListPage() {
       serviceStatus: booking.serviceStatus,
       status: booking.cancelInfo ? 'Cancelled' : 'Active',
     })) ?? []
+
+  const handleChat = async (bookingId: string) => {
+    try {
+      const { chatId } = await chatService.initiateChat(bookingId)
+      router.push(`/customer/chat/${chatId}`)
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to initiate chat')
+    }
+  }
 
   const columns: ColumnDefinition<BookingTableItem>[] = [
     {
@@ -89,13 +102,25 @@ export default function BookingListPage() {
       onSearchTermChange={(e) => setSearch(e.target.value)}
       onSearchClick={() => setPage(1)}
       actions={(item) => (
-        <Button
-          size='sm'
-          variant='outline'
-          onClick={() => router.push(`/customer/booking/${item.bookingId}`)}
-        >
-          View Details
-        </Button>
+        <div className='flex gap-2'>
+          <Button
+            size='sm'
+            variant='outline'
+            onClick={() => router.push(`/customer/booking/${item.bookingId}`)}
+          >
+            View Details
+          </Button>
+          {item.status !== 'Cancelled' && (
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={() => handleChat(item.bookingId)}
+            >
+              <MessageCircle className='w-4 h-4 mr-2' />
+              Chat
+            </Button>
+          )}
+        </div>
       )}
     />
   )

@@ -9,6 +9,7 @@ export type statusTypes = 'active' | 'blocked'
 export type TRole = 'customer' | 'admin' | 'vendor'
 export interface User {
   _id?: string
+  userId: string
   username: string
   email: string
   password: string

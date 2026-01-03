@@ -12,7 +12,7 @@ import {
   FaWallet,
 } from 'react-icons/fa'
 
-import { HiDocumentSearch } from 'react-icons/hi'
+import { HiChat, HiDocumentSearch } from 'react-icons/hi'
 import { User2 } from 'lucide-react'
 
 export interface NavItem {
@@ -137,6 +137,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         title: 'Payment History',
         href: '/customer/payments',
         icon: FaMoneyCheck,
+      },
+      {
+        title: 'Chat',
+        href: '/customer/chat',
+        icon: HiChat,
       },
       {
         title: 'Change Password',
