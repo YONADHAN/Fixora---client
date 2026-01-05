@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { chatService } from '@/services/chat/chat.service'
+import { customerChatService } from '@/services/chat/customer.chat.service'
 import { useSocket } from '@/providers/SocketProvider'
 import { SOCKET_EVENTS } from '@/utils/constants/constants'
 import { ChatMessage } from '@/types/chat/chat.type'
@@ -16,7 +16,7 @@ export function useChat(chatId: string | null) {
     if (!chatId) return
 
     setLoading(true)
-    const data = await chatService.getChatMessages(chatId)
+    const data = await customerChatService.getChatMessages(chatId)
     setMessages(data.messages)
     setLoading(false)
   }
@@ -51,11 +51,23 @@ export function useChat(chatId: string | null) {
 
   /* Send */
   const sendMessage = (content: string): void => {
-    if (!chatId || !socket) return
+    console.log('[useChat] sendMessage called:', { chatId, hasSocket: !!socket })
 
+    if (!chatId || !socket) {
+      console.warn('[useChat] Aborted: Missing chatId or socket')
+      return
+    }
+
+    /* emit with Ack callback */
     socket.emit(SOCKET_EVENTS.CHAT_SEND, {
       chatId,
       content,
+    }, (res: any) => {
+      console.log('[useChat] CHAT_SEND ack:', res)
+      if (!res.success) {
+        console.error('[useChat] Send failed:', res.message)
+        // Optional: show toast
+      }
     })
   }
 

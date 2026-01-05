@@ -11,7 +11,7 @@ import { useCustomerBookings } from '@/lib/hooks/useBooking'
 
 import { Button } from '@/components/ui/button'
 import { MessageCircle } from 'lucide-react'
-import { chatService } from '@/services/chat/chat.service'
+import { customerChatService } from '@/services/chat/customer.chat.service'
 import { toast } from 'sonner'
 
 interface BookingTableItem {
@@ -45,7 +45,7 @@ export default function BookingListPage() {
 
   const handleChat = async (bookingId: string) => {
     try {
-      const { chatId } = await chatService.initiateChat(bookingId)
+      const { chatId } = await customerChatService.initiateChat(bookingId)
       router.push(`/customer/chat/${chatId}`)
     } catch (error) {
       console.error(error)

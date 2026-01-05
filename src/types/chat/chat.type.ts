@@ -21,3 +21,21 @@ export interface GetChatMessagesResponse {
   currentPage: number
   totalPages: number
 }
+
+export interface IChatEntity {
+  chatId: string
+  customerId: string
+  vendorId: string
+  serviceId: string
+  lastMessage?: {
+    content: string
+    createdAt: string
+  }
+  unreadCount: {
+    customer: number
+    vendor: number
+  }
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}

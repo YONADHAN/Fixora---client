@@ -41,6 +41,8 @@ export const VENDOR_ROUTES = {
   GET_VENDOR_BOOKINGS: `${BASE_URL.VENDOR}/booking/me`,
   GET_BOOKING_DETAILS: `${BASE_URL.VENDOR}/booking`,
   GET_VENDOR_WALLET: `${BASE_URL.VENDOR}/wallet`,
+  GET_MY_CHATS: `${BASE_URL.VENDOR}/chats`,
+  GET_CHAT_MESSAGES: `${BASE_URL.VENDOR}/chats`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -63,6 +65,9 @@ export const CUSTOMER_ROUTES = {
   GET_MY_NOTIFICATION: `${BASE_URL.CUSTOMER}/notification`,
   MARK_NOTIFICATION_READ: `${BASE_URL.CUSTOMER}/notification`,
   MARK_ALL_NOTIFICATION_READ: `${BASE_URL.CUSTOMER}/notification/read-all`,
+  INITIATE_CHAT: `${BASE_URL.CUSTOMER}/chats/initiate`,
+  GET_MY_CHATS: `${BASE_URL.CUSTOMER}/chats`,
+  GET_CHAT_MESSAGES: `${BASE_URL.CUSTOMER}/chats`,
 }
 
 export const AUTH_ROUTES = {

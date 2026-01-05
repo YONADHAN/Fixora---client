@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface ChatUIContextType {
   activeChatId: string | null
@@ -18,6 +18,12 @@ export function ChatUIProvider({
   const [activeChatId, setActiveChatId] = useState<string | null>(
     initialChatId || null
   )
+
+  useEffect(() => {
+    if (initialChatId) {
+      setActiveChatId(initialChatId)
+    }
+  }, [initialChatId])
 
   return (
     <ChatUIContext.Provider value={{ activeChatId, setActiveChatId }}>
