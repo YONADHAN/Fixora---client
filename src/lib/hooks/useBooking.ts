@@ -7,6 +7,7 @@ import {
   cancelCustomerBooking,
   getAdminBookings,
   getAvailableSlotsForCustomers,
+  getBookingDetailsByPaymentId,
   getCustomerBookingDetails,
   getCustomerBookings,
   getVendorBookingDetails,
@@ -79,13 +80,22 @@ export const useAdminBookings = (params: RequestGetMyBookingsDTO) => {
   })
 }
 
-export const useCustomerBookingDetails = (bookingId: string) => {
+export const useCustomerBookingDetails = (bookingId: string | null) => {
   return useQuery({
-    queryKey: ['customer-booking-details', bookingId],
-    queryFn: () => getCustomerBookingDetails(bookingId),
+    queryKey: ['booking-details', bookingId],
+    queryFn: () => getCustomerBookingDetails(bookingId!),
     enabled: !!bookingId,
   })
 }
+
+export const useCustomerBookingDetailsByPaymentId = (paymentId: string | null) => {
+  return useQuery({
+    queryKey: ['booking-details-payment', paymentId],
+    queryFn: () => getBookingDetailsByPaymentId(paymentId!),
+    enabled: !!paymentId,
+  })
+}
+
 
 export const useVendorBookingDetails = (bookingId: string) => {
   return useQuery({

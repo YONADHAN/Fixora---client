@@ -22,15 +22,15 @@ const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
   }
 
   return (
-    <div className='p-4 max-w-md mx-auto bg-white rounded-xl shadow-md'>
-      <h1 className='text-xl font-semibold mb-4 text-center'>
+    <div className='p-4 max-w-md mx-auto bg-white dark:bg-slate-900 rounded-xl shadow-md border dark:border-gray-800 transition-colors'>
+      <h1 className='text-xl font-semibold mb-4 text-center text-gray-900 dark:text-gray-100'>
         Change Your Password
       </h1>
       <form onSubmit={handleFormSubmit} className='flex flex-col space-y-4'>
         <div>
           <label
             htmlFor='currentPassword'
-            className='block text-sm font-medium text-gray-700 mb-1'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
           >
             Current Password
           </label>
@@ -41,13 +41,13 @@ const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
               name='currentPassword'
               value={form.currentPassword}
               onChange={handleChange}
-              className='w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              className='w-full border border-gray-300 dark:border-gray-700 bg-transparent dark:bg-slate-800 rounded-lg px-3 py-2 pr-10 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               required
             />
             <button
               type='button'
               onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-              className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+              className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
             >
               {showCurrentPassword ? (
                 <svg
@@ -92,7 +92,7 @@ const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
         <div>
           <label
             htmlFor='newPassword'
-            className='block text-sm font-medium text-gray-700 mb-1'
+            className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
           >
             New Password
           </label>
@@ -103,13 +103,13 @@ const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
               name='newPassword'
               value={form.newPassword}
               onChange={handleChange}
-              className='w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              className='w-full border border-gray-300 dark:border-gray-700 bg-transparent dark:bg-slate-800 rounded-lg px-3 py-2 pr-10 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
               required
             />
             <button
               type='button'
               onClick={() => setShowNewPassword(!showNewPassword)}
-              className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700'
+              className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
             >
               {showNewPassword ? (
                 <svg
@@ -153,7 +153,7 @@ const ChangePasswordForm = ({ onSubmit }: ChangePasswordFormProps) => {
 
         <button
           type='submit'
-          className='mt-2 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-800 transition'
+          className='mt-2 bg-gray-700 hover:bg-gray-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white py-2 rounded-lg transition-colors'
         >
           Submit
         </button>

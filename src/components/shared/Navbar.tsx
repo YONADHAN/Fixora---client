@@ -28,6 +28,12 @@ import { toast } from 'sonner'
 import { useNotifications } from '@/lib/hooks/useNotification'
 
 import { useNotificationsSocket } from '@/lib/hooks/useNotificationsSocket'
+import { NotificationModal } from './NotificationModal'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface NavbarProps {
   role?: 'admin' | 'vendor' | 'customer'
@@ -42,15 +48,14 @@ export default function Navbar({
   const dispatch = useDispatch()
   const { topNav, sideNav } = navData[role]
 
-  // Initialize socket listener for notifications
-  useNotificationsSocket()
-
   const customerLogoutHook = useCustomerLogout()
   const vendorLogoutHook = useVendorLogout()
   const adminLogoutHook = useAdminLogout()
 
-  const { data: notificationData } = useNotifications()
-  const unreadCount = notificationData?.unreadCount ?? 0
+  // Initialize socket listener for notifications
+  useNotificationsSocket(isAuthenticated)
+
+  const { unreadCount } = useNotifications('all', isAuthenticated)
 
   const logoutActions = {
     admin: adminLogoutHook,
@@ -250,19 +255,26 @@ export default function Navbar({
 
           {isAuthenticated ? (
             <>
-              <Button variant='outline' className='relative hidden sm:flex'>
-                <BiSolidBell size={20} />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline' className='relative hidden sm:flex'>
+                    <BiSolidBell size={20} />
 
-                {unreadCount > 0 && (
-                  <span
-                    className='absolute -top-1 -right-1 min-w-[18px] h-[18px] 
+                    {unreadCount > 0 && (
+                      <span
+                        className='absolute -top-1 -right-1 min-w-[18px] h-[18px] 
       rounded-full bg-red-600 text-white text-xs 
       flex items-center justify-center px-1'
-                  >
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
-                )}
-              </Button>
+                      >
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end' className='p-0 border-none shadow-none bg-transparent w-auto'>
+                  <NotificationModal />
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <Button
                 variant='destructive'

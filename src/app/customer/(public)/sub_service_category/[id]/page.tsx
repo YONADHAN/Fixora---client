@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { useState, useMemo } from 'react'
 import { Pagination } from '@/components/shared-ui/resusable_components/pagination/pagination'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,9 @@ import type {
   ResponseSearchServicesForCustomerItemDTO,
 } from '@/dtos/service_dto'
 
-const SearchPage = ({ params }: { params: { id: string } }) => {
+const SearchPage = () => {
+  const params = useParams()
+  const id = params.id as string
   const [showFilter, setShowFilter] = useState(false)
   const [search, setSearch] = useState('')
   const [minPrice, setMinPrice] = useState<number | undefined>()
@@ -30,7 +32,7 @@ const SearchPage = ({ params }: { params: { id: string } }) => {
   ----------------------------------------*/
   const payload: RequestSearchServicesForCustomerDTO = useMemo(
     () => ({
-      subServiceCategoryId: params.id,
+      subServiceCategoryId: id,
       page: currentPage,
       limit: 4,
       search,
@@ -44,7 +46,7 @@ const SearchPage = ({ params }: { params: { id: string } }) => {
       weeklyDays: weeklyDays.length ? weeklyDays : undefined,
     }),
     [
-      params.id,
+      id,
       search,
       minPrice,
       maxPrice,
@@ -270,9 +272,8 @@ const FilterSidebar = ({
               <button
                 key={day}
                 onClick={() => toggleWeeklyDay(day)}
-                className={`day-btn ${
-                  weeklyDays.includes(day) ? 'active' : ''
-                }`}
+                className={`day-btn ${weeklyDays.includes(day) ? 'active' : ''
+                  }`}
               >
                 {['S', 'M', 'T', 'W', 'T', 'F', 'S'][day]}
               </button>

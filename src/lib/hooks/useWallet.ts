@@ -5,10 +5,10 @@ import {
 } from '@/services/wallet/wallet.service'
 import { WalletResponseDTO } from '@/dtos/wallet_dto'
 
-export const useCustomerWallet = () => {
+export const useCustomerWallet = (sortBy?: string, order?: string) => {
   return useQuery<WalletResponseDTO, Error>({
-    queryKey: ['customer-wallet'],
-    queryFn: getCustomerWallets,
+    queryKey: ['customer-wallet', sortBy, order],
+    queryFn: () => getCustomerWallets(sortBy, order),
   })
 }
 

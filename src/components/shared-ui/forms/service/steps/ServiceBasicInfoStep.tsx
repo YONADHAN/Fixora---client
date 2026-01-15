@@ -14,30 +14,30 @@ export default function ServiceBasicInfoStep() {
   }
   const handleTouchedChange =
     (field: keyof IServiceFormValues) =>
-    (
-      e: React.ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
-    ) => {
-      handleChange(e)
-      setFieldTouched(field, true, false)
-    }
+      (
+        e: React.ChangeEvent<
+          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
+      ) => {
+        handleChange(e)
+        setFieldTouched(field, true, false)
+      }
 
   return (
-    <div className='max-w-2xl mx-auto bg-white border rounded-2xl shadow-sm p-6 space-y-6'>
+    <div className='max-w-2xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-6'>
       {/* ✅ HEADER */}
       <div>
-        <h2 className='text-xl font-semibold text-gray-900'>
+        <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Basic Information
         </h2>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm text-gray-500 dark:text-muted-foreground'>
           Enter the basic details of your service
         </p>
       </div>
 
       {/* ✅ SERVICE NAME */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Service Name
         </label>
         <input
@@ -45,7 +45,7 @@ export default function ServiceBasicInfoStep() {
           value={values.name}
           onChange={handleTouchedChange('name')}
           placeholder='Enter service name'
-          className='border rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black'
+          className='border dark:border-input rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white bg-transparent dark:bg-background dark:text-foreground'
         />
         {touched.name && errors.name && (
           <p className='text-red-500 text-xs'>{errors.name}</p>
@@ -54,7 +54,7 @@ export default function ServiceBasicInfoStep() {
 
       {/* ✅ DESCRIPTION */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Service Description
         </label>
         <textarea
@@ -63,7 +63,7 @@ export default function ServiceBasicInfoStep() {
           onChange={handleTouchedChange('description')}
           placeholder='Describe your service'
           rows={4}
-          className='border rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black resize-none'
+          className='border dark:border-input rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white resize-none bg-transparent dark:bg-background dark:text-foreground'
         />
         {touched.description && errors.description && (
           <p className='text-red-500 text-xs'>{errors.description}</p>
@@ -72,7 +72,7 @@ export default function ServiceBasicInfoStep() {
 
       {/* ✅ SUB CATEGORY (DYNAMIC FROM API) */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Sub Service Category
         </label>
 
@@ -80,7 +80,7 @@ export default function ServiceBasicInfoStep() {
           name='subServiceCategoryId'
           value={values.subServiceCategoryId}
           onChange={handleTouchedChange('subServiceCategoryId')}
-          className='border rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black bg-white'
+          className='border dark:border-input rounded-lg p-2.5 w-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white bg-white dark:bg-background dark:text-foreground'
           disabled={isLoading}
         >
           <option value=''>Select Sub Category</option>
@@ -89,6 +89,7 @@ export default function ServiceBasicInfoStep() {
             <option
               key={item.subServiceCategoryId}
               value={item.subServiceCategoryId}
+              className='dark:bg-background dark:text-foreground'
             >
               {item.name}
             </option>
@@ -99,11 +100,11 @@ export default function ServiceBasicInfoStep() {
           <p className='text-red-500 text-xs'>{errors.subServiceCategoryId}</p>
         )}
         {/* ✅ INFO BANNER */}
-        <div className='bg-gray-50 border rounded-lg p-4 text-sm text-gray-600'>
+        <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
           💡 <span className='font-medium'>Tip:</span> If you don&apos;t find
           your required sub service category, please{' '}
           <span
-            className='text-blue-600 cursor-pointer '
+            className='text-blue-600 dark:text-blue-400 cursor-pointer '
             onClick={() => router.push('/vendor/sub-service-category/add')}
           >
             create your new sub service category

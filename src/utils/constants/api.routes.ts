@@ -43,6 +43,7 @@ export const VENDOR_ROUTES = {
   GET_VENDOR_WALLET: `${BASE_URL.VENDOR}/wallet`,
   GET_MY_CHATS: `${BASE_URL.VENDOR}/chats`,
   GET_CHAT_MESSAGES: `${BASE_URL.VENDOR}/chats`,
+  GET_PAYMENTS: `${BASE_URL.VENDOR}/payment`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -68,6 +69,7 @@ export const CUSTOMER_ROUTES = {
   INITIATE_CHAT: `${BASE_URL.CUSTOMER}/chats/initiate`,
   GET_MY_CHATS: `${BASE_URL.CUSTOMER}/chats`,
   GET_CHAT_MESSAGES: `${BASE_URL.CUSTOMER}/chats`,
+  GET_PAYMENTS: `${BASE_URL.CUSTOMER}/payment`,
 }
 
 export const AUTH_ROUTES = {
@@ -79,4 +81,13 @@ export const AUTH_ROUTES = {
   RESET_PASSWORD: `${BASE_URL.AUTH}/reset-password`,
   LOGOUT: `${BASE_URL.AUTH}/logout`,
   GOOGLE_AUTH: `${BASE_URL.AUTH}/google-auth`,
+}
+
+export const ADDRESS_ROUTES = {
+  GET_MY_ADDRESSES: `${BASE_URL.CUSTOMER}/address/me`,
+  ADD_ADDRESS: `${BASE_URL.CUSTOMER}/address`,
+  GET_SINGLE_ADDRESS: `${BASE_URL.CUSTOMER}/address`,
+  EDIT_ADDRESS: `${BASE_URL.CUSTOMER}/address`,
+  SET_DEFAULT_ADDRESS: `${BASE_URL.CUSTOMER}/address`,
+  DELETE_ADDRESS: `${BASE_URL.CUSTOMER}/address`,
 }

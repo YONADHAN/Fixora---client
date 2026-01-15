@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Clock, Plus, Trash2 } from 'lucide-react'
+import { Clock, MapPin, Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -11,13 +11,15 @@ import {
   useCreateBookingHold,
   useGetAvailableSlotsForCustomer,
 } from '@/lib/hooks/useBooking'
+import { useAddresses } from '@/lib/hooks/useAddress'
 import { useGetServicesById } from '@/lib/hooks/useService'
+import { AddressSelector } from './address_selector'
 
-import { toast } from 'sonner'
-import SignInModal from './signIn_modal'
-import { RootState } from '@/store/store'
-import { useSelector } from 'react-redux'
 import { AxiosError } from 'axios'
+import { useSelector } from 'react-redux'
+import { toast } from 'sonner'
+import { RootState } from '@/store/store'
+import SignInModal from './signIn_modal'
 
 /* ───────────────── TYPES ───────────────── */
 
@@ -26,28 +28,16 @@ type Slot = {
   end: string
 }
 
-type SelectedSlot = {
-  date: string
-  start: string
-  end: string
-
-  pricing: {
-    pricePerSlot: number
-    advancePerSlot: number
-  }
-
-  variant?: {
-    name?: string
-    price?: number
-  }
-}
-
 /* ───────────────── COMPONENT ───────────────── */
 
 export default function BookServicePage() {
   const params = useParams()
   const serviceId = params.id as string
   const router = useRouter()
+
+  /* ───────────── State ───────────── */
+  const customer = useSelector((state: RootState) => state.customer.customer)
+  const authenticated = !!customer
 
   /* ───────────── Calendar State ───────────── */
 
@@ -64,7 +54,6 @@ export default function BookServicePage() {
   const [selectedSlotStart, setSelectedSlotStart] = useState<string | null>(
     null
   )
-  const [addedSlots, setAddedSlots] = useState<SelectedSlot[]>([])
 
   /* ───────────── Variant State (OPTIONAL) ───────────── */
 
@@ -93,10 +82,16 @@ export default function BookServicePage() {
     isLoading: isServiceLoading,
     isError: isServiceError,
   } = useGetServicesById({ serviceId })
+
+  const { data: addressData } = useAddresses(
+    { page: 1, limit: 100 },
+    { enabled: authenticated }
+  )
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
+
   const { mutate: createHold, isPending, isSuccess } = useCreateBookingHold()
   /* ───────────── Derived Data ───────────── */
 
-  const customer = useSelector((state: RootState) => state.customer.customer)
   const availableDates = Object.keys(slotsByDate)
 
   const hasVariants =
@@ -114,15 +109,9 @@ export default function BookServicePage() {
   const effectivePricePerSlot = selectedVariant?.price ?? basePrice
   const effectiveAdvancePerSlot = baseAdvance
 
-  const totalPrice = addedSlots.reduce(
-    (sum, s) => sum + s.pricing.pricePerSlot,
-    0
-  )
-
-  const totalAdvance = addedSlots.reduce(
-    (sum, s) => sum + s.pricing.advancePerSlot,
-    0
-  )
+  // Single Slot Logic
+  const totalPrice = selectedSlotStart ? effectivePricePerSlot : 0
+  const totalAdvance = selectedSlotStart ? effectiveAdvancePerSlot : 0
 
   /* ───────────── Effects ───────────── */
 
@@ -134,84 +123,40 @@ export default function BookServicePage() {
   const slotsForSelectedDate: Slot[] =
     selectedDate && slotsByDate[selectedDate] ? slotsByDate[selectedDate] : []
 
-  const hasSlotOnDate = (date: string) =>
-    addedSlots.some((s) => s.date === date)
-
-  const isSlotSelected = (date: string, start: string) =>
-    addedSlots.some((s) => s.date === date && s.start === start)
-
   /* ───────────── Slot Actions ───────────── */
-  const bookingHoldPayload = {
-    serviceId,
-    paymentMethod,
 
-    slots: addedSlots.map((s) => ({
-      date: s.date,
-      start: s.start,
-      end: s.end,
-
-      pricePerSlot: s.pricing.pricePerSlot,
-      advancePerSlot: s.pricing.advancePerSlot,
-
-      variant: s.variant,
-    })),
-
-    pricing: {
-      totalAmount: totalPrice,
-      advanceAmount: totalAdvance,
-      remainingAmount: totalPrice - totalAdvance,
-    },
-  }
-
-  const addSlot = () => {
-    if (!selectedDate || !selectedSlotStart) return
-
-    if (hasVariants && selectedVariantIndex === undefined) {
-      toast.error('Please select a variant or choose No Variant')
-      return
+  const handleSlotClick = (start: string) => {
+    if (selectedSlotStart === start) {
+      setSelectedSlotStart(null) // deselect
+    } else {
+      setSelectedSlotStart(start)
     }
-
-    const slot = slotsForSelectedDate.find((s) => s.start === selectedSlotStart)
-    if (!slot) return
-
-    const exists = addedSlots.some(
-      (s) => s.date === selectedDate && s.start === slot.start
-    )
-    if (exists) return
-
-    setAddedSlots((prev) => [
-      ...prev,
-      {
-        date: selectedDate,
-        start: slot.start,
-        end: slot.end,
-
-        pricing: {
-          pricePerSlot: effectivePricePerSlot,
-          advancePerSlot: effectiveAdvancePerSlot,
-        },
-
-        variant: selectedVariant
-          ? {
-              name: selectedVariant.name,
-              price: selectedVariant.price,
-            }
-          : undefined,
-      },
-    ])
   }
 
-  const removeSlot = (date: string, start: string) => {
-    setAddedSlots((prev) =>
-      prev.filter((s) => !(s.date === date && s.start === start))
-    )
+  const getSelectedSlotDetails = () => {
+    if (!selectedDate || !selectedSlotStart) return null
+    const slot = slotsByDate[selectedDate]?.find(s => s.start === selectedSlotStart)
+    if (!slot) return null
+    return {
+      date: selectedDate,
+      start: slot.start,
+      end: slot.end,
+      variant: selectedVariant
+        ? {
+          name: selectedVariant.name,
+          price: selectedVariant.price,
+        }
+        : undefined,
+    }
   }
+
+  const selectedSlot = getSelectedSlotDetails()
+
 
   /* ───────────── Month Navigation ───────────── */
 
   const goPrevMonth = () => {
     setSelectedDate(null)
-    setAddedSlots([])
     setSelectedSlotStart(null)
 
     month === 0 ? (setMonth(11), setYear((y) => y - 1)) : setMonth((m) => m - 1)
@@ -219,7 +164,6 @@ export default function BookServicePage() {
 
   const goNextMonth = () => {
     setSelectedDate(null)
-    setAddedSlots([])
     setSelectedSlotStart(null)
 
     month === 11 ? (setMonth(0), setYear((y) => y + 1)) : setMonth((m) => m + 1)
@@ -228,8 +172,13 @@ export default function BookServicePage() {
   /* ───────────── Payment ───────────── */
 
   const PayAdvanceButtonClick = () => {
-    if (addedSlots.length === 0) {
-      toast.error('Please select at least one slot')
+    if (!selectedSlot) {
+      toast.error('Please select a slot')
+      return
+    }
+
+    if (hasVariants && selectedVariantIndex === null) {
+      toast.error('Please select a variant or choose No Variant')
       return
     }
 
@@ -239,16 +188,34 @@ export default function BookServicePage() {
       return
     }
 
+    if (!selectedAddressId) {
+      toast.error('Please select an address')
+      const element = document.getElementById('address-section')
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+      return
+    }
+
+    const formattedSlots = [{
+      date: selectedSlot.date,
+      start: selectedSlot.start,
+      end: selectedSlot.end,
+      pricePerSlot: effectivePricePerSlot,
+      advancePerSlot: effectiveAdvancePerSlot,
+      variant: selectedSlot.variant,
+    }]
+
     createHold(
       {
         serviceId,
         paymentMethod,
-        slots: addedSlots,
+        slots: formattedSlots,
+        addressId: selectedAddressId,
       },
       {
         onSuccess: (data) => {
           console.log('Booking hold created:', data)
-
           router.push(`/customer/booking/payment/${data.holdId}`)
         },
         onError: (error: unknown) => {
@@ -275,7 +242,7 @@ export default function BookServicePage() {
         onSuccess={() => {
           setShowLoginModal(false)
           setPendingPayment(false)
-          router.push(`/customer/service/${serviceId}/confirm`)
+          // Stay on this page so user can continue booking
         }}
       />
 
@@ -306,8 +273,6 @@ export default function BookServicePage() {
                 variant={
                   selectedDate === d
                     ? 'default'
-                    : hasSlotOnDate(d)
-                    ? 'secondary'
                     : 'outline'
                 }
                 onClick={() => {
@@ -323,9 +288,16 @@ export default function BookServicePage() {
 
         {/* Slots */}
         <Card className='p-3'>
-          <h2 className='text-sm font-semibold flex gap-2 mb-2'>
-            <Clock size={14} /> Select Time Slot
-          </h2>
+          <div className='flex items-center justify-between mb-2'>
+            <h2 className='text-sm font-semibold flex gap-2'>
+              <Clock size={14} /> Select Time Slot
+            </h2>
+            {selectedSlot && (
+              <span className='text-xs text-muted-foreground'>
+                Selected: {selectedSlot.start} - {selectedSlot.end}
+              </span>
+            )}
+          </div>
 
           <div className='grid grid-cols-3 md:grid-cols-4 gap-1.5 mb-2'>
             {slotsForSelectedDate.map((slot) => (
@@ -333,25 +305,22 @@ export default function BookServicePage() {
                 key={slot.start}
                 size='sm'
                 variant={
-                  isSlotSelected(selectedDate!, slot.start)
-                    ? 'secondary'
-                    : selectedSlotStart === slot.start
+                  selectedSlotStart === slot.start
                     ? 'default'
                     : 'outline'
                 }
-                onClick={() => setSelectedSlotStart(slot.start)}
+                onClick={() => handleSlotClick(slot.start)}
               >
                 {slot.start}–{slot.end}
               </Button>
             ))}
           </div>
-
-          <Button size='sm' disabled={!selectedSlotStart} onClick={addSlot}>
-            <Plus size={12} className='mr-1' /> Add Slot
-          </Button>
+          {slotsForSelectedDate.length === 0 && (
+            <p className='text-xs text-muted-foreground p-2 text-center'>No slots available for this date.</p>
+          )}
         </Card>
 
-        {/* Variant (OPTIONAL) */}
+        {/* Variant  */}
         {hasVariants && (
           <Card className='p-3'>
             <h2 className='text-sm font-semibold mb-2'>
@@ -384,36 +353,53 @@ export default function BookServicePage() {
             </div>
           </Card>
         )}
+
+        {/* Address Selection */}
+        <Card className='p-3' id="address-section">
+          <h2 className='text-sm font-semibold mb-2'>Select Address</h2>
+          <AddressSelector
+            selectedAddressId={selectedAddressId}
+            onSelect={setSelectedAddressId}
+          />
+        </Card>
       </div>
 
       {/* ───────────── RIGHT ───────────── */}
       <Card className='p-4 h-fit sticky top-4 space-y-4'>
         <h2 className='text-base font-semibold'>Booking Summary</h2>
 
-        {addedSlots.map((s) => (
+        {selectedAddressId && addressData?.data?.find(a => a.addressId === selectedAddressId) && (
+          <div className="bg-muted/50 p-2 rounded text-xs space-y-1 border">
+            <p className="font-semibold flex items-center gap-1"><MapPin className="h-3 w-3" /> Service Address:</p>
+            <p className="text-muted-foreground line-clamp-2">
+              {addressData.data.find(a => a.addressId === selectedAddressId)?.addressLine1}, {addressData.data.find(a => a.addressId === selectedAddressId)?.city}
+            </p>
+          </div>
+        )}
+
+        {selectedSlot ? (
           <div
-            key={`${s.date}-${s.start}`}
-            className='text-xs flex justify-between items-start gap-2'
+            className='text-xs flex justify-between items-start gap-2 bg-accent/20 p-2 rounded'
           >
             <div>
-              <div>
-                {s.date} • {s.start}–{s.end}
+              <div className='font-medium'>
+                {selectedSlot.date} • {selectedSlot.start}–{selectedSlot.end}
               </div>
-              {s.variant?.name && (
+              {selectedSlot.variant?.name && (
                 <div className='text-[10px] text-muted-foreground'>
-                  {s.variant.name}
+                  {selectedSlot.variant.name}
                 </div>
               )}
             </div>
 
             <div className='flex items-center gap-2 text-right text-[10px]'>
               <div className='text-muted-foreground leading-tight'>
-                <div>₹{s.pricing.pricePerSlot}</div>
-                <div>Adv ₹{s.pricing.advancePerSlot}</div>
+                <div>₹{totalPrice}</div>
+                <div>Adv ₹{totalAdvance}</div>
               </div>
 
               <button
-                onClick={() => removeSlot(s.date, s.start)}
+                onClick={() => setSelectedSlotStart(null)}
                 className='text-red-500 hover:text-red-600'
                 title='Remove slot'
               >
@@ -421,20 +407,24 @@ export default function BookServicePage() {
               </button>
             </div>
           </div>
-        ))}
+        ) : (
+          <p className='text-xs text-muted-foreground text-center py-4 border border-dashed rounded'>
+            Select a slot to continue
+          </p>
+        )}
 
-        <div className='text-xs space-y-1'>
+        <div className='text-xs space-y-1 border-t pt-2'>
           <div className='flex justify-between'>
-            <span>Price / Slot</span>
-            <span>₹{effectivePricePerSlot}</span>
-          </div>
-          <div className='flex justify-between'>
-            <span>Advance / Slot</span>
-            <span>₹{effectiveAdvancePerSlot}</span>
-          </div>
-          <div className='flex justify-between font-medium'>
-            <span>Total</span>
+            <span>Price</span>
             <span>₹{totalPrice}</span>
+          </div>
+          <div className='flex justify-between'>
+            <span>Advance</span>
+            <span>₹{totalAdvance}</span>
+          </div>
+          <div className='flex justify-between font-medium text-sm pt-1'>
+            <span>Total Payable</span>
+            <span>₹{totalAdvance}</span>
           </div>
         </div>
         <div className='space-y-1 text-xs'>
@@ -450,13 +440,13 @@ export default function BookServicePage() {
 
         <Button
           className='w-full justify-between'
-          disabled={addedSlots.length === 0}
+          disabled={!selectedSlot}
           onClick={PayAdvanceButtonClick}
         >
           <span>Pay Advance</span>
           <span>₹{totalAdvance}</span>
         </Button>
       </Card>
-    </div>
+    </div >
   )
 }

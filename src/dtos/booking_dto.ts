@@ -27,10 +27,23 @@ export interface ISlot {
   }
 }
 
+export interface IBookingHoldSlot {
+  date: string
+  start: string
+  end: string
+  pricePerSlot: number
+  advancePerSlot: number
+  variant?: {
+    name?: string
+    price?: number
+  }
+}
+
 export interface RequestCreateBookingHoldDTO {
   serviceId: string
+  addressId: string
   paymentMethod?: 'stripe'
-  slots: ISlot[]
+  slots: IBookingHoldSlot[]
 }
 
 export interface ResponseCreateBookingHoldDTO {
@@ -59,6 +72,18 @@ export interface ResponseGetMyBookingsDTO {
       cancelledByRole?: TRole
       reason?: string
     }
+    date: string
+    serviceName?: string
+    slotStart?: string
+    slotEnd?: string
+    slots?: {
+      bookingId: string
+      date: string
+      slotStart?: string
+      slotEnd?: string
+      paymentStatus: string
+      serviceStatus: string
+    }[]
   }[]
   totalPages: number
   currentPage: number
@@ -73,6 +98,11 @@ export interface GetBookingDetailsForCustomerStrategyResponseDTO {
     slotEnd?: string
     paymentStatus: string
     serviceStatus: string
+    cancelInfo?: {
+      cancelledByRole?: string
+      reason?: string
+      cancelledAt?: string
+    }
   }
 
   service: {
@@ -87,17 +117,24 @@ export interface GetBookingDetailsForCustomerStrategyResponseDTO {
       description?: string
       price?: number
     }[]
+    mainImage?: string
   }
 
   vendor: {
     name: string
+    email: string
+    phone?: string
     profileImage?: string
     location?: {
       name?: string
       displayName?: string
     }
+    geoLocation?: {
+      coordinates: number[]
+    }
   }
 }
+
 
 export interface GetBookingDetailsForVendorStrategyResponseDTO {
   booking: {
@@ -127,6 +164,7 @@ export interface GetBookingDetailsForVendorStrategyResponseDTO {
       description?: string
       price?: number
     }[]
+    mainImage?: string
   }
 
   customer: {
@@ -139,5 +177,12 @@ export interface GetBookingDetailsForVendorStrategyResponseDTO {
       displayName?: string
       zipCode?: string
     }
+    geoLocation?: {
+      coordinates: number[]
+    }
   }
+}
+
+export interface ResponsePayBalanceDTO {
+  checkoutUrl: string
 }

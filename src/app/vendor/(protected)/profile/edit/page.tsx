@@ -11,6 +11,7 @@ import { queryClient } from '@/lib/queryClient'
 import {
   useVendorProfileInfo,
   useVenderProfileInfoUpdate,
+  useVendorUploadProfileImage,
 } from '@/lib/hooks/useVendor'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
 import ProfileUpdatePage from '@/components/shared-ui/forms/profile-form/profile-image-update-form'
@@ -22,6 +23,8 @@ const EditVendorProfilePage = () => {
 
   const { mutate: updateVendorProfile, isPending } =
     useVenderProfileInfoUpdate()
+
+  const { mutate: uploadImage, isPending: isUploadingImage } = useVendorUploadProfileImage()
 
   const handleSubmit = (formData: any) => {
     const name = formData.name?.trim()
@@ -67,7 +70,7 @@ const EditVendorProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className='min-h-screen flex items-center justify-center text-gray-500'>
+      <div className='min-h-screen flex items-center justify-center text-gray-500 dark:bg-slate-950 dark:text-gray-400'>
         Loading profile...
       </div>
     )
@@ -75,7 +78,7 @@ const EditVendorProfilePage = () => {
 
   if (isError) {
     return (
-      <div className='min-h-screen flex items-center justify-center text-red-500'>
+      <div className='min-h-screen flex items-center justify-center text-red-500 dark:bg-slate-950'>
         Failed to load profile.
       </div>
     )
@@ -83,7 +86,7 @@ const EditVendorProfilePage = () => {
 
   if (!data?.data?.data) {
     return (
-      <div className='min-h-screen flex items-center justify-center text-gray-400'>
+      <div className='min-h-screen flex items-center justify-center text-gray-400 dark:bg-slate-950'>
         No profile data found.
       </div>
     )
@@ -91,9 +94,11 @@ const EditVendorProfilePage = () => {
 
   const vendor = data.data.data
 
+
+
   return (
-    <div className='min-h-screen bg-gray-100 flex items-center justify-center p-6'>
-      <div className='w-full max-w-3xl bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden'>
+    <div className='min-h-screen bg-gray-100 dark:bg-slate-950 flex items-center justify-center p-6'>
+      <div className='w-full max-w-3xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden'>
         {/* Header */}
         <div className='bg-gradient-to-r from-slate-800 via-slate-700 to-gray-800 text-white p-6 flex items-center justify-between'>
           <h2 className='text-lg md:text-xl font-semibold tracking-wide'>
@@ -116,6 +121,17 @@ const EditVendorProfilePage = () => {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           isPending={isPending}
+          onImageUpload={(file) => uploadImage(file, {
+            onSuccess: () => {
+              toast.success('Profile picture updated!')
+              queryClient.invalidateQueries({ queryKey: ['vendorProfile'] })
+            },
+            onError: (error: any) => {
+              toast.error('Failed to upload image')
+              console.error(error)
+            }
+          })}
+          isUploadingImage={isUploadingImage}
         />
       </div>
     </div>

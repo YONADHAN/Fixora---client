@@ -134,34 +134,34 @@ export default function ServiceOverridesStep() {
   }
 
   return (
-    <div className='max-w-4xl mx-auto bg-white border rounded-2xl shadow-sm p-6 space-y-10'>
+    <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-10'>
       {/* ✅ HEADER */}
       <div>
-        <h2 className='text-xl font-semibold text-gray-900'>
+        <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Overrides
         </h2>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm text-gray-500 dark:text-muted-foreground'>
           Temporarily block or customize your service availability.
         </p>
       </div>
 
       {/* ================= BLOCK OVERRIDES ================= */}
-      <div className='border rounded-xl p-6 space-y-4 bg-gray-50'>
-        <h3 className='font-medium text-gray-900'>Block Service Period</h3>
+      <div className='border dark:border-border rounded-xl p-6 space-y-4 bg-gray-50 dark:bg-muted/50'>
+        <h3 className='font-medium text-gray-900 dark:text-foreground'>Block Service Period</h3>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <input
             type='datetime-local'
             value={blockStart}
             onChange={(e) => setBlockStart(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
 
           <input
             type='datetime-local'
             value={blockEnd}
             onChange={(e) => setBlockEnd(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
         </div>
 
@@ -170,13 +170,13 @@ export default function ServiceOverridesStep() {
           placeholder='Reason (optional)'
           value={blockReason}
           onChange={(e) => setBlockReason(e.target.value)}
-          className='border p-2 rounded-lg w-full'
+          className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
         />
 
         <button
           type='button'
           onClick={addBlockOverride}
-          className='px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900'
+          className='px-4 py-2 bg-black dark:bg-primary text-white dark:text-primary-foreground rounded-lg hover:bg-gray-900 dark:hover:bg-primary/90'
         >
           Add Block
         </button>
@@ -187,15 +187,15 @@ export default function ServiceOverridesStep() {
           {values.schedule.overrideBlock?.map((o, i) => (
             <div
               key={i}
-              className='flex justify-between items-center bg-white border rounded-lg p-3'
+              className='flex justify-between items-center bg-white dark:bg-muted border dark:border-border rounded-lg p-3'
             >
-              <div className='text-sm'>
+              <div className='text-sm dark:text-foreground'>
                 <p className='font-medium'>
                   {new Date(o.startDateTime).toLocaleString()} →{' '}
                   {new Date(o.endDateTime).toLocaleString()}
                 </p>
                 {o.reason && (
-                  <p className='text-xs text-gray-500'>{o.reason}</p>
+                  <p className='text-xs text-gray-500 dark:text-muted-foreground'>{o.reason}</p>
                 )}
               </div>
 
@@ -209,7 +209,7 @@ export default function ServiceOverridesStep() {
             </div>
           ))}
           {/* ✅ INFO BANNER */}
-          <div className='bg-gray-50 border rounded-lg p-4 text-sm text-gray-600'>
+          <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
             💡 <span className='font-medium'>Tip:</span> Block service period is
             means holidays. You can skip this, if you don&apos;t want it now.
           </div>
@@ -217,22 +217,22 @@ export default function ServiceOverridesStep() {
       </div>
 
       {/* ================= CUSTOM OVERRIDES ================= */}
-      <div className='border rounded-xl p-6 space-y-4 bg-gray-50'>
-        <h3 className='font-medium text-gray-900'>Custom Time Overrides</h3>
+      <div className='border dark:border-border rounded-xl p-6 space-y-4 bg-gray-50 dark:bg-muted/50'>
+        <h3 className='font-medium text-gray-900 dark:text-foreground'>Custom Time Overrides</h3>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <input
             type='datetime-local'
             value={customStart}
             onChange={(e) => setCustomStart(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
 
           <input
             type='datetime-local'
             value={customEnd}
             onChange={(e) => setCustomEnd(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
         </div>
 
@@ -241,20 +241,20 @@ export default function ServiceOverridesStep() {
             type='time'
             value={customStartTime}
             onChange={(e) => setCustomStartTime(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
           <input
             type='time'
             value={customEndTime}
             onChange={(e) => setCustomEndTime(e.target.value)}
-            className='border p-2 rounded-lg w-full'
+            className='border dark:border-input p-2 rounded-lg w-full bg-transparent dark:bg-background dark:text-foreground focus:ring-2 focus:ring-black dark:focus:ring-white outline-none'
           />
         </div>
 
         <button
           type='button'
           onClick={addCustomOverride}
-          className='px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900'
+          className='px-4 py-2 bg-black dark:bg-primary text-white dark:text-primary-foreground rounded-lg hover:bg-gray-900 dark:hover:bg-primary/90'
         >
           Add Custom Override
         </button>
@@ -265,9 +265,9 @@ export default function ServiceOverridesStep() {
           {values.schedule.overrideCustom?.map((o, i) => (
             <div
               key={i}
-              className='flex justify-between items-center bg-white border rounded-lg p-3'
+              className='flex justify-between items-center bg-white dark:bg-muted border dark:border-border rounded-lg p-3'
             >
-              <span className='text-sm font-medium'>
+              <span className='text-sm font-medium dark:text-foreground'>
                 {new Date(o.startDateTime).toLocaleString()} →{' '}
                 {new Date(o.endDateTime).toLocaleString()}
               </span>
@@ -282,7 +282,7 @@ export default function ServiceOverridesStep() {
             </div>
           ))}
           {/* ✅ INFO BANNER */}
-          <div className='bg-gray-50 border rounded-lg p-4 text-sm text-gray-600'>
+          <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
             💡 <span className='font-medium'>Tip:</span> You can add additional
             service schedule in this. If you don&apos;t want it now, skip this.
           </div>

@@ -10,6 +10,7 @@ import {
   FaMoneyCheck,
   FaRegBookmark,
   FaWallet,
+  FaAddressBook,
 } from 'react-icons/fa'
 
 import { HiChat, HiDocumentSearch } from 'react-icons/hi'
@@ -133,6 +134,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         icon: FaRegAddressBook,
       },
       { title: 'My Wallet', href: '/customer/wallet', icon: FaMoneyBill },
+      { title: 'My Address', href: '/customer/address', icon: FaAddressBook },
       {
         title: 'Payment History',
         href: '/customer/payments',

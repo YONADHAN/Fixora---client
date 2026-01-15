@@ -5,8 +5,8 @@ import { Search, CheckCircle, Clock, Shield, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useGetActiveServiceCategories } from '@/lib/hooks/userServiceCategory'
 import { useRouter } from 'next/navigation'
-import { testingOnlyApi } from '@/services/notification/notification.service'
-import { toast } from 'sonner'
+// import { testingOnlyApi } from '@/services/notification/notification.service'
+// import { toast } from 'sonner'
 interface TypeCategoryItem {
   serviceCategoryId: string
   name: string
@@ -44,37 +44,37 @@ export default function Page() {
     },
   ]
 
-  function createNotificationFunction() {
-    testingOnlyApi()
-    toast.success('notification send successfully: testing done')
-  }
+  // function createNotificationFunction() {
+  //   testingOnlyApi()
+  //   toast.success('notification send successfully: testing done')
+  // }
 
   return (
-    <div className='flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-white'>
+    <div className='flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background'>
       {/* HERO SECTION */}
       <section className='relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden'>
         <div className='absolute inset-0 overflow-hidden'>
-          <div className='absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse'></div>
+          <div className='absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl animate-pulse'></div>
           <div
-            className='absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl animate-pulse'
+            className='absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-3xl animate-pulse'
             style={{ animationDelay: '1s' }}
           ></div>
         </div>
 
         <div className='relative z-10 max-w-5xl mx-auto text-center space-y-8'>
-          <div className='inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm text-blue-700 font-medium'>
+          <div className='inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-full text-sm text-blue-700 dark:text-blue-400 font-medium'>
             <span className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></span>
             Trusted by 50,000+ happy customers
           </div>
 
-          <h1 className='text-5xl md:text-7xl font-bold text-gray-900 leading-tight'>
+          <h1 className='text-5xl md:text-7xl font-bold text-gray-900 dark:text-foreground leading-tight'>
             Your Home Services,
             <span className='block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2'>
               Just a Click Away
             </span>
           </h1>
 
-          <p className='text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed'>
+          <p className='text-xl md:text-2xl text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
             Connect with verified local professionals for all your home service
             needs. Fast, reliable, and affordable.
           </p>
@@ -83,14 +83,14 @@ export default function Page() {
           <div className='max-w-2xl mx-auto mt-12'>
             <div className='relative group'>
               <div className='absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300'></div>
-              <div className='relative flex items-center bg-white rounded-2xl shadow-2xl p-2'>
-                <Search className='text-gray-400 ml-4' size={24} />
+              <div className='relative flex items-center bg-white dark:bg-card rounded-2xl shadow-2xl p-2'>
+                <Search className='text-gray-400 dark:text-muted-foreground ml-4' size={24} />
                 <input
                   type='text'
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder='What service do you need today?'
-                  className='flex-1 px-4 py-4 text-lg outline-none text-gray-800 bg-transparent'
+                  className='flex-1 px-4 py-4 text-lg outline-none text-gray-800 dark:text-foreground bg-transparent placeholder:text-gray-400 dark:placeholder:text-muted-foreground'
                 />
                 <button className='bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition duration-200'>
                   Search
@@ -101,7 +101,7 @@ export default function Page() {
 
           {/* POPULAR SEARCHES */}
           <div className='flex flex-wrap items-center justify-center gap-3 text-sm'>
-            <span className='text-gray-500'>Popular:</span>
+            <span className='text-gray-500 dark:text-muted-foreground'>Popular:</span>
             {activeCategories.map(
               (serviceCategories: TypeCategoryItem, index: string) => (
                 <button
@@ -111,7 +111,7 @@ export default function Page() {
                       `/customer/service_category/${serviceCategories.serviceCategoryId}`
                     )
                   }
-                  className='px-4 py-2 bg-white border border-gray-200 rounded-full text-gray-700 hover:border-blue-400 hover:text-blue-600 transition'
+                  className='px-4 py-2 bg-white dark:bg-card border border-gray-200 dark:border-border rounded-full text-gray-700 dark:text-foreground hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition'
                 >
                   {serviceCategories.name}
                 </button>
@@ -123,13 +123,13 @@ export default function Page() {
 
       {/* ACTIVE SERVICE CATEGORIES  */}
       {!isLoading && activeCategories.length > 0 && (
-        <section className='py-24 px-4 bg-white'>
+        <section className='py-24 px-4 bg-white dark:bg-background'>
           <div className='max-w-7xl mx-auto'>
             <div className='text-center mb-16'>
-              <h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+              <h2 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4'>
                 Popular Services
               </h2>
-              <p className='text-xl text-gray-600'>
+              <p className='text-xl text-gray-600 dark:text-muted-foreground'>
                 Book the most in-demand home services
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function Page() {
                       `/customer/service_category/${cat.serviceCategoryId}`
                     )
                   }
-                  className='group cursor-pointer pb-1 text-center bg-gray-50 p-2 rounded-3xl'
+                  className='group cursor-pointer pb-1 text-center bg-gray-50 dark:bg-muted p-2 rounded-3xl'
                 >
                   <div className='relative overflow-hidden rounded-2xl h-40 flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl'>
                     <Image
@@ -160,7 +160,9 @@ export default function Page() {
                       {cat.name}
                     </span>
                   </div>
-                  {cat.description}
+                  <div className="mt-2 text-gray-900 dark:text-foreground">
+                    {cat.description}
+                  </div>
                 </div>
               ))}
             </div>
@@ -168,7 +170,7 @@ export default function Page() {
         </section>
       )}
 
-      <div>
+      {/* <div>
         <p>Testing Socket Notification</p>
         <div>
           <button
@@ -178,14 +180,14 @@ export default function Page() {
             create notifications
           </button>
         </div>
-      </div>
-      <section className='py-24 px-4 bg-gradient-to-b from-gray-50 to-white'>
+      </div> */}
+      <section className='py-24 px-4 bg-gradient-to-b from-gray-50 to-white dark:from-background dark:to-background'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-16'>
-            <h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+            <h2 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4'>
               Why Choose Fixora?
             </h2>
-            <p className='text-xl text-gray-600'>
+            <p className='text-xl text-gray-600 dark:text-muted-foreground'>
               Your satisfaction is our top priority
             </p>
           </div>
@@ -194,15 +196,15 @@ export default function Page() {
             {features.map((feature, idx) => (
               <div
                 key={idx}
-                className='group p-8 bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300'
+                className='group p-8 bg-white dark:bg-card rounded-2xl border border-gray-200 dark:border-border hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-xl transition-all duration-300'
               >
                 <div className='w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300'>
                   <feature.icon className='text-white' size={28} />
                 </div>
-                <h3 className='text-xl font-bold text-gray-900 mb-3'>
+                <h3 className='text-xl font-bold text-gray-900 dark:text-foreground mb-3'>
                   {feature.title}
                 </h3>
-                <p className='text-gray-600 leading-relaxed'>{feature.desc}</p>
+                <p className='text-gray-600 dark:text-muted-foreground leading-relaxed'>{feature.desc}</p>
               </div>
             ))}
           </div>

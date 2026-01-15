@@ -10,6 +10,8 @@ export const getSocket = (): Socket => {
 
   isConnecting = true
 
+  console.log('🔌 Connecting to socket at:', process.env.NEXT_PUBLIC_API_URL)
+
   socket = io(process.env.NEXT_PUBLIC_API_URL!, {
     withCredentials: true,
     transports: ['websocket', 'polling'],

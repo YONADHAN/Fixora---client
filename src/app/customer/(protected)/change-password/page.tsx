@@ -43,13 +43,13 @@ const ChangePasswordPage = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50 text-black '>
+    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-slate-950 text-black dark:text-gray-100'>
       <ChangePasswordForm onSubmit={handleSubmit} />
-      {isPending && <p className='text-blue-600 mt-2'>Updating password...</p>}
+      {isPending && <p className='text-blue-600 dark:text-blue-400 mt-2'>Updating password...</p>}
       {isSuccess && (
-        <p className='text-green-600 mt-2'>Password changed successfully </p>
+        <p className='text-green-600 dark:text-green-400 mt-2'>Password changed successfully </p>
       )}
-      {isError && <p className='text-red-600 mt-2'>Invalid passwords</p>}
+      {isError && <p className='text-red-600 dark:text-red-400 mt-2'>Invalid passwords</p>}
     </div>
   )
 }

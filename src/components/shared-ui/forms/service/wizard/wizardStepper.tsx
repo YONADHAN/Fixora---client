@@ -17,7 +17,7 @@ const steps = [
   ServiceReviewStep,
 ]
 
-// ✅ Strict field mapping per step
+// Strict field mapping per step
 const stepFields: (readonly string[])[] = [
   ['name', 'description', 'subServiceCategoryId'], // Step 0
   ['pricing.pricePerSlot', 'pricing.advanceAmountPerSlot'], // Step 1
@@ -41,19 +41,19 @@ export default function WizardStepper({
   step: number
   setStep: React.Dispatch<React.SetStateAction<number>>
 }) {
-  const { setFieldTouched, validateForm } =
+  const { setFieldTouched, validateForm, submitForm } =
     useFormikContext<IServiceFormValues>()
 
   const StepComponent = steps[step]
   const isLastStep = step === steps.length - 1
 
   const handleNext = async () => {
-    // ✅ Touch only current step fields
+    // Touch only current step fields
     stepFields[step].forEach((field) => {
       setFieldTouched(field, true, true)
     })
 
-    // ✅ Validate after touch
+    // Validate after touch
     const errors: FormikErrors<IServiceFormValues> = await validateForm()
     const hasStepErrors = stepFields[step].some((path) => {
       const value = path.split('.').reduce<unknown>((acc, key) => {
@@ -63,7 +63,7 @@ export default function WizardStepper({
         return undefined
       }, errors)
 
-      // ✅ Only count it as error if actual value exists
+      // Only count it as error if actual value exists
       return value !== undefined
     })
 
@@ -74,47 +74,41 @@ export default function WizardStepper({
 
   return (
     <div className='relative'>
-      {/* ✅ STEP CONTENT */}
+      {/* STEP CONTENT */}
       <div className='pb-24'>
         <StepComponent />
       </div>
 
-      {/* ✅ FIXED CLEAN FOOTER BAR */}
-      <div className='fixed bottom-0 left-0 right-0 bg-white border-t shadow-sm z-50'>
+      {/* FIXED CLEAN FOOTER BAR */}
+      <div className='fixed bottom-0 left-0 right-0 bg-white dark:bg-card border-t dark:border-border shadow-sm z-50 transition-colors'>
         <div className='max-w-6xl mx-auto px-6 py-4 flex items-center justify-between'>
-          {/* ✅ BACK BUTTON */}
+          {/* BACK BUTTON */}
           {step > 0 ? (
             <button
               type='button'
               onClick={() => setStep((s) => s - 1)}
-              className='px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition'
+              className='px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition'
             >
               Back
             </button>
           ) : (
-            <div /> // ✅ Keeps spacing balanced on first step
+            <div /> // Keeps spacing balanced on first step
           )}
 
-          {/* ✅ NEXT / SUBMIT BUTTON */}
+          {/* NEXT / SUBMIT BUTTON */}
           <button
             type='button'
             onClick={() => {
               if (isLastStep) {
-                validateForm().then(() => {
-                  const form = document.querySelector('form')
-                  form?.dispatchEvent(
-                    new Event('submit', { bubbles: true, cancelable: true })
-                  )
-                })
+                submitForm()
               } else {
                 handleNext()
               }
             }}
-            className={`px-8 py-2 rounded-lg text-white font-medium transition ${
-              isLastStep
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-black hover:bg-gray-900'
-            }`}
+            className={`px-8 py-2 rounded-lg text-white font-medium transition ${isLastStep
+                ? 'bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
+                : 'bg-black hover:bg-gray-900 dark:bg-primary dark:text-primary-foreground'
+              }`}
           >
             {isLastStep ? 'Submit Service' : 'Next'}
           </button>

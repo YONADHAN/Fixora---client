@@ -45,6 +45,7 @@ export const useVendorVerificationDocStatusCheck = () => {
     refetchOnMount: 'always',
     refetchOnWindowFocus: true,
     staleTime: 0,
+    retry: false,
   })
 }
 

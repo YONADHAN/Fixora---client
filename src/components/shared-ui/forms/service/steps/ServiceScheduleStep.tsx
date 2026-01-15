@@ -101,13 +101,13 @@ export default function ServiceScheduleStep() {
       : undefined
 
   return (
-    <div className='max-w-4xl mx-auto bg-white border rounded-2xl shadow-sm p-6 space-y-10'>
+    <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-10'>
       {/* ✅ HEADER */}
       <div>
-        <h2 className='text-xl font-semibold text-gray-900'>
+        <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Schedule
         </h2>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm text-gray-500 dark:text-muted-foreground'>
           Configure when customers can book this service.
         </p>
       </div>
@@ -115,7 +115,7 @@ export default function ServiceScheduleStep() {
       {/* ✅ DATE RANGE */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='space-y-1'>
-          <label className='text-sm font-medium text-gray-700'>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
             Start Date
           </label>
           <input
@@ -123,7 +123,7 @@ export default function ServiceScheduleStep() {
             name='schedule.visibilityStartDate'
             onChange={handleChange}
             onBlur={() => setFieldTouched('schedule.visibilityStartDate', true)}
-            className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-black outline-none'
+            className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
           />
           {touched.schedule?.visibilityStartDate &&
             scheduleErrors?.visibilityStartDate && (
@@ -134,13 +134,13 @@ export default function ServiceScheduleStep() {
         </div>
 
         <div className='space-y-1'>
-          <label className='text-sm font-medium text-gray-700'>End Date</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>End Date</label>
           <input
             type='date'
             name='schedule.visibilityEndDate'
             onChange={handleChange}
             onBlur={() => setFieldTouched('schedule.visibilityEndDate', true)}
-            className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-black outline-none'
+            className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
           />
           {touched.schedule?.visibilityEndDate &&
             scheduleErrors?.visibilityEndDate && (
@@ -153,7 +153,7 @@ export default function ServiceScheduleStep() {
 
       {/* ✅ SLOT DURATION */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Slot Duration (minutes)
         </label>
         <input
@@ -161,35 +161,35 @@ export default function ServiceScheduleStep() {
           name='schedule.slotDurationMinutes'
           value={values.schedule.slotDurationMinutes}
           onChange={handleChange}
-          className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-black outline-none'
+          className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
         />
       </div>
 
       {/* ✅ DAILY WORKING WINDOWS */}
       <div className='space-y-4'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Daily Working Windows
         </label>
 
-        <div className='flex flex-wrap gap-3 items-center bg-gray-50 p-4 rounded-lg border'>
+        <div className='flex flex-wrap gap-3 items-center bg-gray-50 dark:bg-muted p-4 rounded-lg border dark:border-border'>
           <input
             type='time'
             value={newStartTime}
             onChange={(e) => setNewStartTime(e.target.value)}
-            className='border p-2 rounded-lg'
+            className='border dark:border-input p-2 rounded-lg bg-transparent dark:bg-background dark:text-foreground'
           />
-          <span className='text-gray-600'>to</span>
+          <span className='text-gray-600 dark:text-muted-foreground'>to</span>
           <input
             type='time'
             value={newEndTime}
             onChange={(e) => setNewEndTime(e.target.value)}
-            className='border p-2 rounded-lg'
+            className='border dark:border-input p-2 rounded-lg bg-transparent dark:bg-background dark:text-foreground'
           />
 
           <button
             type='button'
             onClick={handleAddWindow}
-            className='px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900'
+            className='px-4 py-2 bg-black dark:bg-primary text-white dark:text-primary-foreground rounded-lg hover:bg-gray-900 dark:hover:bg-primary/90'
           >
             Add Window
           </button>
@@ -203,9 +203,9 @@ export default function ServiceScheduleStep() {
             .map((w, idx) => (
               <div
                 key={idx}
-                className='flex justify-between items-center bg-gray-50 border rounded-lg p-3'
+                className='flex justify-between items-center bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-3'
               >
-                <span className='text-sm font-medium'>
+                <span className='text-sm font-medium dark:text-foreground'>
                   {w.startTime} — {w.endTime}
                 </span>
 
@@ -227,18 +227,18 @@ export default function ServiceScheduleStep() {
 
       {/* ✅ RECURRENCE */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700'>Recurrence</label>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Recurrence</label>
         <select
           name='schedule.recurrenceType'
           value={values.schedule.recurrenceType || ''}
           onChange={handleChange}
           onBlur={() => setFieldTouched('schedule.recurrenceType', true)}
-          className='w-full p-2 border rounded-lg focus:ring-2 focus:ring-black outline-none'
+          className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
         >
-          <option value=''>Select recurrence</option>
-          <option value='daily'>Daily</option>
-          <option value='weekly'>Weekly</option>
-          <option value='monthly'>Monthly</option>
+          <option value='' className='dark:bg-background'>Select recurrence</option>
+          <option value='daily' className='dark:bg-background'>Daily</option>
+          <option value='weekly' className='dark:bg-background'>Weekly</option>
+          <option value='monthly' className='dark:bg-background'>Monthly</option>
         </select>
 
         {touched.schedule?.recurrenceType && scheduleErrors?.recurrenceType && (
@@ -251,13 +251,13 @@ export default function ServiceScheduleStep() {
       {/* ✅ WEEKLY */}
       {values.schedule.recurrenceType === 'weekly' && (
         <div className='space-y-2'>
-          <label className='text-sm font-medium text-gray-700'>Weekdays</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Weekdays</label>
 
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
             {[0, 1, 2, 3, 4, 5, 6].map((day) => (
               <label
                 key={day}
-                className='flex items-center gap-2 border rounded-lg p-2 text-sm'
+                className='flex items-center gap-2 border dark:border-input rounded-lg p-2 text-sm dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-muted/50 cursor-pointer'
               >
                 <input
                   type='checkbox'
@@ -274,6 +274,7 @@ export default function ServiceScheduleStep() {
                     setFieldTouched('schedule.weeklyWorkingDays', true, false)
                     setFieldValue('schedule.weeklyWorkingDays', updated, true)
                   }}
+                  className='accent-black dark:accent-primary'
                 />
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][day]}
               </label>
@@ -285,15 +286,15 @@ export default function ServiceScheduleStep() {
       {/* ✅ MONTHLY */}
       {values.schedule.recurrenceType === 'monthly' && (
         <div className='space-y-2'>
-          <label className='text-sm font-medium text-gray-700'>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
             Dates (1–31)
           </label>
 
-          <div className='grid grid-cols-6 gap-2 max-h-40 overflow-y-auto border rounded-lg p-3'>
+          <div className='grid grid-cols-6 gap-2 max-h-40 overflow-y-auto border dark:border-input rounded-lg p-3 dark:bg-muted/20'>
             {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
               <label
                 key={day}
-                className='flex items-center gap-1 text-xs border rounded p-1 justify-center'
+                className='flex items-center gap-1 text-xs border dark:border-input rounded p-1 justify-center dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-muted/50 cursor-pointer'
               >
                 <input
                   type='checkbox'
@@ -310,6 +311,7 @@ export default function ServiceScheduleStep() {
                     setFieldTouched('schedule.monthlyWorkingDates', true, false)
                     setFieldValue('schedule.monthlyWorkingDates', updated, true)
                   }}
+                  className='accent-black dark:accent-primary'
                 />
                 {day}
               </label>

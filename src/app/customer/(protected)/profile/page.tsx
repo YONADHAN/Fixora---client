@@ -9,21 +9,21 @@ const CustomerProfilePage = () => {
 
   if (isLoading)
     return (
-      <div className='min-h-screen flex items-center justify-center text-gray-500'>
+      <div className='min-h-screen flex items-center justify-center text-gray-500 dark:text-gray-400 dark:bg-gray-950'>
         Loading profile...
       </div>
     )
 
   if (isError)
     return (
-      <div className='min-h-screen flex items-center justify-center text-red-500'>
+      <div className='min-h-screen flex items-center justify-center text-red-500 dark:bg-gray-950'>
         Failed to load profile.
       </div>
     )
 
   if (!data)
     return (
-      <div className='min-h-screen flex items-center justify-center text-gray-400'>
+      <div className='min-h-screen flex items-center justify-center text-gray-400 dark:bg-gray-950'>
         No profile data found.
       </div>
     )
@@ -31,7 +31,7 @@ const CustomerProfilePage = () => {
   const user = data.data.data
 
   return (
-    <div className='min-h-screen bg-gray-50 flex items-center justify-center p-6'>
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-6'>
       <ProfileCard user={user} />
     </div>
   )

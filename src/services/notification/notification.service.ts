@@ -3,18 +3,19 @@ import { CUSTOMER_ROUTES } from '@/utils/constants/api.routes'
 import { NotificationPayload } from '@/utils/constants/constants'
 
 export const getMyNotifications = async (
-  page = 1,
-  limit = 10
+  limit = 10,
+  cursor?: string,
+  filter: 'all' | 'unread' = 'all',
+  search?: string
 ): Promise<{
   data: NotificationPayload[]
-  currentPage: number
-  totalPages: number
+  nextCursor: string | null
   unreadCount: number
 }> => {
   const response = await axiosInstance.get(
     CUSTOMER_ROUTES.GET_MY_NOTIFICATION,
     {
-      params: { page, limit },
+      params: { limit, cursor, filter, search },
     }
   )
 
@@ -33,6 +34,6 @@ export const markAllNotificationsRead = async (): Promise<void> => {
   await axiosInstance.patch(CUSTOMER_ROUTES.MARK_ALL_NOTIFICATION_READ)
 }
 
-export const testingOnlyApi = async (): Promise<void> => {
-  await axiosInstance.post('/api/v1/customer/notification/test')
-}
+// export const testingOnlyApi = async (): Promise<void> => {
+//   await axiosInstance.post('/api/v1/customer/notification/test')
+// }

@@ -17,7 +17,7 @@ export default function EditServicePage() {
   const editMutation = useEditServiceById()
 
   /**
-   * ✅ Convert API Response → Wizard Initial Values
+   * Convert API Response → Wizard Initial Values
    */
   const initialValues = useMemo<IServiceFormValues>(() => {
     if (!data) return initialServiceFormValues
@@ -25,22 +25,22 @@ export default function EditServicePage() {
     return {
       ...initialServiceFormValues,
 
-      // ✅ BASIC INFO
+      // BASIC INFO
       serviceId: data.serviceId,
       name: data.name,
       description: data.description ?? '',
       subServiceCategoryId: data.subServiceCategoryId,
 
-      // ✅ VARIANTS
+      // VARIANTS
       serviceVariants: data.serviceVariants ?? [],
 
-      // ✅ PRICING
+      // PRICING
       pricing: {
         pricePerSlot: data.pricing.pricePerSlot,
         advanceAmountPerSlot: data.pricing.advanceAmountPerSlot,
       },
 
-      // ✅ SCHEDULE
+      // SCHEDULE
       schedule: {
         visibilityStartDate: data.schedule.visibilityStartDate,
         visibilityEndDate: data.schedule.visibilityEndDate,
@@ -60,26 +60,26 @@ export default function EditServicePage() {
         overrideCustom: data.schedule.overrideCustom ?? [],
       },
 
-      // ✅ IMAGES (KEEP EMPTY — ONLY FOR NEW UPLOADS)
+      // IMAGES (KEEP EMPTY — ONLY FOR NEW UPLOADS)
       images: [],
       mainImage: data.mainImage,
     }
   }, [data])
 
   /**
-   * ✅ SUBMIT EDIT (USES SAME PAYLOAD AS CREATE)
+   * SUBMIT EDIT (USES SAME PAYLOAD AS CREATE)
    */
   const handleEditService = (values: IServiceFormValues) => {
-    // ✅ Remove preview-only field
+    // Remove preview-only field
     const { mainImage, ...payloadWithoutPreview } = values
 
-    // ✅ Only send real File objects (PATCH-safe)
+    // Only send real File objects (PATCH-safe)
     const safePayload = {
       ...payloadWithoutPreview,
       images: values.images?.filter((img) => img instanceof File),
     }
 
-    console.log('✅ FINAL PAYLOAD TO API:', safePayload)
+    console.log('FINAL PAYLOAD TO API:', safePayload)
     console.log('in json,', JSON.stringify(safePayload))
 
     editMutation.mutate(

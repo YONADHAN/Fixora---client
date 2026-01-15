@@ -39,22 +39,22 @@ export default function ServiceImagesStep() {
   const imageError = errors.images as string | undefined
 
   return (
-    <div className='max-w-2xl mx-auto bg-white border rounded-2xl shadow-sm p-6 space-y-6'>
+    <div className='max-w-2xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-6'>
       {/* ✅ HEADER */}
       <div>
-        <h2 className='text-xl font-semibold text-gray-900'>Service Image</h2>
-        <p className='text-sm text-gray-500'>
+        <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>Service Image</h2>
+        <p className='text-sm text-gray-500 dark:text-muted-foreground'>
           Upload one main image that represents your service.
         </p>
       </div>
 
       {/* ✅ FILE INPUT */}
       <div className='flex flex-col gap-3'>
-        <label className='text-sm font-medium text-gray-700'>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Upload Image
         </label>
 
-        <div className='border-2 border-dashed rounded-xl p-6 text-center hover:border-gray-900 transition'>
+        <div className='border-2 border-dashed dark:border-gray-600 rounded-xl p-6 text-center hover:border-gray-900 dark:hover:border-gray-400 transition'>
           <input
             type='file'
             accept='image/*'
@@ -73,13 +73,13 @@ export default function ServiceImagesStep() {
             htmlFor='service-image-upload'
             className='cursor-pointer flex flex-col items-center gap-2'
           >
-            <div className='w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center'>
+            <div className='w-12 h-12 rounded-full bg-gray-100 dark:bg-muted flex items-center justify-center'>
               📷
             </div>
-            <span className='text-sm text-gray-700 font-medium'>
+            <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>
               Click to upload image
             </span>
-            <span className='text-xs text-gray-500'>
+            <span className='text-xs text-gray-500 dark:text-muted-foreground'>
               PNG, JPG, JPEG supported
             </span>
           </label>
@@ -88,8 +88,8 @@ export default function ServiceImagesStep() {
 
       {/* ✅ IMAGE PREVIEW */}
       {preview && (
-        <div className='flex items-center gap-4 border rounded-xl p-4'>
-          <div className='relative w-40 h-28 rounded-lg overflow-hidden border'>
+        <div className='flex items-center gap-4 border dark:border-border rounded-xl p-4'>
+          <div className='relative w-40 h-28 rounded-lg overflow-hidden border dark:border-border'>
             <img
               src={preview}
               alt='preview'
@@ -109,9 +109,9 @@ export default function ServiceImagesStep() {
             </button>
           </div>
 
-          <div className='text-sm text-gray-600'>
-            <p className='font-medium'>Selected Image</p>
-            <p className='text-xs text-gray-500'>
+          <div className='text-sm text-gray-600 dark:text-muted-foreground'>
+            <p className='font-medium dark:text-foreground'>Selected Image</p>
+            <p className='text-xs text-gray-500 dark:text-muted-foreground'>
               This will be shown as your service thumbnail.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function ServiceImagesStep() {
       )}
 
       {/* ✅ INFO */}
-      <div className='bg-gray-50 border rounded-lg p-4 text-sm text-gray-600'>
+      <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
         💡 <span className='font-medium'>Tip:</span> Service Image should be
         image only.
       </div>

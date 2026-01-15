@@ -50,152 +50,166 @@ export const editServiceById = async (
   payload: RequestEditServiceDTO
 ): Promise<ResponseEditServiceDTO> => {
   console.log('Entering service edit by id api')
-  const formData = new FormData()
+  try {
+    const formData = new FormData()
 
-  //formData.append('serviceId', payload.serviceId)
-  formData.append('name', payload.name)
-  formData.append('subServiceCategoryId', payload.subServiceCategoryId)
+    //formData.append('serviceId', payload.serviceId)
+    formData.append('name', payload.name)
+    formData.append('subServiceCategoryId', payload.subServiceCategoryId)
 
-  if (payload.description) {
-    formData.append('description', payload.description)
-  }
+    if (payload.description) {
+      formData.append('description', payload.description)
+    }
 
-  if (payload.serviceVariants?.length) {
-    payload.serviceVariants.forEach((variant, index) => {
-      formData.append(`serviceVariants[${index}].name`, variant.name)
+    if (payload.serviceVariants?.length) {
+      payload.serviceVariants.forEach((variant, index) => {
+        formData.append(`serviceVariants[${index}].name`, variant.name)
 
-      if (variant.description) {
-        formData.append(
-          `serviceVariants[${index}].description`,
-          variant.description
-        )
-      }
+        if (variant.description) {
+          formData.append(
+            `serviceVariants[${index}].description`,
+            variant.description
+          )
+        }
 
-      if (variant.price !== undefined) {
-        formData.append(
-          `serviceVariants[${index}].price`,
-          String(variant.price)
-        )
-      }
-    })
-  }
+        if (variant.price !== undefined) {
+          formData.append(
+            `serviceVariants[${index}].price`,
+            String(variant.price)
+          )
+        }
+      })
+    }
 
-  formData.append('pricing.pricePerSlot', String(payload.pricing.pricePerSlot))
-
-  formData.append(
-    'pricing.advanceAmountPerSlot',
-    String(payload.pricing.advanceAmountPerSlot)
-  )
-
-  if (payload.schedule.visibilityStartDate) {
     formData.append(
-      'schedule.visibilityStartDate',
-      new Date(payload.schedule.visibilityStartDate).toISOString()
+      'pricing.pricePerSlot',
+      String(payload.pricing.pricePerSlot)
     )
-  }
 
-  if (payload.schedule.visibilityEndDate) {
     formData.append(
-      'schedule.visibilityEndDate',
-      new Date(payload.schedule.visibilityEndDate).toISOString()
+      'pricing.advanceAmountPerSlot',
+      String(payload.pricing.advanceAmountPerSlot)
     )
-  }
 
-  payload.schedule.dailyWorkingWindows?.forEach((window, index) => {
+    if (payload.schedule.visibilityStartDate) {
+      formData.append(
+        'schedule.visibilityStartDate',
+        new Date(payload.schedule.visibilityStartDate).toISOString()
+      )
+    }
+
+    if (payload.schedule.visibilityEndDate) {
+      formData.append(
+        'schedule.visibilityEndDate',
+        new Date(payload.schedule.visibilityEndDate).toISOString()
+      )
+    }
+
+    payload.schedule.dailyWorkingWindows?.forEach((window, index) => {
+      formData.append(
+        `schedule.dailyWorkingWindows[${index}].startTime`,
+        window.startTime
+      )
+      formData.append(
+        `schedule.dailyWorkingWindows[${index}].endTime`,
+        window.endTime
+      )
+    })
+
     formData.append(
-      `schedule.dailyWorkingWindows[${index}].startTime`,
-      window.startTime
+      'schedule.slotDurationMinutes',
+      String(payload.schedule.slotDurationMinutes)
     )
-    formData.append(
-      `schedule.dailyWorkingWindows[${index}].endTime`,
-      window.endTime
-    )
-  })
 
-  formData.append(
-    'schedule.slotDurationMinutes',
-    String(payload.schedule.slotDurationMinutes)
-  )
-
-  if (payload.schedule.recurrenceType) {
-    formData.append('schedule.recurrenceType', payload.schedule.recurrenceType)
-  }
-
-  if (payload.schedule.weeklyWorkingDays?.length) {
-    payload.schedule.weeklyWorkingDays.forEach((day, index) => {
-      formData.append(`schedule.weeklyWorkingDays[${index}]`, String(day))
-    })
-  }
-
-  if (payload.schedule.monthlyWorkingDates?.length) {
-    payload.schedule.monthlyWorkingDates.forEach((date, index) => {
-      formData.append(`schedule.monthlyWorkingDates[${index}]`, String(date))
-    })
-  }
-
-  if (payload.schedule.overrideBlock?.length) {
-    payload.schedule.overrideBlock.forEach((block, index) => {
+    if (payload.schedule.recurrenceType) {
       formData.append(
-        `schedule.overrideBlock[${index}].startDateTime`,
-        block.startDateTime.toISOString()
+        'schedule.recurrenceType',
+        payload.schedule.recurrenceType
       )
+    }
 
-      formData.append(
-        `schedule.overrideBlock[${index}].endDateTime`,
-        block.endDateTime.toISOString()
-      )
+    if (payload.schedule.weeklyWorkingDays?.length) {
+      payload.schedule.weeklyWorkingDays.forEach((day, index) => {
+        formData.append(`schedule.weeklyWorkingDays[${index}]`, String(day))
+      })
+    }
 
-      if (block.reason) {
-        formData.append(`schedule.overrideBlock[${index}].reason`, block.reason)
-      }
-    })
-  }
+    if (payload.schedule.monthlyWorkingDates?.length) {
+      payload.schedule.monthlyWorkingDates.forEach((date, index) => {
+        formData.append(`schedule.monthlyWorkingDates[${index}]`, String(date))
+      })
+    }
 
-  //  OVERRIDE CUSTOM
-  if (payload.schedule.overrideCustom?.length) {
-    payload.schedule.overrideCustom.forEach((custom, index) => {
-      formData.append(
-        `schedule.overrideCustom[${index}].startDateTime`,
-        custom.startDateTime.toISOString()
-      )
-
-      formData.append(
-        `schedule.overrideCustom[${index}].endDateTime`,
-        custom.endDateTime.toISOString()
-      )
-
-      if (custom.startTime) {
+    if (payload.schedule.overrideBlock?.length) {
+      payload.schedule.overrideBlock.forEach((block, index) => {
         formData.append(
-          `schedule.overrideCustom[${index}].startTime`,
-          custom.startTime
+          `schedule.overrideBlock[${index}].startDateTime`,
+          new Date(block.startDateTime).toISOString()
         )
-      }
 
-      if (custom.endTime) {
         formData.append(
-          `schedule.overrideCustom[${index}].endTime`,
-          custom.endTime
+          `schedule.overrideBlock[${index}].endDateTime`,
+          new Date(block.endDateTime).toISOString()
         )
-      }
-    })
+
+        if (block.reason) {
+          formData.append(
+            `schedule.overrideBlock[${index}].reason`,
+            block.reason
+          )
+        }
+      })
+    }
+
+    //  OVERRIDE CUSTOM
+    if (payload.schedule.overrideCustom?.length) {
+      payload.schedule.overrideCustom.forEach((custom, index) => {
+        formData.append(
+          `schedule.overrideCustom[${index}].startDateTime`,
+          new Date(custom.startDateTime).toISOString()
+        )
+
+        formData.append(
+          `schedule.overrideCustom[${index}].endDateTime`,
+          new Date(custom.endDateTime).toISOString()
+        )
+
+        if (custom.startTime) {
+          formData.append(
+            `schedule.overrideCustom[${index}].startTime`,
+            custom.startTime
+          )
+        }
+
+        if (custom.endTime) {
+          formData.append(
+            `schedule.overrideCustom[${index}].endTime`,
+            custom.endTime
+          )
+        }
+      })
+    }
+
+    if (payload.images?.length) {
+      payload.images.forEach((file) => {
+        formData.append('images', file)
+      })
+    }
+    console.log(
+      '🚀 SENDING REQUEST TO:',
+      `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`
+    )
+
+    const response = await axiosInstance.patch(
+      `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
+      formData
+    )
+
+    return response.data.data
+  } catch (error) {
+    console.error('Error in editServiceById:', error)
+    throw error
   }
-
-  if (payload.images?.length) {
-    payload.images.forEach((file) => {
-      formData.append('images', file)
-    })
-  }
-  console.log(
-    '🚀 SENDING REQUEST TO:',
-    `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`
-  )
-
-  const response = await axiosInstance.patch(
-    `${VENDOR_ROUTES.EDIT_SERVICE_BY_ID}/${serviceId}/edit`,
-    formData
-  )
-
-  return response.data.data
 }
 
 export const toggleServiceById = async (

@@ -8,6 +8,8 @@ import {
   RequestGetMyBookingsDTO,
   ResponseCreateBookingHoldDTO,
   ResponseGetAvailableSlotsDTO,
+  ResponsePayBalanceDTO,
+
 } from '@/dtos/booking_dto'
 import {
   ADMIN_ROUTES,
@@ -34,25 +36,13 @@ export const getAvailableSlotsForCustomers = async (
 export const createBookingHold = async (
   payload: RequestCreateBookingHoldDTO
 ): Promise<ResponseCreateBookingHoldDTO> => {
+
+
   const body = {
     serviceId: payload.serviceId,
+    addressId: payload.addressId,
     paymentMethod: 'stripe',
-
-    slots: payload.slots.map((slot: ISlot) => ({
-      date: slot.date,
-      start: slot.start,
-      end: slot.end,
-
-      pricePerSlot: slot.pricing.pricePerSlot,
-      advancePerSlot: slot.pricing.advancePerSlot,
-
-      ...(slot.variant && {
-        variant: {
-          name: slot.variant.name,
-          price: slot.variant.price,
-        },
-      }),
-    })),
+    slots: payload.slots
   }
 
   const response = await axiosInstance.post(
@@ -88,12 +78,21 @@ export const getVendorBookingDetails = async (
 export const getCustomerBookingDetails = async (
   bookingId: string
 ): Promise<GetBookingDetailsForCustomerStrategyResponseDTO> => {
-  const res = await axiosInstance.get(
+  const response = await axiosInstance.get(
     `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}`
   )
-
-  return res.data.data
+  return response.data.data
 }
+
+export const getBookingDetailsByPaymentId = async (
+  paymentId: string
+): Promise<GetBookingDetailsForCustomerStrategyResponseDTO> => {
+  const response = await axiosInstance.get(
+    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/payment/${paymentId}`
+  )
+  return response.data.data
+}
+
 
 export const cancelCustomerBooking = async (
   bookingId: string,
@@ -103,4 +102,13 @@ export const cancelCustomerBooking = async (
     `${CUSTOMER_ROUTES.CANCEL_CUSTOMER_BOOKING}/${bookingId}/cancel`,
     { reason }
   )
+}
+
+export const payBalance = async (
+  bookingId: string
+): Promise<ResponsePayBalanceDTO> => {
+  const response = await axiosInstance.post(
+    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}/pay-balance`
+  )
+  return response.data
 }

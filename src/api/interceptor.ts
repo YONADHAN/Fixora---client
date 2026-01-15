@@ -102,7 +102,12 @@ axiosInstance.interceptors.response.use(
             refreshError.response?.data?.message || 'Failed to refresh'
           toast.info(errorMessage)
           isRefreshing = false
-          handleLogout(role)
+
+          if (role === 'vendor') {
+            window.location.href = '/vendor/signin'
+          } else {
+            handleLogout(role)
+          }
           return Promise.reject(refreshError)
         }
       }

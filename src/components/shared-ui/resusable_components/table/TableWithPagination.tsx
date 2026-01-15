@@ -46,6 +46,7 @@ interface ResponsiveTableProps<T extends TableItem> {
   searchTerm: string
   onSearchTermChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSearchClick: () => void
+  searchPlaceholder?: string
 
   /** Optional top-right custom header button(s) */
   headerActions?: React.ReactNode
@@ -66,6 +67,7 @@ export function ResponsiveTable<T extends TableItem>({
   searchTerm,
   onSearchTermChange,
   onSearchClick,
+  searchPlaceholder,
   headerActions,
 }: ResponsiveTableProps<T>) {
   return (
@@ -81,7 +83,7 @@ export function ResponsiveTable<T extends TableItem>({
         <div className='flex items-center gap-4 mb-4 flex-wrap'>
           <Input
             type='text'
-            placeholder='Search...'
+            placeholder={searchPlaceholder || 'Search...'}
             className='w-full max-w-sm'
             value={searchTerm}
             onChange={onSearchTermChange}
