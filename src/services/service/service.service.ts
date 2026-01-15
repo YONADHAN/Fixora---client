@@ -239,10 +239,9 @@ export const searchServicesForCustomer = async (
         maxPrice: payload.maxPrice?.toString(),
         availableFrom: payload.availableFrom?.toString(),
         availableTo: payload.availableTo?.toString(),
-        workStartTime: payload.workStartTime?.toString(),
-        workEndTime: payload.workEndTime?.toString(),
-        recurrenceType: payload.recurrenceType,
-        weeklyDays: payload.weeklyDays?.toString(),
+        latitude: payload.latitude?.toString(),
+        longitude: payload.longitude?.toString(),
+        radius: payload.radius?.toString(),
       },
     }
   )

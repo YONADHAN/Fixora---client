@@ -9,6 +9,7 @@ import {
   markAllNotificationsRead,
 } from '@/services/notification/notification.service'
 import { NotificationPayload } from '@/utils/constants/constants'
+import { usePathname } from 'next/navigation'
 
 export const useNotifications = (
   filter: 'all' | 'unread',
@@ -16,6 +17,11 @@ export const useNotifications = (
   search: string = ''
 ) => {
   const queryClient = useQueryClient()
+  const pathname = usePathname()
+
+  let role: 'customer' | 'vendor' | 'admin' = 'customer'
+  if (pathname?.includes('/vendor')) role = 'vendor'
+  if (pathname?.includes('/admin')) role = 'admin'
 
   const {
     data,
@@ -24,17 +30,24 @@ export const useNotifications = (
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['notifications', filter, search],
+    queryKey: ['notifications', filter, search, role],
     queryFn: ({ pageParam }) =>
-      getMyNotifications(10, pageParam as string | undefined, filter, search),
+      getMyNotifications(
+        10,
+        pageParam as string | undefined,
+        filter,
+        search,
+        role
+      ),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     enabled,
   })
 
-  // Optimistic update for single read
+
   const markReadMutation = useMutation({
-    mutationFn: markNotificationRead,
+    mutationFn: (notificationId: string) =>
+      markNotificationRead(notificationId, role),
     onMutate: async (notificationId) => {
       await queryClient.cancelQueries({ queryKey: ['notifications'] })
 
@@ -71,7 +84,7 @@ export const useNotifications = (
 
   // Optimistic update for ALL read
   const markAllReadMutation = useMutation({
-    mutationFn: markAllNotificationsRead,
+    mutationFn: () => markAllNotificationsRead(role),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['notifications'] })
       const previousData = queryClient.getQueryData(['notifications', filter])

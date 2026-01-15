@@ -180,6 +180,22 @@ export interface GetBookingDetailsForVendorStrategyResponseDTO {
     geoLocation?: {
       coordinates: number[]
     }
+    bookingAddress?: {
+      name?: string
+      addressLine1?: string
+      addressLine2?: string
+      city?: string
+      state?: string
+      zipCode?: string
+      country?: string
+      location?: {
+        name?: string
+        displayName?: string
+      }
+      geoLocation?: {
+        coordinates: number[]
+      }
+    }
   }
 }
 

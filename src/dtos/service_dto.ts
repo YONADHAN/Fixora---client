@@ -373,24 +373,17 @@ export interface ScheduleDTO {
 
 export interface RequestSearchServicesForCustomerDTO {
   subServiceCategoryId: string
-
-  search: string
-
-  minPrice?: number
-  maxPrice?: number
-
-  availableFrom?: Date
-  availableTo?: Date
-
-  workStartTime?: string
-  workEndTime?: string
-
-  recurrenceType?: 'daily' | 'weekly' | 'monthly'
-
-  weeklyDays?: number[]
-
   page: number
   limit: number
+  search: string
+  // filter
+  minPrice?: number
+  maxPrice?: number
+  availableFrom?: Date
+  availableTo?: Date
+  latitude?: number
+  longitude?: number
+  radius?: number
 }
 
 export interface ResponseSearchServicesForCustomerItemDTO {

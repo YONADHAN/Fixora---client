@@ -21,6 +21,9 @@ export const ADMIN_ROUTES = {
   TOGGLE_SUB_SERVICE_CATEGORY_BLOCK_STATUS: `${BASE_URL.ADMIN}/sub-service-category`,
   TOGGLE_SUB_SERVICE_CATEGORY_VERIFICATION_STATUS: `${BASE_URL.ADMIN}/sub-service-category/verification`,
   GET_ADMIN_BOOKINGS: `${BASE_URL.ADMIN}/booking/me`,
+  GET_MY_NOTIFICATION: `${BASE_URL.ADMIN}/notification`,
+  MARK_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification`,
+  MARK_ALL_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification/read-all`,
 }
 
 export const VENDOR_ROUTES = {
@@ -44,6 +47,9 @@ export const VENDOR_ROUTES = {
   GET_MY_CHATS: `${BASE_URL.VENDOR}/chats`,
   GET_CHAT_MESSAGES: `${BASE_URL.VENDOR}/chats`,
   GET_PAYMENTS: `${BASE_URL.VENDOR}/payment`,
+  GET_MY_NOTIFICATION: `${BASE_URL.VENDOR}/notification`,
+  MARK_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification`,
+  MARK_ALL_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification/read-all`,
 }
 
 export const CUSTOMER_ROUTES = {

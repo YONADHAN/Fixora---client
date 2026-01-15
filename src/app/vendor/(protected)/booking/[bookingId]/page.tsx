@@ -64,6 +64,7 @@ export default function VendorBookingDetailsPage() {
   }
 
   const { booking, service, customer } = data
+  const locationCoordinates = customer.bookingAddress?.geoLocation?.coordinates ?? customer.geoLocation?.coordinates
   console.log('Booking Data:', data)
   const serviceStatus = booking.serviceStatus || 'pending'
   const paymentStatus = booking.paymentStatus || 'pending'
@@ -203,11 +204,81 @@ export default function VendorBookingDetailsPage() {
               )}
             </CardContent>
           </Card>
+
+          {/* Location Map */}
+          {(customer.bookingAddress || customer.location) && (
+            <Card>
+              <CardHeader>
+                <CardTitle className='flex items-center gap-2 text-lg'>
+                  <MapPin className='h-5 w-5 text-primary' />
+                  Service Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='space-y-4'>
+
+                {(customer.bookingAddress || customer.location) && (
+                  <div className="text-sm text-balance bg-muted/30 p-4 rounded-lg border">
+                    {customer.bookingAddress ? (
+                      <>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="secondary" className="uppercase tracking-wider font-semibold text-xs rounded-sm">
+                            {customer.bookingAddress.name}
+                          </Badge>
+                        </div>
+                        <div className="text-base font-medium mb-1">
+                          {customer.bookingAddress.addressLine1}
+                          {customer.bookingAddress.addressLine2 && `, ${customer.bookingAddress.addressLine2}`}
+                        </div>
+                        <div className="text-muted-foreground">
+                          {customer.bookingAddress.city}, {customer.bookingAddress.state} - {customer.bookingAddress.zipCode}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span>
+                          {customer.location?.displayName || customer.location?.name}
+                          {customer.location?.zipCode ? ` - ${customer.location.zipCode}` : ''}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {locationCoordinates && (
+                  <div className='aspect-video w-full rounded-md overflow-hidden border mt-4'>
+                    <MapComponent
+                      lat={locationCoordinates[1]!}
+                      lng={locationCoordinates[0]!}
+                      popupText={customer.bookingAddress?.name || customer.name}
+                    />
+                  </div>
+                )}
+
+                {locationCoordinates && (
+                  <Button
+                    variant='outline'
+                    className='w-full mt-2'
+                    onClick={() => {
+                      const lat = locationCoordinates[1]
+                      const lng = locationCoordinates[0]
+                      window.open(
+                        `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+                        '_blank'
+                      )
+                    }}
+                  >
+                    <MapPin className='h-4 w-4 mr-2' />
+                    Open in Google Maps
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
 
-        {/* Right Column - Customer & Location */}
+        {/* Right Column - Customer Details */}
         <div className='space-y-6'>
-
           <Card>
             <CardHeader>
               <CardTitle className='flex items-center gap-2 text-lg'>
@@ -249,56 +320,6 @@ export default function VendorBookingDetailsPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Location Map */}
-
-          {customer.location && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='flex items-center gap-2 text-lg'>
-                  <MapPin className='h-5 w-5 text-primary' />
-                  Service Location
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                {/* Address Text */}
-                {(customer.location?.displayName || customer.location?.name) && (
-                  <p className="text-sm text-balance">
-                    {customer.location?.displayName || customer.location?.name}
-                    {customer.location?.zipCode ? ` - ${customer.location.zipCode}` : ''}
-                  </p>
-                )}
-
-
-
-                {customer.geoLocation?.coordinates && customer.geoLocation.coordinates.length === 2 && (
-                  <div className='aspect-video w-full rounded-md overflow-hidden border'>
-                    <MapComponent
-                      lat={customer.geoLocation.coordinates[1]}
-                      lng={customer.geoLocation.coordinates[0]}
-                      popupText={customer.name}
-                    />
-                  </div>
-                )}
-
-                {customer.geoLocation?.coordinates && customer.geoLocation.coordinates.length === 2 && (
-                  <Button
-                    variant='outline'
-                    className='w-full'
-                    onClick={() =>
-                      window.open(
-                        `https://www.google.com/maps/search/?api=1&query=${customer.geoLocation.coordinates[1]},${customer.geoLocation.coordinates[0]}`,
-                        '_blank'
-                      )
-                    }
-                  >
-                    <MapPin className='h-4 w-4 mr-2' />
-                    Open in Google Maps
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
     </div>
