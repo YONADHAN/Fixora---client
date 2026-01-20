@@ -24,7 +24,7 @@ export function MessageInput({ onSend }: Props) {
       />
       <button
         onClick={handleSend}
-        className='px-4 py-2 bg-primary text-white rounded'
+        className='px-4 py-2 bg-primary text-primary-foreground font-medium rounded hover:bg-primary/90 transition-colors'
       >
         Send
       </button>

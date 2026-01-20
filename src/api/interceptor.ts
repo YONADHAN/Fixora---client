@@ -40,8 +40,11 @@ function onRefreshed(token?: string) {
   refreshSubscribers = []
 }
 function getRoleFromUrl(url?: string) {
-  const part = url?.split('/')[3] || ''
-  return ['admin', 'vendor', 'customer'].includes(part) ? part : ''
+  if (!url) return ''
+  const parts = url.split('/')
+
+  const role = parts.find(part => ['admin', 'vendor', 'customer'].includes(part))
+  return role || ''
 }
 
 axiosInstance.interceptors.response.use(

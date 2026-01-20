@@ -25,6 +25,7 @@ export const SOCKET_EVENTS = {
   CHAT_SEND: 'chat:message:send',
   CHAT_READ: 'chat:message:read',
   CHAT_NEW: 'chat:message:new',
+  CHAT_LIST_UPDATE: 'chat:list:update',
 
   PRESENCE_PING: 'presence:ping',
 }

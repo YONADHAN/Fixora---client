@@ -1,177 +1,245 @@
-'use client'
-import React from 'react'
+"use client";
+
+import React, { useState } from "react";
+import { useAdminDashboardStats } from "@/hooks/useDashboardStats";
+import { TimeGranularity } from "@/types/dashboard.types";
+import { MetricCard } from "@/components/dashboard/MetricCard";
+import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
+import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
+import { PieChartWidget } from "@/components/dashboard/PieChartWidget";
 import {
-  FaUsers,
-  FaTools,
-  FaMoneyBillWave,
-  FaClipboardList,
-} from 'react-icons/fa'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Users, Calendar, TrendingUp, DollarSign, Briefcase } from "lucide-react";
 
-const AdminDashboardPage = () => {
-  const stats = [
-    {
-      title: 'Total Vendors',
-      count: 14,
-      icon: <FaUsers />,
-      color: 'bg-blue-100 text-blue-700',
-    },
-    {
-      title: 'Total Bookings',
-      count: 132,
-      icon: <FaClipboardList />,
-      color: 'bg-yellow-100 text-yellow-700',
-    },
-    {
-      title: 'Active Vendors',
-      count: 9,
-      icon: <FaTools />,
-      color: 'bg-green-100 text-green-700',
-    },
-    {
-      title: 'Revenue',
-      count: '₹1,24,500',
-      icon: <FaMoneyBillWave />,
-      color: 'bg-purple-100 text-purple-700',
-    },
-  ]
+export default function AdminDashboardPage() {
+  const [interval, setInterval] = useState<TimeGranularity>("daily");
+  const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>({});
 
-  const vendors = [
-    {
-      id: 'VND001',
-      name: 'Rahul Verma',
-      service: 'AC Repair',
-      status: 'Active',
-      joined: 'Apr 2024',
-      rating: 4.8,
-    },
-    {
-      id: 'VND002',
-      name: 'Amit Singh',
-      service: 'Plumbing',
-      status: 'Inactive',
-      joined: 'Jan 2024',
-      rating: 4.2,
-    },
-    {
-      id: 'VND003',
-      name: 'Neha Sharma',
-      service: 'Cleaning',
-      status: 'Active',
-      joined: 'May 2024',
-      rating: 4.6,
-    },
-  ]
+  const { data, loading, error } = useAdminDashboardStats({
+    interval,
+    from: dateRange.from,
+    to: dateRange.to,
+  });
+
+  if (loading && !data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
+
+  const { summary, booking, vendor, customer, service } = data || {};
 
   return (
-    <main className='flex-1 p-8 bg-gray-50 min-h-screen overflow-y-auto'>
-      {/* Header */}
-      <div className='flex items-center justify-between mb-8'>
-        <h2 className='text-2xl font-semibold text-gray-800'>
-          Welcome, Admin{' '}
-        </h2>
-        <button className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition'>
-          + Add New Vendor
-        </button>
-      </div>
-
-      {/* Stats */}
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-6 mb-10'>
-        {stats.map((item, i) => (
-          <div
-            key={i}
-            className={`p-5 rounded-xl shadow-sm ${item.color} flex items-center justify-between`}
+    <div className="p-8 space-y-8 bg-gray-50/50 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Overview of platform performance and metrics.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <Input
+            type="date"
+            className="w-[150px]"
+            onChange={(e) =>
+              setDateRange((prev) => ({ ...prev, from: e.target.value }))
+            }
+          />
+          <span className="text-muted-foreground">-</span>
+          <Input
+            type="date"
+            className="w-[150px]"
+            onChange={(e) =>
+              setDateRange((prev) => ({ ...prev, to: e.target.value }))
+            }
+          />
+          <Select
+            value={interval}
+            onValueChange={(val) => setInterval(val as TimeGranularity)}
           >
-            <div>
-              <p className='text-sm font-medium'>{item.title}</p>
-              <h3 className='text-2xl font-bold mt-2'>{item.count}</h3>
-            </div>
-            <div className='text-3xl'>{item.icon}</div>
-          </div>
-        ))}
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Interval" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="daily">Daily</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="yearly">Yearly</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Vendors List */}
-      <section className='mb-10'>
-        <h3 className='text-xl font-semibold text-gray-800 mb-4'>
-          Registered Vendors
-        </h3>
-        <div className='bg-white shadow-md rounded-xl overflow-hidden'>
-          <table className='min-w-full text-left'>
-            <thead className='bg-gray-100 text-gray-600 uppercase text-sm'>
-              <tr>
-                <th className='py-3 px-4'>Vendor ID</th>
-                <th className='py-3 px-4'>Name</th>
-                <th className='py-3 px-4'>Service</th>
-                <th className='py-3 px-4'>Status</th>
-                <th className='py-3 px-4'>Joined</th>
-                <th className='py-3 px-4'>Rating</th>
-                <th className='py-3 px-4 text-right'>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vendors.map((v) => (
-                <tr key={v.id} className='border-b hover:bg-gray-50'>
-                  <td className='py-3 px-4'>{v.id}</td>
-                  <td className='py-3 px-4 font-medium'>{v.name}</td>
-                  <td className='py-3 px-4'>{v.service}</td>
-                  <td className='py-3 px-4'>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs ${
-                        v.status === 'Active'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-700'
-                      }`}
-                    >
-                      {v.status}
-                    </span>
-                  </td>
-                  <td className='py-3 px-4'>{v.joined}</td>
-                  <td className='py-3 px-4'>{v.rating}⭐</td>
-                  <td className='py-3 px-4 text-right'>
-                    <button className='text-blue-600 hover:underline text-sm mr-2'>
-                      View
-                    </button>
-                    <button className='text-red-600 hover:underline text-sm'>
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {/* Summary Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <MetricCard
+          title="Total Revenue"
+          value={`₹${summary?.totalRevenue?.toLocaleString() ?? 0}`}
+          icon={DollarSign}
+        />
+        <MetricCard
+          title="Total Bookings"
+          value={summary?.totalBookings}
+          icon={Calendar}
+          description={`${summary?.cancelledBookings ?? 0} cancelled`}
+        />
+        <MetricCard
+          title="Active Vendors"
+          value={summary?.activeVendors}
+          icon={Briefcase}
+          description={`Total: ${(summary?.activeVendors ?? 0) + (summary?.blockedVendors ?? 0)
+            }`}
+        />
+        <MetricCard
+          title="Active Users"
+          value={summary?.activeCustomers}
+          icon={Users}
+          description={`Total: ${summary?.totalActiveUsers ?? 0}`}
+        />
+      </div>
 
-      {/* System Summary */}
-      <section>
-        <h3 className='text-xl font-semibold text-gray-800 mb-4'>
-          System Overview
-        </h3>
-        <div className='bg-white shadow-md rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6'>
-          <div>
-            <h4 className='font-semibold mb-2'>Pending Approvals</h4>
-            <p className='text-gray-600 text-sm'>
-              3 new vendors are awaiting approval.
-            </p>
+      {/* Charts Grid */}
+      {/* Sections */}
+      <div className="space-y-10">
+
+        {/* Booking Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Booking Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {booking?.bookingGrowth && (
+              <LineChartWidget
+                title="Booking Growth"
+                data={booking.bookingGrowth}
+                dataKey="totalBookings"
+                xAxisKey="label"
+              />
+            )}
+            {booking?.bookingStatusBreakdown && (
+              <PieChartWidget
+                title="Booking Status"
+                data={[
+                  { name: "Scheduled", value: booking.bookingStatusBreakdown.scheduled },
+                  { name: "In Progress", value: booking.bookingStatusBreakdown.inProgress },
+                  { name: "Completed", value: booking.bookingStatusBreakdown.completed },
+                  { name: "Cancelled", value: booking.bookingStatusBreakdown.cancelled },
+                ]}
+              />
+            )}
           </div>
-          <div>
-            <h4 className='font-semibold mb-2'>Recent Activity</h4>
-            <ul className='text-gray-600 text-sm list-disc list-inside'>
-              <li>
-                Vendor <b>Rahul Verma</b> completed 5 jobs this week.
-              </li>
-              <li>
-                Customer complaints resolved: <b>12</b>
-              </li>
-              <li>
-                New booking requests today: <b>6</b>
-              </li>
-            </ul>
+        </section>
+
+        {/* Vendor Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Vendor Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {vendor?.vendorGrowth && (
+              <BarChartWidget
+                title="Vendor Growth"
+                data={vendor.vendorGrowth}
+                dataKey="totalVendors"
+                color="#16a34a"
+              />
+            )}
+            {vendor?.vendorStatusBreakdown && (
+              <PieChartWidget
+                title="Vendor Status"
+                data={[
+                  { name: "Pending", value: vendor.vendorStatusBreakdown.pending },
+                  { name: "Active", value: vendor.vendorStatusBreakdown.active },
+                  { name: "Blocked", value: vendor.vendorStatusBreakdown.blocked },
+                ]}
+              />
+            )}
           </div>
-        </div>
-      </section>
-    </main>
-  )
+        </section>
+
+        {/* Customer Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Customer Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {customer?.customerGrowth && (
+              <LineChartWidget
+                title="Customer Growth"
+                data={customer.customerGrowth}
+                dataKey="totalCustomers"
+                color="#9333ea"
+              />
+            )}
+            {customer?.customerStatusBreakdown && (
+              <PieChartWidget
+                title="Customer Status"
+                data={[
+                  { name: "Active", value: customer.customerStatusBreakdown.active },
+                  { name: "Blocked", value: customer.customerStatusBreakdown.blocked },
+                ]}
+              />
+            )}
+          </div>
+        </section>
+
+        {/* Service Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Service Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {service?.serviceGrowth && (
+              <BarChartWidget
+                title="Service Growth"
+                data={service.serviceGrowth}
+                dataKey="totalServices"
+                color="#06b6d4" // Cyan
+              />
+            )}
+            {service?.serviceStatusOverview && (
+              <PieChartWidget
+                title="Service Status"
+                data={[
+                  { name: "Active", value: service.serviceStatusOverview.activeServices },
+                  { name: "Inactive", value: service.serviceStatusOverview.inactiveServices },
+                ]}
+              />
+            )}
+            {service?.serviceUsageOverview && (
+              <PieChartWidget
+                title="Service Usage"
+                data={[
+                  { name: "With Bookings", value: service.serviceUsageOverview.servicesWithBookings },
+                  { name: "No Bookings", value: service.serviceUsageOverview.servicesWithoutBookings },
+                ]}
+              />
+            )}
+            {service?.topServices && (
+              <div className="md:col-span-2 lg:col-span-3">
+                <BarChartWidget
+                  title="Top Services (Bookings)"
+                  data={service.topServices.map((s) => ({
+                    label: s.serviceName,
+                    value: s.totalBookings,
+                  }))}
+                  dataKey="value"
+                  color="#eab308"
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }
-
-export default AdminDashboardPage

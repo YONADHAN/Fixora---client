@@ -3,9 +3,10 @@ import { useChatUI } from '../context/ChatUIContext'
 import { MessageList } from './MessageList'
 import { MessageInput } from '../input/MessageInput'
 import { useChat } from '@/lib/hooks/useChat'
+import { ArrowLeft } from 'lucide-react'
 
 export function ChatWindow() {
-  const { activeChatId } = useChatUI()
+  const { activeChatId, setActiveChatId } = useChatUI()
   const { messages, sendMessage, loading } = useChat(activeChatId)
 
   if (!activeChatId) {
@@ -17,7 +18,20 @@ export function ChatWindow() {
   }
 
   return (
-    <div className='flex flex-col h-full'>
+    <div className='flex flex-col h-full bg-background'>
+      {/* Chat Header */}
+      <div className='flex items-center gap-3 p-3 border-b bg-card'>
+        <button
+          onClick={() => setActiveChatId(null)}
+          className='md:hidden p-2 hover:bg-muted rounded-full'
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+        <div className="font-semibold">
+          Chat
+        </div>
+      </div>
+
       <MessageList messages={messages} loading={loading} />
       <MessageInput onSend={sendMessage} />
     </div>

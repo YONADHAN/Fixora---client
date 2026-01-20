@@ -1,6 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { customerChatService } from '@/services/chat/customer.chat.service'
+import { chatService } from '@/services/chat/chat.service'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store/store'
 import { useSocket } from '@/providers/SocketProvider'
 import { SOCKET_EVENTS } from '@/utils/constants/constants'
 import { ChatMessage } from '@/types/chat/chat.type'
@@ -8,20 +10,29 @@ import { ChatMessage } from '@/types/chat/chat.type'
 export function useChat(chatId: string | null) {
   const socket = useSocket()
 
+  const customer = useSelector((state: RootState) => state.customer.customer)
+  const vendor = useSelector((state: RootState) => state.vendor.vendor)
+  const role = customer ? 'customer' : vendor ? 'vendor' : null
+
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   /* Load history */
   const loadMessages = async (): Promise<void> => {
-    if (!chatId) return
+    if (!chatId || !role) return
 
     setLoading(true)
-    const data = await customerChatService.getChatMessages(chatId)
-    setMessages(data.messages)
-    setLoading(false)
+    try {
+      const data = await chatService.getChatMessages(role, chatId)
+      setMessages(data.messages)
+    } catch (err) {
+      console.error("Failed to load messages", err)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  /* Join / Leave */
+
   useEffect(() => {
     if (!socket || !chatId) return
 
@@ -34,7 +45,7 @@ export function useChat(chatId: string | null) {
     }
   }, [chatId, socket])
 
-  /* Listen */
+
   useEffect(() => {
     if (!socket) return
 
@@ -49,7 +60,7 @@ export function useChat(chatId: string | null) {
     }
   }, [socket])
 
-  /* Send */
+
   const sendMessage = (content: string): void => {
     console.log('[useChat] sendMessage called:', { chatId, hasSocket: !!socket })
 
@@ -58,7 +69,7 @@ export function useChat(chatId: string | null) {
       return
     }
 
-    /* emit with Ack callback */
+
     socket.emit(SOCKET_EVENTS.CHAT_SEND, {
       chatId,
       content,
@@ -66,7 +77,7 @@ export function useChat(chatId: string | null) {
       console.log('[useChat] CHAT_SEND ack:', res)
       if (!res.success) {
         console.error('[useChat] Send failed:', res.message)
-        // Optional: show toast
+
       }
     })
   }

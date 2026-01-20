@@ -1,4 +1,6 @@
-interface Props {
+import { useChatUI } from '../context/ChatUIContext'
+
+interface ChatListItemProps {
   chat: {
     chatId: string
     name: string
@@ -7,24 +9,26 @@ interface Props {
   }
 }
 
-export function ChatListItem({ chat }: Props) {
-  return (
-    <div className='p-4 hover:bg-muted cursor-pointer border-b'>
-      <div className='flex justify-between items-center'>
-        <span className='font-medium'>{chat.name}</span>
+export function ChatListItem({ chat }: ChatListItemProps) {
+  const { activeChatId } = useChatUI()
+  const isActive = activeChatId === chat.chatId
 
+  return (
+    <div
+      className={`p-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors ${isActive ? 'bg-neutral-100 dark:bg-neutral-800' : ''
+        }`}
+    >
+      <div className='flex justify-between items-start'>
+        <div className='font-medium'>{chat.name}</div>
         {chat.unreadCount > 0 && (
-          <span className='bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full'>
+          <div className='bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
             {chat.unreadCount}
-          </span>
+          </div>
         )}
       </div>
-
-      {chat.lastMessage && (
-        <div className='text-sm text-muted-foreground truncate'>
-          {chat.lastMessage}
-        </div>
-      )}
+      <div className='text-sm text-neutral-500 truncate mt-1'>
+        {chat.lastMessage || 'No messages yet'}
+      </div>
     </div>
   )
 }

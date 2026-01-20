@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 interface ChatUIContextType {
   activeChatId: string | null
-  setActiveChatId: (id: string) => void
+  setActiveChatId: (id: string | null) => void
 }
 
 const ChatUIContext = createContext<ChatUIContextType | null>(null)

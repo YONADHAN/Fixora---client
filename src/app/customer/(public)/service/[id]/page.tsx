@@ -5,6 +5,7 @@ import { useGetServicesById } from '@/lib/hooks/useService'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Star, MapPin, Clock } from 'lucide-react'
+import { ReviewsSection } from '@/components/review/ReviewsSection'
 
 export default function ServiceDetailPage() {
   const params = useParams()
@@ -142,6 +143,11 @@ export default function ServiceDetailPage() {
           </p>
         )}
       </Card>
+
+      {/* -------------------------------------- */}
+      {/* REVIEWS SECTION */}
+      {/* -------------------------------------- */}
+      <ReviewsSection serviceId={serviceId} />
 
       {/* -------------------------------------- */}
       {/* PROVIDER INFO */}

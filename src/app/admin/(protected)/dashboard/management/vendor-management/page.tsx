@@ -1,15 +1,18 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ResponsiveTable } from '@/components/shared-ui/resusable_components/table/table'
+import { ResponsiveTable } from '@/components/shared-ui/resusable_components/table/TableWithPagination'
 import {
   useGetAllVendors,
   useChangeMyUserBlockStatus,
 } from '@/lib/hooks/useAdmin'
+import { ConfirmDialog } from '@/components/shared-ui/resusable_components/DialogBox/confirmationPopup'
+import { Button } from '@/components/ui/button'
 
 type StatusType = 'active' | 'blocked'
 
 interface Vendor {
+  id: string
   userId: string
   name: string
   email: string
@@ -24,7 +27,7 @@ const VendorPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [appliedSearch, setAppliedSearch] = useState('')
-  const limit = 10
+  const limit = 4
 
   // ----------------------- React Query: Fetch Vendors -----------------------
   const { data, isLoading, refetch } = useGetAllVendors({
@@ -33,8 +36,14 @@ const VendorPage = () => {
     search: appliedSearch,
   })
 
-  const vendors: Vendor[] = data?.data?.data || []
-  const totalPages = data?.data?.totalPages || 1
+  // Map users to include 'id' required by TableItem
+  const vendors: Vendor[] = (data?.data?.data?.data || []).map(
+    (user: Omit<Vendor, 'id'>) => ({
+      ...user,
+      id: user.userId,
+    })
+  )
+  const totalPages = data?.data?.data?.totalPages || 1
 
   // ----------------------- Dialog State -----------------------
   const [confirmDialog, setConfirmDialog] = useState({
@@ -97,33 +106,25 @@ const VendorPage = () => {
     setAppliedSearch(searchTerm)
   }
 
-  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setCurrentPage(1)
-      setAppliedSearch(searchTerm)
-    }
-  }
-
   // ----------------------- Table Columns -----------------------
   const columns = [
-    { key: 'userId', header: 'User ID' },
-    { key: 'name', header: 'Name' },
-    { key: 'email', header: 'Email' },
+
+    { key: 'name' as keyof Vendor, header: 'Name' },
+    { key: 'email' as keyof Vendor, header: 'Email' },
     {
-      key: 'status',
+      key: 'status' as keyof Vendor,
       header: 'Status',
       render: (item: Vendor) => (
         <span
-          className={`${
-            item.status === 'active' ? 'text-green-600' : 'text-red-500'
-          } font-medium`}
+          className={`${item.status === 'active' ? 'text-green-600' : 'text-red-500'
+            } font-medium`}
         >
           {item.status}
         </span>
       ),
     },
     {
-      key: 'createdAt',
+      key: 'createdAt' as keyof Vendor,
       header: 'Created At',
       render: (item: Vendor) => {
         const date = new Date(item.createdAt)
@@ -139,27 +140,48 @@ const VendorPage = () => {
   return (
     <div className='p-6'>
       <ResponsiveTable<Vendor>
+        title='Vendor Management'
         data={vendors}
         loading={isLoading}
-        updatingItems={updatingItems}
+        columns={columns}
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
         searchTerm={searchTerm}
         onSearchTermChange={handleSearchTermChange}
-        onSearchKeyPress={handleSearchKeyPress}
         onSearchClick={handleSearchClick}
-        onBlockUnblockClick={handleBlockUnblockClick}
-        confirmDialog={{
-          isOpen: confirmDialog.isOpen,
-          item: confirmDialog.item,
-          action: confirmDialog.newStatus === 'blocked' ? 'block' : 'unblock',
-        }}
-        onConfirmAction={handleConfirmAction}
-        onCancelAction={handleCancelAction}
-        entityType='vendor'
-        columns={columns}
-        showLabelsOnMobile
+        searchPlaceholder='Search by name or email...'
+        actions={(item) => (
+          <Button
+            variant='destructive'
+            size='sm'
+            onClick={() => handleBlockUnblockClick(item)}
+            disabled={updatingItems.has(item.userId)}
+          >
+            {updatingItems.has(item.userId)
+              ? 'Updating...'
+              : item.status === 'active'
+                ? 'Block'
+                : 'Unblock'}
+          </Button>
+        )}
+      />
+
+      <ConfirmDialog
+        open={confirmDialog.isOpen}
+        onCancel={handleCancelAction}
+        onConfirm={handleConfirmAction}
+        title={
+          confirmDialog.newStatus === 'blocked'
+            ? 'Block Vendor'
+            : 'Unblock Vendor'
+        }
+        description={`Are you sure you want to ${confirmDialog.newStatus === 'blocked' ? 'block' : 'unblock'
+          } vendor "${confirmDialog.item?.name}"?`}
+        confirmLabel={
+          confirmDialog.newStatus === 'blocked' ? 'Block' : 'Unblock'
+        }
+        confirmColor={confirmDialog.newStatus === 'blocked' ? 'red' : 'green'}
       />
     </div>
   )

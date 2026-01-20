@@ -24,9 +24,9 @@ export interface GetChatMessagesResponse {
 
 export interface IChatEntity {
   chatId: string
-  customerId: string
-  vendorId: string
-  serviceId: string
+  customerRef: string
+  vendorRef: string
+  serviceRef: string
   lastMessage?: {
     content: string
     createdAt: string
@@ -38,4 +38,19 @@ export interface IChatEntity {
   isActive: boolean
   createdAt: string
   updatedAt: string
+
+  customer?: {
+    name: string
+    profileImage?: string
+    email: string
+  }
+  vendor?: {
+    name: string
+    profileImage?: string
+    email: string
+  }
+  service?: {
+    name: string
+    mainImage?: string
+  }
 }

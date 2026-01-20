@@ -1,168 +1,172 @@
-'use client'
+"use client";
 
-import { useSelector } from 'react-redux'
-import { RootState } from '@/store/store'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import React, { useState } from "react";
+import { useVendorDashboardStats } from "@/hooks/useDashboardStats";
+import { TimeGranularity } from "@/types/dashboard.types";
+import { MetricCard } from "@/components/dashboard/MetricCard";
+import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
+import { PieChartWidget } from "@/components/dashboard/PieChartWidget";
 import {
-  FaUsers,
-  FaClipboardList,
-  FaStar,
-  FaMoneyBillWave,
-} from 'react-icons/fa'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Users, Calendar, TrendingUp, DollarSign } from "lucide-react";
 
 export default function VendorDashboardPage() {
-  const router = useRouter()
-  const vendor = useSelector((state: RootState) => state.vendor.vendor)
+  const [interval, setInterval] = useState<TimeGranularity>("daily");
+  const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>({});
 
-  const vendorName = vendor?.name || 'Vendor'
+  const { data, loading, error } = useVendorDashboardStats({
+    interval,
+    from: dateRange.from,
+    to: dateRange.to,
+  });
+
+  if (loading && !data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
+
+  const { summary, booking, customer } = data || {};
 
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 p-6'>
-      <div className='max-w-7xl mx-auto'>
-        <h1 className='text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100'>
-          Welcome back, {vendorName}
-        </h1>
-
-        {/* Overview Cards */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10'>
-          <Card className='hover:shadow-lg transition'>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2 text-blue-600'>
-                <FaClipboardList /> Active Bookings
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className='text-3xl font-bold text-gray-800 dark:text-white'>
-                12
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className='hover:shadow-lg transition'>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2 text-green-600'>
-                <FaUsers /> Completed Jobs
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className='text-3xl font-bold text-gray-800 dark:text-white'>
-                46
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className='hover:shadow-lg transition'>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2 text-yellow-500'>
-                <FaStar /> Average Rating
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className='text-3xl font-bold text-gray-800 dark:text-white'>
-                4.8
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className='hover:shadow-lg transition'>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2 text-purple-600'>
-                <FaMoneyBillWave /> Total Earnings
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className='text-3xl font-bold text-gray-800 dark:text-white'>
-                ₹15,400
-              </p>
-            </CardContent>
-          </Card>
+    <div className="p-8 space-y-8 bg-gray-50/50 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Vendor Dashboard</h1>
+          <p className="text-muted-foreground">
+            Track your appointments and earnings.
+          </p>
         </div>
-
-        {/* Quick Actions */}
-        <div className='bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 mb-10'>
-          <h2 className='text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100'>
-            Quick Actions
-          </h2>
-          <div className='flex flex-wrap gap-4'>
-            <Button onClick={() => router.push('/vendor/bookings')}>
-              View All Bookings
-            </Button>
-            <Button
-              variant='outline'
-              onClick={() => router.push('/vendor/profile')}
-            >
-              Edit Profile
-            </Button>
-            <Button
-              variant='secondary'
-              onClick={() => router.push('/vendor/payments')}
-            >
-              View Payments
-            </Button>
-          </div>
-        </div>
-
-        {/* Recent Bookings */}
-        <div className='bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6'>
-          <h2 className='text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100'>
-            Recent Bookings
-          </h2>
-          <table className='w-full border-collapse text-sm'>
-            <thead>
-              <tr className='text-left border-b dark:border-gray-700'>
-                <th className='p-3'>Customer</th>
-                <th className='p-3'>Service</th>
-                <th className='p-3'>Date</th>
-                <th className='p-3'>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                {
-                  name: 'Rahul Sharma',
-                  service: 'AC Repair',
-                  date: '2025-10-25',
-                  status: 'Completed',
-                },
-                {
-                  name: 'Aditi Menon',
-                  service: 'Plumbing',
-                  date: '2025-10-27',
-                  status: 'Pending',
-                },
-                {
-                  name: 'John Varghese',
-                  service: 'House Cleaning',
-                  date: '2025-10-28',
-                  status: 'Ongoing',
-                },
-              ].map((b, i) => (
-                <tr
-                  key={i}
-                  className='border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition'
-                >
-                  <td className='p-3'>{b.name}</td>
-                  <td className='p-3'>{b.service}</td>
-                  <td className='p-3'>{b.date}</td>
-                  <td
-                    className={`p-3 font-medium ${
-                      b.status === 'Completed'
-                        ? 'text-green-600'
-                        : b.status === 'Ongoing'
-                        ? 'text-yellow-600'
-                        : 'text-gray-500'
-                    }`}
-                  >
-                    {b.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <Input
+            type="date"
+            className="w-[150px]"
+            onChange={(e) =>
+              setDateRange((prev) => ({ ...prev, from: e.target.value }))
+            }
+          />
+          <span className="text-muted-foreground">-</span>
+          <Input
+            type="date"
+            className="w-[150px]"
+            onChange={(e) =>
+              setDateRange((prev) => ({ ...prev, to: e.target.value }))
+            }
+          />
+          <Select
+            value={interval}
+            onValueChange={(val) => setInterval(val as TimeGranularity)}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Interval" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="daily">Daily</SelectItem>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="yearly">Yearly</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
+
+      {/* Summary Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <MetricCard
+          title="Total Earnings"
+          value={`₹${summary?.totalRevenue?.toLocaleString() ?? 0}`}
+          icon={DollarSign}
+        />
+        <MetricCard
+          title="Total Bookings"
+          value={summary?.totalBookings}
+          icon={Calendar}
+          description={`${summary?.cancelledBookings ?? 0} cancelled`}
+        />
+        <MetricCard
+          title="Active Customers"
+          value={summary?.activeCustomers}
+          icon={Users}
+          description="Unique customers"
+        />
+        {/* Intentionally omitting Active Vendors card as it's not relevant for Vendor view */}
+        <MetricCard
+          title="Scheduled Bookings"
+          value={booking?.bookingStatusBreakdown?.scheduled ?? 0}
+          icon={TrendingUp}
+          description="Total scheduled"
+        />
+      </div>
+
+      {/* Sections */}
+      <div className="space-y-10">
+
+        {/* Booking Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Booking Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {booking?.bookingGrowth && (
+              <LineChartWidget
+                title="Booking Growth"
+                data={booking.bookingGrowth}
+                dataKey="totalBookings"
+                xAxisKey="label"
+              />
+            )}
+            {booking?.bookingStatusBreakdown && (
+              <PieChartWidget
+                title="Booking Status"
+                data={[
+                  { name: "Scheduled", value: booking.bookingStatusBreakdown.scheduled },
+                  { name: "In Progress", value: booking.bookingStatusBreakdown.inProgress },
+                  { name: "Completed", value: booking.bookingStatusBreakdown.completed },
+                  { name: "Cancelled", value: booking.bookingStatusBreakdown.cancelled },
+                ]}
+              />
+            )}
+          </div>
+        </section>
+
+        {/* Customer Analytics */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Customer Analytics</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {customer?.customerGrowth && (
+              <LineChartWidget
+                title="Customer Growth"
+                data={customer.customerGrowth}
+                dataKey="totalCustomers"
+                color="#9333ea"
+              />
+            )}
+            {customer?.customerStatusBreakdown && (
+              <PieChartWidget
+                title="Customer Breakdown"
+                data={[
+                  { name: "Active", value: customer.customerStatusBreakdown.active },
+                  { name: "Blocked", value: customer.customerStatusBreakdown.blocked },
+                ]}
+              />
+            )}
+          </div>
+        </section>
+      </div>
     </div>
-  )
+  );
 }

@@ -11,10 +11,12 @@ import {
   FaRegBookmark,
   FaWallet,
   FaAddressBook,
+  FaClipboardList,
 } from 'react-icons/fa'
 
 import { HiChat, HiDocumentSearch } from 'react-icons/hi'
 import { User2 } from 'lucide-react'
+import { BiChat } from 'react-icons/bi'
 
 export interface NavItem {
   title: string
@@ -38,7 +40,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       //{ title: 'Dashboard', href: '/admin/dashboard' }
     ],
     sideNav: [
-      // { title: 'Dashboard', href: '/admin/dashboard', icon: FaHome },
+      { title: 'Dashboard', href: '/admin/dashboard', icon: FaClipboardList },
       {
         title: 'Customers',
         href: '/admin/dashboard/management/customer-management',
@@ -78,6 +80,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       // { title: 'Profile', href: '/vendor/profile' },
     ],
     sideNav: [
+      { title: 'Dashboard', href: '/vendor/dashboard', icon: FaClipboardList },
       { title: 'My profile', href: '/vendor/profile', icon: User2 },
       {
         title: 'My services',
@@ -104,6 +107,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         title: 'Payment History',
         href: '/vendor/payment',
         icon: FaMoneyCheck,
+      },
+      {
+        title: 'Chat',
+        href: '/vendor/chat',
+        icon: BiChat,
       },
       {
         title: 'Change my password',

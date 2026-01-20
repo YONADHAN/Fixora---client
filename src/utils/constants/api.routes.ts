@@ -24,6 +24,7 @@ export const ADMIN_ROUTES = {
   GET_MY_NOTIFICATION: `${BASE_URL.ADMIN}/notification`,
   MARK_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification`,
   MARK_ALL_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification/read-all`,
+  GET_ADMIN_DASHBOARD_STATS: `${BASE_URL.ADMIN}/dashboard-stats`,
 }
 
 export const VENDOR_ROUTES = {
@@ -50,6 +51,7 @@ export const VENDOR_ROUTES = {
   GET_MY_NOTIFICATION: `${BASE_URL.VENDOR}/notification`,
   MARK_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification`,
   MARK_ALL_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification/read-all`,
+  DASHBOARD: `${BASE_URL.VENDOR}/dashboard-stats`,
 }
 
 export const CUSTOMER_ROUTES = {
@@ -76,6 +78,7 @@ export const CUSTOMER_ROUTES = {
   GET_MY_CHATS: `${BASE_URL.CUSTOMER}/chats`,
   GET_CHAT_MESSAGES: `${BASE_URL.CUSTOMER}/chats`,
   GET_PAYMENTS: `${BASE_URL.CUSTOMER}/payment`,
+  REVIEWS: `${BASE_URL.CUSTOMER}/review`,
 }
 
 export const AUTH_ROUTES = {
