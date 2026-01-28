@@ -1,0 +1,10 @@
+  feature/authentication[m
+  feature/change-password[m
+  feature/chat[m
+  feature/notification[m
+  feature/payment[m
+  feature/service[m
+  feature/service-category[m
+  feature/vendor-doc-verification-by-admin[m
+  fix/profile-image[m
+* [32mmaster[m

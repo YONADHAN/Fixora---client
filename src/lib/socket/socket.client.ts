@@ -10,7 +10,7 @@ export const getSocket = (): Socket => {
 
   isConnecting = true
 
-  console.log('🔌 Connecting to socket at:', process.env.NEXT_PUBLIC_API_URL)
+  console.log(' Connecting to socket at:', process.env.NEXT_PUBLIC_API_URL)
 
   socket = io(process.env.NEXT_PUBLIC_API_URL!, {
     withCredentials: true,
@@ -18,12 +18,12 @@ export const getSocket = (): Socket => {
   })
 
   socket.on('connect', () => {
-    console.log('✅ Socket connected:', socket?.id)
+    console.log(' Socket connected:', socket?.id)
     isConnecting = false
   })
 
   socket.on('connect_error', (err) => {
-    console.error('❌ Socket connect error:', err.message)
+    console.error(' Socket connect error:', err.message)
     isConnecting = false
   })
 

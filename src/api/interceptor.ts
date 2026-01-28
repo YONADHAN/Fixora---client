@@ -43,7 +43,9 @@ function getRoleFromUrl(url?: string) {
   if (!url) return ''
   const parts = url.split('/')
 
-  const role = parts.find(part => ['admin', 'vendor', 'customer'].includes(part))
+  const role = parts.find((part) =>
+    ['admin', 'vendor', 'customer'].includes(part),
+  )
   return role || ''
 }
 
@@ -53,7 +55,7 @@ axiosInstance.interceptors.response.use(
     console.log(
       'Interceptor triggered',
       error.response?.status,
-      error.response?.data
+      error.response?.data,
     )
     const originalRequest: any = error.config
     const role = getRoleFromUrl(originalRequest.url)
@@ -146,6 +148,23 @@ axiosInstance.interceptors.response.use(
       handleLogout(role)
       return Promise.reject(error)
     }
+
+    if (
+      error.response?.status === StatusCodes.PAYMENT_REQUIRED &&
+      role === URL_PART.vendor
+    ) {
+      toast.info(
+        error.response?.data?.message ||
+          'An active subscription is required to access this feature',
+      )
+
+      if (!window.location.pathname.startsWith('/vendor/subscription')) {
+        window.location.href = '/vendor/subscription'
+      }
+
+      return Promise.reject(error)
+    }
+
     return Promise.reject(error)
-  }
+  },
 )

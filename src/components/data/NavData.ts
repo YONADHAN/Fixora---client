@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa'
 
 import { HiChat, HiDocumentSearch } from 'react-icons/hi'
-import { User2 } from 'lucide-react'
+import { CreditCard, User2 } from 'lucide-react'
 import { BiChat } from 'react-icons/bi'
 
 export interface NavItem {
@@ -56,6 +56,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         href: '/admin/dashboard/management/request-management',
         icon: HiDocumentSearch,
       },
+
       {
         title: 'wallet',
         href: '/admin/dashboard/wallet',
@@ -70,6 +71,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         title: 'Sub Service Categories',
         href: '/admin/dashboard/sub-service-category',
         icon: FaScrewdriver,
+      },
+      {
+        title: 'Subscription Plan',
+        href: '/admin/dashboard/subscription',
+        icon: FaMoneyBill,
       },
     ],
   },
@@ -119,13 +125,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         icon: FaLock,
       },
 
-      //{ title: 'Dashboard', href: '/vendor/dashboard', icon: FaHome },
-      // { title: 'Customers', href: '/vendor/customers', icon: FaUsers },
-      // {
-      //   title: 'Notifications',
-      //   href: '/vendor/notifications',
-      //   icon: BiSolidBell,
-      // },
+      {
+        title: 'Subscription Plan',
+        href: '/vendor/subscription',
+        icon: CreditCard,
+      },
     ],
   },
 

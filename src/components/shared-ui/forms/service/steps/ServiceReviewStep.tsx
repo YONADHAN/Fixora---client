@@ -144,7 +144,7 @@ export default function ServiceReviewStep() {
         </div>
       )}
 
-      {/* ✅ IMAGE PREVIEW */}
+
       <div className='border dark:border-border rounded-xl p-4 space-y-3'>
         <h3 className='font-medium text-gray-800 dark:text-gray-200'>Main Service Image</h3>
 

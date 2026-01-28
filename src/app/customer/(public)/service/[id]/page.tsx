@@ -5,7 +5,6 @@ import { useGetServicesById } from '@/lib/hooks/useService'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Star, MapPin, Clock } from 'lucide-react'
-import { ReviewsSection } from '@/components/review/ReviewsSection'
 
 export default function ServiceDetailPage() {
   const params = useParams()
@@ -39,10 +38,6 @@ export default function ServiceDetailPage() {
 
   return (
     <div className='max-w-5xl mx-auto p-6 space-y-10 pb-28'>
-      {/* -------------------------------------- */}
-      {/* HERO SECTION */}
-      {/* -------------------------------------- */}
-
       <div className='grid md:grid-cols-2 gap-6'>
         <div className='w-full h-80 rounded-xl overflow-hidden bg-muted'>
           <img
@@ -60,16 +55,13 @@ export default function ServiceDetailPage() {
             </span>
           )}
 
-          {/* TITLE */}
           <h1 className='text-3xl font-bold leading-tight'>{data.name}</h1>
 
-          {/* RATING - STATIC FOR NOW */}
           <div className='flex items-center gap-2 text-yellow-500'>
             <Star size={18} />
             <span className='text-sm text-gray-600'>4.8 (42 reviews)</span>
           </div>
 
-          {/* DESCRIPTION */}
           <p className='text-gray-600 text-sm leading-relaxed'>
             {data.description}
           </p>
@@ -84,7 +76,6 @@ export default function ServiceDetailPage() {
               </p>
             </div>
 
-            {/* Desktop button */}
             <div className='hidden md:flex justify-end'>
               <Button
                 size='lg'
@@ -99,10 +90,6 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* -------------------------------------- */}
-      {/* SERVICE AVAILABILITY */}
-      {/* -------------------------------------- */}
 
       <Card className='p-6 space-y-4'>
         <h2 className='text-xl font-semibold'>Service Availability</h2>
@@ -144,14 +131,7 @@ export default function ServiceDetailPage() {
         )}
       </Card>
 
-      {/* -------------------------------------- */}
-      {/* REVIEWS SECTION */}
-      {/* -------------------------------------- */}
-      <ReviewsSection serviceId={serviceId} />
 
-      {/* -------------------------------------- */}
-      {/* PROVIDER INFO */}
-      {/* -------------------------------------- */}
 
       {vendor && (
         <Card className='p-6 space-y-4'>

@@ -25,6 +25,10 @@ export const ADMIN_ROUTES = {
   MARK_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification`,
   MARK_ALL_NOTIFICATION_READ: `${BASE_URL.ADMIN}/notification/read-all`,
   GET_ADMIN_DASHBOARD_STATS: `${BASE_URL.ADMIN}/dashboard-stats`,
+  GET_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
+  CREATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
+  TOGGLE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
+  UPDATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
 }
 
 export const VENDOR_ROUTES = {
@@ -52,6 +56,8 @@ export const VENDOR_ROUTES = {
   MARK_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification`,
   MARK_ALL_NOTIFICATION_READ: `${BASE_URL.VENDOR}/notification/read-all`,
   DASHBOARD: `${BASE_URL.VENDOR}/dashboard-stats`,
+  GET_ACTIVE_SUBSCRIPTION_PLANS: `${BASE_URL.VENDOR}/subscription/subscription-plans/active`,
+  CREATE_SUBSCRIPTION_CHECKOUT: `${BASE_URL.VENDOR}/subscription/checkout`,
 }
 
 export const CUSTOMER_ROUTES = {

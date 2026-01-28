@@ -17,7 +17,6 @@ export function useChat(chatId: string | null) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  /* Load history */
   const loadMessages = async (): Promise<void> => {
     if (!chatId || !role) return
 
@@ -26,12 +25,11 @@ export function useChat(chatId: string | null) {
       const data = await chatService.getChatMessages(role, chatId)
       setMessages(data.messages)
     } catch (err) {
-      console.error("Failed to load messages", err)
+      console.error('Failed to load messages', err)
     } finally {
       setLoading(false)
     }
   }
-
 
   useEffect(() => {
     if (!socket || !chatId) return
@@ -44,7 +42,6 @@ export function useChat(chatId: string | null) {
       socket.emit(SOCKET_EVENTS.CHAT_LEAVE, chatId)
     }
   }, [chatId, socket])
-
 
   useEffect(() => {
     if (!socket) return
@@ -60,26 +57,30 @@ export function useChat(chatId: string | null) {
     }
   }, [socket])
 
-
   const sendMessage = (content: string): void => {
-    console.log('[useChat] sendMessage called:', { chatId, hasSocket: !!socket })
+    console.log('[useChat] sendMessage called:', {
+      chatId,
+      hasSocket: !!socket,
+    })
 
     if (!chatId || !socket) {
       console.warn('[useChat] Aborted: Missing chatId or socket')
       return
     }
 
-
-    socket.emit(SOCKET_EVENTS.CHAT_SEND, {
-      chatId,
-      content,
-    }, (res: any) => {
-      console.log('[useChat] CHAT_SEND ack:', res)
-      if (!res.success) {
-        console.error('[useChat] Send failed:', res.message)
-
-      }
-    })
+    socket.emit(
+      SOCKET_EVENTS.CHAT_SEND,
+      {
+        chatId,
+        content,
+      },
+      (res: any) => {
+        console.log('[useChat] CHAT_SEND ack:', res)
+        if (!res.success) {
+          console.error('[useChat] Send failed:', res.message)
+        }
+      },
+    )
   }
 
   return {
