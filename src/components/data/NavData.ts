@@ -109,11 +109,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         href: '/vendor/wallet',
         icon: FaWallet,
       },
-      {
-        title: 'Payment History',
-        href: '/vendor/payment',
-        icon: FaMoneyCheck,
-      },
+      // {
+      //   title: 'Payment History',
+      //   href: '/vendor/payment',
+      //   icon: FaMoneyCheck,
+      // },
       {
         title: 'Chat',
         href: '/vendor/chat',
