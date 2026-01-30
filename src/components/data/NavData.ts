@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa'
 
 import { HiChat, HiDocumentSearch } from 'react-icons/hi'
-import { CreditCard, User2 } from 'lucide-react'
+import { CreditCard, Star, User2 } from 'lucide-react'
 import { BiChat } from 'react-icons/bi'
 
 export interface NavItem {
@@ -156,6 +156,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
         title: 'Chat',
         href: '/customer/chat',
         icon: HiChat,
+      },
+      {
+        title: 'Reviews & Ratings',
+        href: '/customer/review-rating',
+        icon: Star,
       },
       {
         title: 'Change Password',

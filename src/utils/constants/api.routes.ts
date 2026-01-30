@@ -85,6 +85,7 @@ export const CUSTOMER_ROUTES = {
   GET_CHAT_MESSAGES: `${BASE_URL.CUSTOMER}/chats`,
   GET_PAYMENTS: `${BASE_URL.CUSTOMER}/payment`,
   REVIEWS: `${BASE_URL.CUSTOMER}/review`,
+  BOOKED_REVIEWS: `${BASE_URL.CUSTOMER}/review/booked-services`,
 }
 
 export const AUTH_ROUTES = {
