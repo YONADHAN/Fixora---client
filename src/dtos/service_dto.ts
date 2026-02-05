@@ -227,8 +227,8 @@ export interface RequestEditServiceDTO {
   }
 
   schedule: {
-    visibilityStartDate?: Date
-    visibilityEndDate?: Date
+    visibilityStartDate?: string
+    visibilityEndDate?: string
 
     dailyWorkingWindows: {
       startTime: string

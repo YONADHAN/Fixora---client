@@ -21,5 +21,8 @@ export type WalletTransaction = {
 
 export type WalletResponseDTO = {
   wallet: Wallet | null
-  transactions: WalletTransaction[]
+  data: WalletTransaction[]
+  totalPages: number
+  currentPage: number
+  totalCount: number
 }

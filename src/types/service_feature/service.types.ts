@@ -17,8 +17,8 @@ export interface IServiceFormValues {
   }
 
   schedule: {
-    visibilityStartDate?: Date
-    visibilityEndDate?: Date
+    visibilityStartDate?: string
+    visibilityEndDate?: string
 
     dailyWorkingWindows: {
       startTime: string

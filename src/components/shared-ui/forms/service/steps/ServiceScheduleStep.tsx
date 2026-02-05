@@ -20,7 +20,7 @@ export default function ServiceScheduleStep() {
   const [newEndTime, setNewEndTime] = useState('')
   const [windowError, setWindowError] = useState<string | null>(null)
 
-  // ✅ SAFE TIME PARSER
+  //  SAFE TIME PARSER
   const toMinutes = (time?: string): number => {
     if (!time || !time.includes(':')) return -1
     const [h, m] = time.split(':').map(Number)
@@ -28,7 +28,7 @@ export default function ServiceScheduleStep() {
     return h * 60 + m
   }
 
-  // ✅ ADD DAILY WINDOW
+  //  ADD DAILY WINDOW
   const handleAddWindow = () => {
     setWindowError(null)
 
@@ -52,12 +52,12 @@ export default function ServiceScheduleStep() {
 
     const existing =
       values.schedule.dailyWorkingWindows?.filter(
-        (w) => w.startTime && w.endTime
+        (w) => w.startTime && w.endTime,
       ) || []
 
     if (
       existing.some(
-        (w) => w.startTime === newStartTime && w.endTime === newEndTime
+        (w) => w.startTime === newStartTime && w.endTime === newEndTime,
       )
     ) {
       setWindowError('This time window already exists')
@@ -90,7 +90,7 @@ export default function ServiceScheduleStep() {
 
   const handleRemoveWindow = (index: number) => {
     const updated = values.schedule.dailyWorkingWindows.filter(
-      (_, i) => i !== index
+      (_, i) => i !== index,
     )
     setFieldValue('schedule.dailyWorkingWindows', updated, true)
   }
@@ -102,7 +102,7 @@ export default function ServiceScheduleStep() {
 
   return (
     <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-10'>
-      {/* ✅ HEADER */}
+      {/*  HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Schedule
@@ -112,7 +112,7 @@ export default function ServiceScheduleStep() {
         </p>
       </div>
 
-      {/* ✅ DATE RANGE */}
+      {/*  DATE RANGE */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div className='space-y-1'>
           <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
@@ -121,6 +121,7 @@ export default function ServiceScheduleStep() {
           <input
             type='date'
             name='schedule.visibilityStartDate'
+            value={values.schedule.visibilityStartDate || ''}
             onChange={handleChange}
             onBlur={() => setFieldTouched('schedule.visibilityStartDate', true)}
             className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
@@ -134,10 +135,13 @@ export default function ServiceScheduleStep() {
         </div>
 
         <div className='space-y-1'>
-          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>End Date</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+            End Date
+          </label>
           <input
             type='date'
             name='schedule.visibilityEndDate'
+            value={values.schedule.visibilityEndDate || ''}
             onChange={handleChange}
             onBlur={() => setFieldTouched('schedule.visibilityEndDate', true)}
             className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
@@ -151,7 +155,7 @@ export default function ServiceScheduleStep() {
         </div>
       </div>
 
-      {/* ✅ SLOT DURATION */}
+      {/*  SLOT DURATION */}
       <div className='space-y-1'>
         <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Slot Duration (minutes)
@@ -165,7 +169,7 @@ export default function ServiceScheduleStep() {
         />
       </div>
 
-      {/* ✅ DAILY WORKING WINDOWS */}
+      {/*  DAILY WORKING WINDOWS */}
       <div className='space-y-4'>
         <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Daily Working Windows
@@ -225,9 +229,11 @@ export default function ServiceScheduleStep() {
         )}
       </div>
 
-      {/* ✅ RECURRENCE */}
+      {/*  RECURRENCE */}
       <div className='space-y-1'>
-        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Recurrence</label>
+        <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+          Recurrence
+        </label>
         <select
           name='schedule.recurrenceType'
           value={values.schedule.recurrenceType || ''}
@@ -235,10 +241,18 @@ export default function ServiceScheduleStep() {
           onBlur={() => setFieldTouched('schedule.recurrenceType', true)}
           className='w-full p-2 border dark:border-input rounded-lg focus:ring-2 focus:ring-black dark:focus:ring-white outline-none bg-transparent dark:bg-background dark:text-foreground'
         >
-          <option value='' className='dark:bg-background'>Select recurrence</option>
-          <option value='daily' className='dark:bg-background'>Daily</option>
-          <option value='weekly' className='dark:bg-background'>Weekly</option>
-          <option value='monthly' className='dark:bg-background'>Monthly</option>
+          <option value='' className='dark:bg-background'>
+            Select recurrence
+          </option>
+          <option value='daily' className='dark:bg-background'>
+            Daily
+          </option>
+          <option value='weekly' className='dark:bg-background'>
+            Weekly
+          </option>
+          <option value='monthly' className='dark:bg-background'>
+            Monthly
+          </option>
         </select>
 
         {touched.schedule?.recurrenceType && scheduleErrors?.recurrenceType && (
@@ -248,10 +262,12 @@ export default function ServiceScheduleStep() {
         )}
       </div>
 
-      {/* ✅ WEEKLY */}
+      {/*  WEEKLY */}
       {values.schedule.recurrenceType === 'weekly' && (
         <div className='space-y-2'>
-          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Weekdays</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+            Weekdays
+          </label>
 
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
             {[0, 1, 2, 3, 4, 5, 6].map((day) => (
@@ -283,7 +299,7 @@ export default function ServiceScheduleStep() {
         </div>
       )}
 
-      {/* ✅ MONTHLY */}
+      {/*  MONTHLY */}
       {values.schedule.recurrenceType === 'monthly' && (
         <div className='space-y-2'>
           <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>

@@ -14,15 +14,42 @@ export function ChatSidebar() {
   const { setActiveChatId } = useChatUI()
   const socket = useSocket()
 
+  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set())
+  const [chats, setChats] = useState<IChatEntity[]>([])
+  const [loading, setLoading] = useState(true)
+
   const customer = useSelector((state: RootState) => state.customer.customer)
   const vendor = useSelector((state: RootState) => state.vendor.vendor)
 
   const role = customer ? 'customer' : vendor ? 'vendor' : null
   const userId = customer?.userId || vendor?.userId
 
-  const [chats, setChats] = useState<IChatEntity[]>([])
-  const [loading, setLoading] = useState(true)
+  //listening to the presence
+  useEffect(() => {
+    if (!socket) return
 
+    const handleOnline = ({ userId }: { userId: string }) => {
+      setOnlineUsers((prev) => new Set(prev).add(userId))
+    }
+
+    const handleOffline = ({ userId }: { userId: string }) => {
+      setOnlineUsers((prev) => {
+        const next = new Set(prev)
+        next.delete(userId)
+        return next
+      })
+    }
+
+    socket.on(SOCKET_EVENTS.USER_ONLINE, handleOnline)
+    socket.on(SOCKET_EVENTS.USER_OFFLINE, handleOffline)
+
+    return () => {
+      socket.off(SOCKET_EVENTS.USER_ONLINE, handleOnline)
+      socket.off(SOCKET_EVENTS.USER_OFFLINE, handleOffline)
+    }
+  }, [socket])
+
+  //fetch chats
   useEffect(() => {
     if (!role) return
 
@@ -41,76 +68,91 @@ export function ChatSidebar() {
     fetchChats()
   }, [role])
 
+  //chat list update
   useEffect(() => {
     if (!socket || !userId) return
 
     const handleListUpdate = (updatedChat: any) => {
       setChats((prev) => {
-        // Remove existing instance of this chat if present
         const filtered = prev.filter((c) => c.chatId !== updatedChat.chatId)
-        // Add updated chat to top
-        // Note: We might need to merge with existing chat data (names/avatars) if the update payload is partial across the app
-        // For now, assuming payload has enough info or we preserve existing metadata
+        const existing = prev.find((c) => c.chatId === updatedChat.chatId)
 
-        const existing = prev.find(c => c.chatId === updatedChat.chatId)
-
-        const merged: IChatEntity = {
-          ...(existing || updatedChat),
-          ...updatedChat,
-          lastMessage: updatedChat.lastMessage,
-          unreadCount: updatedChat.unreadCount
-        }
-
-        return [merged, ...filtered]
+        return [
+          {
+            ...(existing || updatedChat),
+            ...updatedChat,
+            lastMessage: updatedChat.lastMessage,
+            unreadCount: updatedChat.unreadCount,
+          },
+          ...filtered,
+        ]
       })
     }
 
     socket.on(SOCKET_EVENTS.CHAT_LIST_UPDATE, handleListUpdate)
-    // We also need to listen for CHAT_NEW to update the list if we are the SENDER (optional, usually sender sees it in window)
-    // But mostly CHAT_LIST_UPDATE is emitted to receiver. 
-    // If we want to move chat to top for sender too, we might need to handle CHAT_NEW or similar.
-    // For now, focusing on the receiver update as requested.
 
     return () => {
       socket.off(SOCKET_EVENTS.CHAT_LIST_UPDATE, handleListUpdate)
     }
   }, [socket, userId])
 
+  //ui
   if (loading) {
-    return <div className='p-4 text-center text-sm text-neutral-500'>Loading chats...</div>
+    return (
+      <div className='p-4 text-center text-sm text-neutral-500'>
+        Loading chats...
+      </div>
+    )
   }
 
   if (!role) {
-    return <div className='p-4 text-center text-sm text-neutral-500'>Please log in</div>
+    return (
+      <div className='p-4 text-center text-sm text-neutral-500'>
+        Please log in
+      </div>
+    )
   }
 
   return (
     <div className='h-full overflow-y-auto'>
       {chats.length === 0 ? (
-        <div className='p-4 text-center text-sm text-neutral-500'>No chats found</div>
+        <div className='p-4 text-center text-sm text-neutral-500'>
+          No chats found
+        </div>
       ) : (
-        chats.map((chat: IChatEntity) => {
-          const unread = role === 'vendor' ? chat.unreadCount.vendor : chat.unreadCount.customer
+        chats.map((chat) => {
+          const unread =
+            role === 'vendor'
+              ? chat.unreadCount.vendor
+              : chat.unreadCount.customer
 
-          let name = 'Unknown User'
-          let image = ''
+          const otherUserId =
+            role === 'customer' ? chat.vendor?.userId : chat.customer?.userId
 
-          if (role === 'customer') {
-            name = chat.service?.name || chat.vendor?.name || 'Service'
-            image = chat.service?.mainImage || chat.vendor?.profileImage || ''
-          } else {
-            name = chat.customer?.name || 'Customer'
-            image = chat.customer?.profileImage || ''
-          }
+          const isOnline = otherUserId ? onlineUsers.has(otherUserId) : false
+
+          const name =
+            role === 'customer'
+              ? chat.service?.name || 'Service'
+              : `${chat.customer?.name || 'Customer'} • ${
+                  chat.service?.name || 'Service'
+                }`
+
+          const image =
+            role === 'customer'
+              ? chat.service?.mainImage || ''
+              : chat.customer?.profileImage || ''
 
           return (
             <div key={chat.chatId} onClick={() => setActiveChatId(chat.chatId)}>
               <ChatListItem
                 chat={{
                   chatId: chat.chatId,
-                  name: name, // In a real app, this should be part of the chat object (e.g., participants)
+                  name,
+                  image,
                   lastMessage: chat.lastMessage?.content,
-                  unreadCount: unread
+                  unreadCount: unread,
+                  isOnline,
                 }}
               />
             </div>

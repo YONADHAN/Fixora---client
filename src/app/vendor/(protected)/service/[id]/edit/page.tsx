@@ -15,6 +15,11 @@ export default function EditServicePage() {
 
   const { data, isLoading } = useGetServicesById({ serviceId })
   const editMutation = useEditServiceById()
+  const toDateInputValue = (date?: string | Date) => {
+    if (!date) return ''
+    const d = new Date(date)
+    return d.toISOString().split('T')[0]
+  }
 
   /**
    * Convert API Response → Wizard Initial Values
@@ -42,9 +47,12 @@ export default function EditServicePage() {
 
       // SCHEDULE
       schedule: {
-        visibilityStartDate: data.schedule.visibilityStartDate,
-        visibilityEndDate: data.schedule.visibilityEndDate,
-
+        // visibilityStartDate: data.schedule.visibilityStartDate,
+        // visibilityEndDate: data.schedule.visibilityEndDate,
+        visibilityStartDate: toDateInputValue(
+          data.schedule.visibilityStartDate,
+        ),
+        visibilityEndDate: toDateInputValue(data.schedule.visibilityEndDate),
         dailyWorkingWindows:
           data.schedule.dailyWorkingWindows?.length > 0
             ? data.schedule.dailyWorkingWindows
@@ -95,7 +103,7 @@ export default function EditServicePage() {
         onError: () => {
           toast.error('Failed to update service')
         },
-      }
+      },
     )
   }
 
