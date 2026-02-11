@@ -9,7 +9,7 @@ import { queryClient } from '@/lib/queryClient'
 import StoreProvider from '@/store/StoreProvider'
 import { SocketProvider } from '@/providers/SocketProvider'
 import ClientLayout from '@/components/layout/shared/ClientLayout'
-
+import { CallProvider } from '@/providers/CallProvider'
 export default function ClientProviders({
   children,
 }: {
@@ -18,21 +18,23 @@ export default function ClientProviders({
   return (
     <StoreProvider>
       <SocketProvider>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
-        >
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-              attribute='class'
-              defaultTheme='system'
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Toaster position='top-right' />
-              <ClientLayout>{children}</ClientLayout>
-            </ThemeProvider>
-          </QueryClientProvider>
-        </GoogleOAuthProvider>
+        <CallProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+          >
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider
+                attribute='class'
+                defaultTheme='system'
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Toaster position='top-right' />
+                <ClientLayout>{children}</ClientLayout>
+              </ThemeProvider>
+            </QueryClientProvider>
+          </GoogleOAuthProvider>
+        </CallProvider>
       </SocketProvider>
     </StoreProvider>
   )

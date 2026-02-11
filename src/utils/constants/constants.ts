@@ -16,10 +16,12 @@ export interface ServiceSchedule {
 }
 
 export const SOCKET_EVENTS = {
+  // Notification
   NOTIFICATION_NEW: 'notifications:new',
   NOTIFICATION_READ: 'notifications:read',
   NOTIFICATION_READ_ALL: 'notifications:read-all',
 
+  // Chat
   CHAT_JOIN: 'chat:join',
   CHAT_LEAVE: 'chat:leave',
   CHAT_SEND: 'chat:message:send',
@@ -30,11 +32,54 @@ export const SOCKET_EVENTS = {
   CHAT_TYPING_START: 'chat:typing:start',
   CHAT_TYPING_STOP: 'chat:typing:stop',
 
+  // Presence
   USER_ONLINE: 'presence:online',
   USER_OFFLINE: 'presence:offline',
-
   PRESENCE_PING: 'presence:ping',
-}
+
+  // Call Lifecycle
+  CALL_INITIATE: 'call:initiate',
+  CALL_INCOMING: 'call:incoming',
+  CALL_ACCEPT: 'call:accept',
+  CALL_REJECT: 'call:reject',
+  CALL_END: 'call:end',
+  CALL_READY: 'call:ready',
+  // WebRTC Signaling
+  WEBRTC_OFFER: 'webrtc:offer',
+  WEBRTC_ANSWER: 'webrtc:answer',
+  WEBRTC_ICE: 'webrtc:ice',
+} as const
+
+// export const SOCKET_EVENTS = {
+//   NOTIFICATION_NEW: 'notifications:new',
+//   NOTIFICATION_READ: 'notifications:read',
+//   NOTIFICATION_READ_ALL: 'notifications:read-all',
+
+//   CHAT_JOIN: 'chat:join',
+//   CHAT_LEAVE: 'chat:leave',
+//   CHAT_SEND: 'chat:message:send',
+//   CHAT_READ: 'chat:message:read',
+//   CHAT_NEW: 'chat:message:new',
+//   CHAT_LIST_UPDATE: 'chat:list:update',
+
+//   CHAT_TYPING_START: 'chat:typing:start',
+//   CHAT_TYPING_STOP: 'chat:typing:stop',
+
+//   USER_ONLINE: 'presence:online',
+//   USER_OFFLINE: 'presence:offline',
+
+//   PRESENCE_PING: 'presence:ping',
+
+//   WEBRTC_OFFER: 'webrtc:offer',
+//   WEBRTC_ANSWER: 'webrtc:answer',
+//   WEBRTC_ICE: 'webrtc:ice',
+
+//   CALL_INITIATE: 'call:initiate',
+//   CALL_INCOMING: 'call:incoming',
+//   CALL_ACCEPT: 'call:accept',
+//   CALL_REJECT: 'call:reject',
+//   CALL_END: 'call:end',
+// }
 
 export type NotificationMetadata =
   | {

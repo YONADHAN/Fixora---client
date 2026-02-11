@@ -7,7 +7,7 @@ import { useChatUI } from '../context/ChatUIContext'
 import { MessageList } from './MessageList'
 import { MessageInput } from '../input/MessageInput'
 import { useChat } from '@/lib/hooks/useChat'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Video } from 'lucide-react'
 
 export function ChatWindow() {
   const { activeChatId, setActiveChatId } = useChatUI()
@@ -18,6 +18,16 @@ export function ChatWindow() {
 
   const [isTyping, setIsTyping] = useState(false)
 
+  const InitiateVideoChat = () => {
+    if (!socket || !activeChatId) return
+
+    socket.emit(SOCKET_EVENTS.CALL_INITIATE, {
+      chatId: activeChatId,
+      callType: 'video',
+    })
+
+    console.log('📞 Video call initiated for chat:', activeChatId)
+  }
   useEffect(() => {
     if (!socket || !activeChatId) return
 
@@ -43,14 +53,19 @@ export function ChatWindow() {
 
   return (
     <div className='flex flex-col h-full bg-background'>
-      <div className='flex items-center gap-3 p-3 border-b bg-card'>
+      <div className='flex items-center gap-3 p-3 border-b bg-card '>
         <button
           onClick={() => setActiveChatId(null)}
           className='md:hidden p-2 hover:bg-muted rounded-full'
         >
           <ArrowLeft className='w-5 h-5' />
         </button>
-        <div className='font-semibold'>Chat</div>
+        <div className='flex flex-1 items-center justify-between'>
+          <div className='font-semibold'>Chat</div>
+          <div className='cursor-pointer' onClick={InitiateVideoChat}>
+            <Video className=' text-muted-foreground hover:text-primary' />
+          </div>
+        </div>
       </div>
 
       <MessageList
