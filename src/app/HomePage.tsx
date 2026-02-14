@@ -79,7 +79,7 @@ export default function Page() {
             needs. Fast, reliable, and affordable.
           </p>
 
-          {/* SEARCH BAR */}
+          {/* SEARCH BAR
           <div className='max-w-2xl mx-auto mt-12'>
             <div className='relative group'>
               <div className='absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300'></div>
@@ -97,25 +97,27 @@ export default function Page() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* POPULAR SEARCHES */}
           <div className='flex flex-wrap items-center justify-center gap-3 text-sm'>
-            <span className='text-gray-500 dark:text-muted-foreground'>Popular:</span>
+            <span className='text-gray-500 dark:text-muted-foreground'>
+              Popular:
+            </span>
             {activeCategories.map(
               (serviceCategories: TypeCategoryItem, index: string) => (
                 <button
                   key={index}
                   onClick={() =>
                     router.push(
-                      `/customer/service_category/${serviceCategories.serviceCategoryId}`
+                      `/customer/service_category/${serviceCategories.serviceCategoryId}`,
                     )
                   }
                   className='px-4 py-2 bg-white dark:bg-card border border-gray-200 dark:border-border rounded-full text-gray-700 dark:text-foreground hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition'
                 >
                   {serviceCategories.name}
                 </button>
-              )
+              ),
             )}
           </div>
         </div>
@@ -140,7 +142,7 @@ export default function Page() {
                   key={cat.serviceCategoryId}
                   onClick={() =>
                     router.push(
-                      `/customer/service_category/${cat.serviceCategoryId}`
+                      `/customer/service_category/${cat.serviceCategoryId}`,
                     )
                   }
                   className='group cursor-pointer pb-1 text-center bg-gray-50 dark:bg-muted p-2 rounded-3xl'
@@ -160,7 +162,7 @@ export default function Page() {
                       {cat.name}
                     </span>
                   </div>
-                  <div className="mt-2 text-gray-900 dark:text-foreground">
+                  <div className='mt-2 text-gray-900 dark:text-foreground'>
                     {cat.description}
                   </div>
                 </div>
@@ -204,7 +206,9 @@ export default function Page() {
                 <h3 className='text-xl font-bold text-gray-900 dark:text-foreground mb-3'>
                   {feature.title}
                 </h3>
-                <p className='text-gray-600 dark:text-muted-foreground leading-relaxed'>{feature.desc}</p>
+                <p className='text-gray-600 dark:text-muted-foreground leading-relaxed'>
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>

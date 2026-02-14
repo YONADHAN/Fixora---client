@@ -43,11 +43,12 @@ export interface ReviewWithUserDTO {
   _id: string
   rating: number
   review: string
-  createdAt: string
+  serviceRef: string
   customer: {
-    name: string
+    name?: string
     profileImage?: string
   }
+  createdAt: Date
 }
 
 export interface GetRatingAndReviewForServiceResponseDTO {

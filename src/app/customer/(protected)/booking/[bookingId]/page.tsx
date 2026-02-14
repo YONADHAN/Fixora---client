@@ -44,7 +44,7 @@ const MapComponent = dynamic(
     loading: () => (
       <div className='h-full w-full bg-muted animate-pulse rounded-md' />
     ),
-  }
+  },
 )
 
 export default function CustomerBookingDetailsPage() {
@@ -161,7 +161,7 @@ export default function CustomerBookingDetailsPage() {
         <div className='flex items-center gap-3'>
           <Badge
             className={`px-3 py-1 text-sm font-medium ${getStatusColor(
-              booking.serviceStatus
+              booking.serviceStatus,
             )}`}
           >
             {booking.serviceStatus.charAt(0).toUpperCase() +
@@ -170,7 +170,7 @@ export default function CustomerBookingDetailsPage() {
           <Badge
             variant='outline'
             className={`px-3 py-1 text-sm font-medium ${getStatusColor(
-              booking.paymentStatus
+              booking.paymentStatus,
             )} border-0`}
           >
             Payment: {booking.paymentStatus.replace('-', ' ').toUpperCase()}
@@ -249,7 +249,6 @@ export default function CustomerBookingDetailsPage() {
             </CardHeader>
             <CardContent>
               <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
-                {/* Since slots logic might vary, we simulate it based on start/end if slots array is missing or display main times */}
                 {booking.slotStart && booking.slotEnd && (
                   <div className='flex flex-col items-center justify-center p-3 bg-secondary rounded-lg border text-center'>
                     <span className='text-xs text-muted-foreground mb-1'>
@@ -261,7 +260,6 @@ export default function CustomerBookingDetailsPage() {
                     </span>
                   </div>
                 )}
-                {/* If slots array exists (from previous fix), we can map clearer here if needed */}
               </div>
             </CardContent>
           </Card>
@@ -339,7 +337,7 @@ export default function CustomerBookingDetailsPage() {
                       onClick={() =>
                         window.open(
                           `https://www.google.com/maps/search/?api=1&query=${vendor.geoLocation?.coordinates[1]},${vendor.geoLocation?.coordinates[0]}`,
-                          '_blank'
+                          '_blank',
                         )
                       }
                     >
@@ -379,7 +377,7 @@ export default function CustomerBookingDetailsPage() {
                     -
                     {formatCurrency(
                       service.pricing.pricePerSlot -
-                        service.pricing.advanceAmountPerSlot
+                        service.pricing.advanceAmountPerSlot,
                     )}
                   </span>
                 </div>
@@ -392,12 +390,12 @@ export default function CustomerBookingDetailsPage() {
                     ? formatCurrency(0)
                     : formatCurrency(
                         service.pricing.pricePerSlot -
-                          service.pricing.advanceAmountPerSlot
+                          service.pricing.advanceAmountPerSlot,
                       )}
                 </span>
               </div>
             </CardContent>
-            {isAdvancePaid && !isCancelled && (
+            {isAdvancePaid && !isCancelled && isCompleted && (
               <CardFooter className='pt-0'>
                 <Button
                   className='w-full'
@@ -410,7 +408,7 @@ export default function CustomerBookingDetailsPage() {
             )}
           </Card>
 
-          {/* Cancellation Info / Action */}
+          {/* Cancellation */}
           {isCancelled && booking.cancelInfo ? (
             <Card className='border-red-200 bg-red-50'>
               <CardHeader className='pb-2'>

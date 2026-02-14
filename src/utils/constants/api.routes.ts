@@ -47,6 +47,7 @@ export const VENDOR_ROUTES = {
   EDIT_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
   TOGGLE_SERVICE_BY_ID: `${BASE_URL.VENDOR}/service`,
   GET_VENDOR_BOOKINGS: `${BASE_URL.VENDOR}/booking/me`,
+  CANCEL_VENDOR_BOOKING: `${BASE_URL.VENDOR}/booking`,
   GET_BOOKING_DETAILS: `${BASE_URL.VENDOR}/booking`,
   GET_VENDOR_WALLET: `${BASE_URL.VENDOR}/wallet`,
   GET_MY_CHATS: `${BASE_URL.VENDOR}/chats`,
@@ -58,6 +59,7 @@ export const VENDOR_ROUTES = {
   DASHBOARD: `${BASE_URL.VENDOR}/dashboard-stats`,
   GET_ACTIVE_SUBSCRIPTION_PLANS: `${BASE_URL.VENDOR}/subscription/subscription-plans/active`,
   CREATE_SUBSCRIPTION_CHECKOUT: `${BASE_URL.VENDOR}/subscription/checkout`,
+  CHANGE_SERVICE_STATUS_OF_BOOKING: `${BASE_URL.VENDOR}/booking`,
 }
 
 export const CUSTOMER_ROUTES = {

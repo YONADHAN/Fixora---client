@@ -13,10 +13,13 @@ export default function ServiceDetailPage() {
   const serviceId = params.id as string
 
   const { data, isLoading, isError } = useGetServicesById({ serviceId })
-  const { data: reviewsData, isLoading: isReviewsLoading } = useServiceReviews(
-    serviceId,
-    5,
-  )
+  const {
+    data: reviewsData,
+    isLoading: isReviewsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useServiceReviews(serviceId, 5)
 
   if (isLoading) return <p className='p-6'>Loading service details…</p>
   if (isError || !data) return <p className='p-6'>Service not found.</p>
@@ -28,7 +31,8 @@ export default function ServiceDetailPage() {
   const subCategory = data.populatedValues?.subServiceCategory
   const schedule = data.schedule
 
-  const reviews = reviewsData?.ratingsReviews || []
+  const reviews =
+    reviewsData?.pages.flatMap((page) => page.ratingsReviews) ?? []
 
   const avgRating =
     reviews.length > 0
@@ -180,6 +184,17 @@ export default function ServiceDetailPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+        {hasNextPage && (
+          <div className='pt-4 flex justify-center'>
+            <Button
+              variant='outline'
+              disabled={isFetchingNextPage}
+              onClick={() => fetchNextPage()}
+            >
+              {isFetchingNextPage ? 'Loading…' : 'Load more reviews'}
+            </Button>
           </div>
         )}
       </Card>

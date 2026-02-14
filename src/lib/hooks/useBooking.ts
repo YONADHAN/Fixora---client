@@ -4,7 +4,9 @@ import {
   ResponseGetMyBookingsDTO,
 } from '@/dtos/booking_dto'
 import {
+  bookingServiceStatus,
   cancelCustomerBooking,
+  cancelVendorBooking,
   getAdminBookings,
   getAvailableSlotsForCustomers,
   getBookingDetailsByPaymentId,
@@ -21,8 +23,9 @@ import {
 } from '@/dtos/booking_dto'
 import { createBookingHold } from '@/services/booking/booking.service'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
 export const useGetAvailableSlotsForCustomer = (
-  payload: RequestGetAvalilableSlotsDTO
+  payload: RequestGetAvalilableSlotsDTO,
 ) => {
   return useQuery({
     queryKey: [
@@ -88,14 +91,15 @@ export const useCustomerBookingDetails = (bookingId: string | null) => {
   })
 }
 
-export const useCustomerBookingDetailsByPaymentId = (paymentId: string | null) => {
+export const useCustomerBookingDetailsByPaymentId = (
+  paymentId: string | null,
+) => {
   return useQuery({
     queryKey: ['booking-details-payment', paymentId],
     queryFn: () => getBookingDetailsByPaymentId(paymentId!),
     enabled: !!paymentId,
   })
 }
-
 
 export const useVendorBookingDetails = (bookingId: string) => {
   return useQuery({
@@ -116,6 +120,51 @@ export const useCancelCustomerBooking = (bookingId: string) => {
       queryClient.invalidateQueries({
         queryKey: ['customer-booking-details', bookingId],
       })
+    },
+  })
+}
+
+export const useCancelVendorBooking = (bookingId: string) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (reason: string) => cancelVendorBooking(bookingId, reason),
+    onSuccess: () => {
+      toast.success('Booking cancelled successfuly')
+      queryClient.invalidateQueries({
+        queryKey: ['vendor-booking-details', bookingId],
+      })
+    },
+  })
+}
+
+export const useBookingServiceStatus = (bookingGroupId: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => bookingServiceStatus(bookingGroupId),
+
+    onSuccess: (data) => {
+      toast.success('Service marked as completed')
+
+      // queryClient.invalidateQueries({
+      //   queryKey: ['vendorBookings'],
+      // })
+
+      // queryClient.invalidateQueries({
+      //   queryKey: ['vendor-booking-details'],
+      // })
+
+      // queryClient.invalidateQueries({
+      //   queryKey: ['customerBookings'],
+      // })
+    },
+
+    onError: (error: unknown) => {
+      if (error instanceof AxiosError) {
+        toast.error(
+          error?.response?.data?.message || 'Failed to update service status',
+        )
+      }
     },
   })
 }

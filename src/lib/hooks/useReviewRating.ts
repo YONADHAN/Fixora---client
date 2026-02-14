@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import {
   GetRatingAndReviewForServiceResponseDTO,
@@ -69,16 +74,28 @@ export const useReviewRating = (page: number = 1) => {
     isDeleting: deleteReviewMutation.isPending,
   }
 }
+
 export const useServiceReviews = (serviceId: string, limit: number = 5) => {
-  return useQuery<GetRatingAndReviewForServiceResponseDTO, Error>({
+  return useInfiniteQuery<
+    GetRatingAndReviewForServiceResponseDTO,
+    Error,
+    GetRatingAndReviewForServiceResponseDTO,
+    ['service-reviews', string],
+    string | null
+  >({
     queryKey: ['service-reviews', serviceId],
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       const res = await ReviewRatingService.getReviewsForService({
         serviceId,
         limit,
+        cursor: pageParam ?? undefined,
       })
 
       return res.data.data
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor
     },
     enabled: !!serviceId,
   })

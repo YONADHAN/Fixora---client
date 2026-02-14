@@ -9,7 +9,6 @@ import {
   ResponseCreateBookingHoldDTO,
   ResponseGetAvailableSlotsDTO,
   ResponsePayBalanceDTO,
-
 } from '@/dtos/booking_dto'
 import {
   ADMIN_ROUTES,
@@ -18,7 +17,7 @@ import {
 } from '@/utils/constants/api.routes'
 
 export const getAvailableSlotsForCustomers = async (
-  payload: RequestGetAvalilableSlotsDTO
+  payload: RequestGetAvalilableSlotsDTO,
 ): Promise<ResponseGetAvailableSlotsDTO> => {
   const response = await axiosInstance.get(
     CUSTOMER_ROUTES.GET_AVAILABLE_SLOTS_FOR_CUSTOMERS,
@@ -28,26 +27,24 @@ export const getAvailableSlotsForCustomers = async (
         month: payload.month,
         year: payload.year,
       },
-    }
+    },
   )
   return response.data.data
 }
 
 export const createBookingHold = async (
-  payload: RequestCreateBookingHoldDTO
+  payload: RequestCreateBookingHoldDTO,
 ): Promise<ResponseCreateBookingHoldDTO> => {
-
-
   const body = {
     serviceId: payload.serviceId,
     addressId: payload.addressId,
     paymentMethod: 'stripe',
-    slots: payload.slots
+    slots: payload.slots,
   }
 
   const response = await axiosInstance.post(
     CUSTOMER_ROUTES.CREATE_BOOKING_HOLD,
-    body
+    body,
   )
 
   return response.data.data
@@ -66,49 +63,67 @@ export const getAdminBookings = (params: RequestGetMyBookingsDTO) =>
   axiosInstance.get(ADMIN_ROUTES.GET_ADMIN_BOOKINGS, { params })
 
 export const getVendorBookingDetails = async (
-  bookingId: string
+  bookingId: string,
 ): Promise<GetBookingDetailsForVendorStrategyResponseDTO> => {
   const res = await axiosInstance.get(
-    `${VENDOR_ROUTES.GET_BOOKING_DETAILS}/${bookingId}`
+    `${VENDOR_ROUTES.GET_BOOKING_DETAILS}/${bookingId}`,
   )
 
   return res.data.data
 }
 
 export const getCustomerBookingDetails = async (
-  bookingId: string
+  bookingId: string,
 ): Promise<GetBookingDetailsForCustomerStrategyResponseDTO> => {
   const response = await axiosInstance.get(
-    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}`
+    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}`,
   )
   return response.data.data
 }
 
 export const getBookingDetailsByPaymentId = async (
-  paymentId: string
+  paymentId: string,
 ): Promise<GetBookingDetailsForCustomerStrategyResponseDTO> => {
   const response = await axiosInstance.get(
-    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/payment/${paymentId}`
+    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/payment/${paymentId}`,
   )
   return response.data.data
 }
 
-
 export const cancelCustomerBooking = async (
   bookingId: string,
-  reason: string
+  reason: string,
 ) => {
   return axiosInstance.patch(
     `${CUSTOMER_ROUTES.CANCEL_CUSTOMER_BOOKING}/${bookingId}/cancel`,
-    { reason }
+    { reason },
+  )
+}
+
+export const cancelVendorBooking = async (
+  bookingId: string,
+  reason: string,
+) => {
+  return axiosInstance.patch(
+    `${VENDOR_ROUTES.CANCEL_VENDOR_BOOKING}/${bookingId}/cancel`,
+    { reason },
   )
 }
 
 export const payBalance = async (
-  bookingId: string
+  bookingId: string,
 ): Promise<ResponsePayBalanceDTO> => {
   const response = await axiosInstance.post(
-    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}/pay-balance`
+    `${CUSTOMER_ROUTES.GET_BOOKING_DETAILS}/${bookingId}/pay-balance`,
   )
   return response.data
+}
+
+export const bookingServiceStatus = async (
+  bookingGroupId: string,
+): Promise<void> => {
+  const response = await axiosInstance.post(
+    `${VENDOR_ROUTES.CHANGE_SERVICE_STATUS_OF_BOOKING}/${bookingGroupId}/service-status`,
+  )
+  return response.data.data
 }

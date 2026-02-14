@@ -12,6 +12,8 @@ import {
 import { Camera, Mic, Phone } from 'lucide-react'
 
 const VideoCallPage = () => {
+  const initializedRef = useRef(false)
+
   const { chatId } = useParams()
   const searchParams = useSearchParams()
   const mode = (searchParams.get('mode') as 'caller' | 'receiver') || 'caller'
@@ -31,6 +33,8 @@ const VideoCallPage = () => {
     let localStream: MediaStream
 
     const start = async () => {
+      if (initializedRef.current) return
+      initializedRef.current = true
       localStream = await MediaManager.camera()
       localStreamRef.current = localStream
 
@@ -93,6 +97,21 @@ const VideoCallPage = () => {
 
   const endCall = () => {
     callRef.current?.close()
+    //----------------
+    // Stop media tracks immediately
+    localStreamRef.current?.getTracks().forEach((track) => {
+      track.stop()
+    })
+
+    // Clear video elements
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = null
+    }
+
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = null
+    }
+    //-----------------
     socket.emit(SOCKET_EVENTS.CALL_END, { chatId })
     router.back()
   }

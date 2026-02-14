@@ -17,6 +17,13 @@ export const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 })
 
+export const axiosInstanceMultipart: AxiosInstance = axios.create({
+  withCredentials: true,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+})
 const handleLogout = (role: string) => {
   switch (role) {
     case URL_PART.customer:
