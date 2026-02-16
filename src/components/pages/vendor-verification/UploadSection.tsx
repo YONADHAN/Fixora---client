@@ -86,7 +86,7 @@ export default function UploadSection({ docsCount }: { docsCount: number }) {
   }
 
   return (
-    <div className='max-w-lg mx-auto mt-2 p-6 rounded-2xl shadow bg-white'>
+    <div className='max-w-lg mx-auto mt-2 p-6 rounded-2xl shadow bg-white py-40'>
       <h2 className='text-2xl font-semibold mb-3 text-center text-green-800'>
         Upload Verification Documents
       </h2>
