@@ -22,6 +22,7 @@ export default function VendorVerificationPage() {
     return <RejectedSection reason={rejectionReason} docsCount={docsCount} />
   }
 
+  
   if (docsCount > 0 && verificationStatus === 'pending') {
     return <PendingSection />
   }
