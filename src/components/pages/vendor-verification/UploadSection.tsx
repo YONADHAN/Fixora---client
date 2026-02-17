@@ -86,7 +86,7 @@ export default function UploadSection({ docsCount }: { docsCount: number }) {
   }
 
   return (
-    <div className='max-w-lg mx-auto mt-2 p-6 rounded-2xl shadow bg-white py-40'>
+    <div className='max-w-lg mx-auto mt-2 p-6 rounded-2xl shadow bg-white '>
       <h2 className='text-2xl font-semibold mb-3 text-center text-green-800'>
         Upload Verification Documents
       </h2>
@@ -110,7 +110,7 @@ export default function UploadSection({ docsCount }: { docsCount: number }) {
         >
           <UploadCloudIcon className='w-10 h-10 text-gray-400 mb-2' />
           <span className='text-gray-600 font-medium'>
-            Click to browse or drag files here
+            Click to add files here
           </span>
         </label>
       </div>

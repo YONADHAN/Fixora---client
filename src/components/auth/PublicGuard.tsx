@@ -29,8 +29,18 @@ export default function PublicGuard({ children, role }: PublicGuardProps) {
 
   useEffect(() => {
     if (isLoggedIn) {
+    if (activeRole === 'vendor') {
+      const status = vendor?.isVerified?.status
+
+      if (status === 'accepted') {
+        router.replace('/vendor/dashboard')
+      } else {
+        router.replace('/vendor/verification')
+      }
+    } else {
       router.replace(`/${activeRole}/dashboard`)
     }
+  }
   }, [isLoggedIn, activeRole, router])
 
   if (isLoggedIn) return <AuthLoader />
