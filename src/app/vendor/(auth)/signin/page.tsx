@@ -24,7 +24,17 @@ export default function VendorLoginPage() {
       if (response.success) {
         dispatch(vendorLogin(response.user))
         toast.success('Login successful!')
-        router.replace('/vendor/dashboard')
+        //alert(response.user.isVerified.status)
+        //console.log("verification status is ", response.user.isVerified.status)
+        const status = response.user.isVerified?.status
+
+        if (status === "accepted") {
+          router.replace('/vendor/dashboard')
+        } else {
+          router.replace('/vendor/verification')
+        }
+
+
       } else {
         toast.error(response.message || 'Login failed')
       }
