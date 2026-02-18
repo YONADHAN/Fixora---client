@@ -32,7 +32,7 @@ export default function VendorVerificationPage() {
     docsCount === 0 &&
     (!verificationStatus || verificationStatus === 'pending')
   ) {
-   // return <UploadSection docsCount={docsCount} />
+  
     return (
   <div className="min-h-screen bg-gray-50 py-20 px-4">
     <div className="max-w-2xl mx-auto">
@@ -66,7 +66,7 @@ export default function VendorVerificationPage() {
             </ul>
           </div>
 
-          {/* Upload Section */}
+      
           <div className="pt-6 pb-6 border-t border-gray-100">
             <UploadSection docsCount={docsCount} />
           </div>
@@ -82,7 +82,7 @@ export default function VendorVerificationPage() {
   }
 
   if (verificationStatus === 'accepted') {
-   // return <SuccessfulSection />
+ 
    router.replace('/vendor/dashboard')
   }
 
