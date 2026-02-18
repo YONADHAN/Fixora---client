@@ -139,6 +139,7 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       // { title: 'Profile', href: '/customer/profile' },
     ],
     sideNav: [
+        { title: 'Dashboard', href: '/customer/dashboard', icon: FaClipboardList },
       { title: 'My profile', href: '/customer/profile', icon: FaUser },
       {
         title: 'My bookings',

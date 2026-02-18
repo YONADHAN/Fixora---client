@@ -88,6 +88,7 @@ export const CUSTOMER_ROUTES = {
   GET_PAYMENTS: `${BASE_URL.CUSTOMER}/payment`,
   REVIEWS: `${BASE_URL.CUSTOMER}/review`,
   BOOKED_REVIEWS: `${BASE_URL.CUSTOMER}/review/booked-services`,
+  DASHBOARD: `${BASE_URL.CUSTOMER}/dashboard-stats`,
 }
 
 export const AUTH_ROUTES = {
