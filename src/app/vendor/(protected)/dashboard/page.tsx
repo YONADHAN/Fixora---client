@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useVendorDashboardStats } from "@/hooks/useDashboardStats";
+import { useVendorDashboardStats } from "@/lib/hooks/useDashboardStats";
 import { TimeGranularity } from "@/types/dashboard.types";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Users, Calendar, TrendingUp, DollarSign } from "lucide-react";
+import { toast } from "sonner";
 
 export default function VendorDashboardPage() {
   const [interval, setInterval] = useState<TimeGranularity>("daily");
@@ -35,11 +36,7 @@ export default function VendorDashboardPage() {
   }
 
   if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-red-500">
-        Error: {error}
-      </div>
-    );
+   toast.error(error)
   }
 
   const { summary, booking, customer } = data || {};
@@ -105,7 +102,7 @@ export default function VendorDashboardPage() {
           icon={Users}
           description="Unique customers"
         />
-        {/* Intentionally omitting Active Vendors card as it's not relevant for Vendor view */}
+
         <MetricCard
           title="Scheduled Bookings"
           value={booking?.bookingStatusBreakdown?.scheduled ?? 0}

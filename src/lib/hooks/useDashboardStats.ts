@@ -5,7 +5,10 @@ import {
   AdminDashboardResponseDTO,
   VendorDashboardStatsResponseDTO,
   DashboardStatsParams,
+  CustomerDashboardResponseDTO,
+  CustomerDashboardStatsResponseDTO,
 } from '@/types/dashboard.types'
+import { getCustomerDashboardStats } from '@/services/customer/customerDashboard.service'
 
 interface UseDashboardStatsResult<T> {
   data: T | null
@@ -59,6 +62,35 @@ export const useVendorDashboardStats = (
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || 'Failed to fetch vendor dashboard stats')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }, [params.from, params.to, params.interval])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  return { data, loading, error, refetch: fetchData }
+}
+
+export const useCustomerDashboardStats = (
+  params: DashboardStatsParams,
+): UseDashboardStatsResult<CustomerDashboardStatsResponseDTO> => {
+  const [data, setData] = useState<CustomerDashboardStatsResponseDTO | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const result = await getCustomerDashboardStats(params)
+      setData(result)
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Failed to fetch customer dashboard stats")
       }
     } finally {
       setLoading(false)

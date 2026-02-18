@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAdminDashboardStats } from "@/hooks/useDashboardStats";
+import { useAdminDashboardStats } from "@/lib/hooks/useDashboardStats";
 import { TimeGranularity } from "@/types/dashboard.types";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
