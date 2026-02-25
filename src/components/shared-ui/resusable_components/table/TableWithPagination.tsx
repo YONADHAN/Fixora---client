@@ -71,7 +71,7 @@ export function ResponsiveTable<T extends TableItem>({
   headerActions,
 }: ResponsiveTableProps<T>) {
   return (
-    <Card className='w-full'>
+    <Card className='w-full '>
       <div className='p-6 space-y-6'>
         {/* Header */}
         <div className='flex justify-between items-center mb-4 flex-wrap gap-4'>

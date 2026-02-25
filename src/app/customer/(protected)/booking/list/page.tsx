@@ -156,6 +156,7 @@ export default function BookingListPage() {
   ] as const
 
   return (
+    
     <ResponsiveTable<BookingTableItem>
       title='My Bookings'
       data={tableData}

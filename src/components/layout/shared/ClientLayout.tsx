@@ -25,7 +25,7 @@ export default function ClientLayout({
       {showSharedLayout && (
         <Navbar role='customer' isAuthenticated={isAuthenticated} />
       )}
-      <main>{children}</main>
+      <main >{children}</main>
       {showSharedLayout && <Footer />}
     </>
   )
