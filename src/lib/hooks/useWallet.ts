@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getCustomerWallets } from '@/services/wallet/wallet.service'
+import { getAdminWallets, getCustomerWallets } from '@/services/wallet/wallet.service'
 import { getVendorWallets } from '@/services/wallet/wallet.service'
 import { WalletResponseDTO } from '@/dtos/wallet_dto'
 
@@ -42,5 +42,23 @@ export const useVendorWallet = (params: WalletQueryParams) => {
         search,
       }),
     // keepPreviousData: true,
+  })
+}
+
+
+export const useAdminWallet = (params: WalletQueryParams) => {
+  const { page = 1, limit = 10, sortBy, order, search } = params
+
+  return useQuery<WalletResponseDTO, Error>({
+    queryKey: ['admin-wallet', page, limit, sortBy, order, search],
+    queryFn: () =>
+      getAdminWallets({
+        page,
+        limit,
+        sortBy,
+        order,
+        search,
+      }),
+    //keepPreviousData: true,
   })
 }

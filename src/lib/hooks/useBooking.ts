@@ -24,6 +24,7 @@ import {
 import { createBookingHold } from '@/services/booking/booking.service'
 import { toast } from 'sonner'
 import { AxiosError } from 'axios'
+
 export const useGetAvailableSlotsForCustomer = (
   payload: RequestGetAvalilableSlotsDTO,
 ) => {
@@ -120,6 +121,17 @@ export const useCancelCustomerBooking = (bookingId: string) => {
       queryClient.invalidateQueries({
         queryKey: ['customer-booking-details', bookingId],
       })
+    },
+
+    onError: (error: unknown) => {
+      if (error instanceof AxiosError) {
+        const message =
+          error?.response?.data?.message ||
+          'Cancellation not possible'
+        toast.error(message)
+      }
+
+
     },
   })
 }

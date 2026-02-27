@@ -51,7 +51,12 @@ interface ResponsiveTableProps<T extends TableItem> {
   /** Optional top-right custom header button(s) */
   headerActions?: React.ReactNode
 }
-
+const trimText = (text: string, charLimit = 80) => {
+  if (!text) return ''
+  return text.length > charLimit
+    ? text.substring(0, charLimit) + '...'
+    : text
+}
 /* --------------------------------------
    MAIN COMPONENT
 -------------------------------------- */
@@ -120,9 +125,14 @@ export function ResponsiveTable<T extends TableItem>({
                     <TableRow key={item.id}>
                       {columns.map((col) => (
                         <TableCell key={`${item.id}-${col.key.toString()}`}>
+                          {/* {col.render
+                            ? col.render(item)
+                            : (item[col.key] as React.ReactNode)} */}
                           {col.render
                             ? col.render(item)
-                            : (item[col.key] as React.ReactNode)}
+                            : typeof item[col.key] === 'string'
+                              ? trimText(item[col.key] as string, 50)
+                              : (item[col.key] as React.ReactNode)}
                         </TableCell>
                       ))}
 
@@ -151,9 +161,14 @@ export function ResponsiveTable<T extends TableItem>({
                       >
                         <strong>{col.header}:</strong>
                         <span>
+                          {/* {col.render
+                            ? col.render(item)
+                            : (item[col.key] as React.ReactNode)} */}
                           {col.render
                             ? col.render(item)
-                            : (item[col.key] as React.ReactNode)}
+                            : typeof item[col.key] === 'string'
+                              ? trimText(item[col.key] as string, 50)
+                              : (item[col.key] as React.ReactNode)}
                         </span>
                       </div>
                     ))}

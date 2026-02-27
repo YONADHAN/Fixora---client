@@ -7,11 +7,10 @@ import { format } from 'date-fns'
 import {
   Calendar,
   Clock,
-  IndianRupee,
+
   MapPin,
   AlertCircle,
-  CheckCircle2,
-  XCircle,
+ 
   Building2,
   Phone,
   Mail,

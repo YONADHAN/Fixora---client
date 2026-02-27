@@ -53,12 +53,12 @@ export function MessageList({
       prevScrollHeight.current > 0 &&
       el.scrollHeight > prevScrollHeight.current
 
-    // 1. If we loaded older messages (height increased AND first item changed)
+  
     if (isPrepended) {
       el.scrollTop = el.scrollHeight - prevScrollHeight.current
       prevScrollHeight.current = 0
     }
-    // 2. If user was near bottom
+  
     else if (shouldStickToBottom.current) {
       el.scrollTop = el.scrollHeight
     }

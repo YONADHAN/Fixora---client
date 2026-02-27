@@ -232,7 +232,28 @@ export default function BookServicePage() {
   if (isError || isServiceError || !service)
     return <p className='p-6'>Error loading data</p>
 
-  /* ───────────────── UI ───────────────── */
+
+
+  const isSlotInPast = (date: Date, startTime: string) => {
+    const now = new Date()
+
+    const [hours, minutes] = startTime.split(':').map(Number)
+
+    const slotDateTime = new Date(date)
+    slotDateTime.setHours(hours, minutes, 0, 0)
+
+    return slotDateTime <= now
+  }
+
+  const isDateInPast = (dateStr: string) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const date = new Date(dateStr)
+    date.setHours(0, 0, 0, 0)
+
+    return date < today
+  }
 
   return (
     <div className='max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6'>
@@ -266,7 +287,7 @@ export default function BookServicePage() {
           </div>
 
           <div className='grid grid-cols-7 gap-1.5'>
-            {availableDates.map((d) => (
+            {availableDates.filter((d) => !isDateInPast(d)).map((d) => (
               <Button
                 key={d}
                 size='sm'
@@ -300,7 +321,29 @@ export default function BookServicePage() {
           </div>
 
           <div className='grid grid-cols-3 md:grid-cols-4 gap-1.5 mb-2'>
-            {slotsForSelectedDate.map((slot) => (
+            {slotsForSelectedDate.map((slot) => {
+              const slotDate = selectedDate ? new Date(selectedDate) : null
+
+              const disabled =
+                !slotDate || isSlotInPast(slotDate, slot.start)
+
+              return (
+                <Button
+                  key={slot.start}
+                  size='sm'
+                  disabled={disabled}
+                  variant={
+                    selectedSlotStart === slot.start
+                      ? 'default'
+                      : 'outline'
+                  }
+                  onClick={() => !disabled && handleSlotClick(slot.start)}
+                >
+                  {slot.start}–{slot.end}
+                </Button>
+              )
+            })}
+            {/* {slotsForSelectedDate.map((slot) => (
               <Button
                 key={slot.start}
                 size='sm'
@@ -313,7 +356,7 @@ export default function BookServicePage() {
               >
                 {slot.start}–{slot.end}
               </Button>
-            ))}
+            ))} */}
           </div>
           {slotsForSelectedDate.length === 0 && (
             <p className='text-xs text-muted-foreground p-2 text-center'>No slots available for this date.</p>

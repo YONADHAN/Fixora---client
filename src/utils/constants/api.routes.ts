@@ -29,6 +29,7 @@ export const ADMIN_ROUTES = {
   CREATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
   TOGGLE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
   UPDATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
+  GET_ADMIN_WALLET:`${BASE_URL.ADMIN}/wallet`,
 }
 
 export const VENDOR_ROUTES = {
