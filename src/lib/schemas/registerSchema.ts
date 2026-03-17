@@ -15,7 +15,7 @@
 //     }),
 //   phone: z.string().regex(/^\d{10}$/, 'Phone must be 10 digits'),
 
-//   // ✅ Matches backend "geoLocation" { type, coordinates }
+//   // Matches backend "geoLocation" { type, coordinates }
 //   geoLocation: z
 //     .object({
 //       type: z.literal('Point'),
@@ -25,7 +25,7 @@
 //     })
 //     .optional(),
 
-//   // ✅ Matches backend "location" { name, displayName, zipCode }
+//   // Matches backend "location" { name, displayName, zipCode }
 //   location: z
 //     .object({
 //       name: z.string().optional(),

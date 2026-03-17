@@ -26,7 +26,7 @@ export default function ServiceReviewStep() {
 
   return (
     <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-8'>
-      {/* ✅ HEADER */}
+      {/*  HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Review & Confirm
@@ -36,7 +36,7 @@ export default function ServiceReviewStep() {
         </p>
       </div>
 
-      {/* ✅ BASIC INFO */}
+      {/* BASIC INFO */}
       <div className='border dark:border-border rounded-xl p-4 space-y-2'>
         <h3 className='font-medium text-gray-800 dark:text-gray-200 mb-2'>Basic Information</h3>
 
@@ -53,7 +53,7 @@ export default function ServiceReviewStep() {
         </p>
       </div>
 
-      {/* ✅ PRICING */}
+      {/* PRICING */}
       <div className='border dark:border-border rounded-xl p-4 space-y-2'>
         <h3 className='font-medium text-gray-800 dark:text-gray-200 mb-2'>Pricing</h3>
 
@@ -66,7 +66,7 @@ export default function ServiceReviewStep() {
         </p>
       </div>
 
-      {/* ✅ SCHEDULE */}
+      {/* SCHEDULE */}
       <div className='border dark:border-border rounded-xl p-4 space-y-3'>
         <h3 className='font-medium text-gray-800 dark:text-gray-200 mb-2'>Schedule</h3>
 
@@ -78,7 +78,7 @@ export default function ServiceReviewStep() {
           <b className='dark:text-gray-400'>Recurrence:</b> {values.schedule?.recurrenceType || '—'}
         </p>
 
-        {/* ✅ DAILY WINDOWS */}
+        {/* DAILY WINDOWS */}
         <div>
           <p className='font-medium text-sm mb-1 dark:text-gray-300'>Daily Working Windows</p>
 
@@ -95,7 +95,7 @@ export default function ServiceReviewStep() {
           )}
         </div>
 
-        {/* ✅ WEEKLY DAYS */}
+        {/* WEEKLY DAYS */}
         {values.schedule &&
           values.schedule.weeklyWorkingDays &&
           values.schedule?.weeklyWorkingDays?.length > 0 && (
@@ -104,7 +104,7 @@ export default function ServiceReviewStep() {
             </p>
           )}
 
-        {/* ✅ MONTHLY DATES */}
+        {/* MONTHLY DATES */}
         {values.schedule &&
           values.schedule.monthlyWorkingDates &&
           values.schedule?.monthlyWorkingDates?.length > 0 && (
@@ -115,7 +115,7 @@ export default function ServiceReviewStep() {
           )}
       </div>
 
-      {/* ✅ VARIANTS */}
+      {/* VARIANTS */}
       {values.serviceVariants && values.serviceVariants?.length > 0 && (
         <div className='border dark:border-border rounded-xl p-4 space-y-2'>
           <h3 className='font-medium text-gray-800 dark:text-gray-200 mb-2'>Service Variants</h3>

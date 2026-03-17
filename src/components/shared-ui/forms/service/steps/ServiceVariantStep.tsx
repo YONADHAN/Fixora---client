@@ -42,7 +42,7 @@ export default function ServiceVariantStep() {
 
   return (
     <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-8'>
-      {/* ✅ HEADER */}
+      {/* HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Variants
@@ -52,7 +52,7 @@ export default function ServiceVariantStep() {
         </p>
       </div>
 
-      {/* ✅ ADD VARIANT FORM */}
+      {/*  ADD VARIANT FORM */}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         <div>
           <label className='block text-sm font-medium mb-1 dark:text-gray-300'>Variant Name</label>
@@ -100,7 +100,7 @@ export default function ServiceVariantStep() {
         </button>
       </div>
 
-      {/* ✅ VARIANT LIST */}
+      {/*  VARIANT LIST */}
       <div className='space-y-3'>
         {values.serviceVariants?.map((v, idx) => (
           <div
@@ -131,11 +131,11 @@ export default function ServiceVariantStep() {
         ))}
       </div>
 
-      {/* ✅ ERROR DISPLAY */}
+      {/* ERROR DISPLAY */}
       {typeof variantErrors === 'string' && (
         <p className='text-red-500 text-sm'>{variantErrors}</p>
       )}
-      {/* ✅ INFO BANNER */}
+      {/*  INFO BANNER */}
       <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
         💡 <span className='font-medium'>Tip:</span> The service variants are
         for adding services similar but having some difference in price.

@@ -5,7 +5,7 @@ import {
 } from '@/utils/constants/constants'
 
 export const serviceSchema = Yup.object({
-  // ✅ BASIC INFO
+  //  BASIC INFO
   serviceId: Yup.string().optional(),
 
   name: Yup.string().trim().required('Service name is required'),
@@ -19,7 +19,7 @@ export const serviceSchema = Yup.object({
     .trim()
     .required('Sub service category is required'),
 
-  // ✅ VARIANTS (OPTIONAL BUT STRUCTURED)
+  //  VARIANTS (OPTIONAL BUT STRUCTURED)
   serviceVariants: Yup.array()
     .of(
       Yup.object({
@@ -38,7 +38,7 @@ export const serviceSchema = Yup.object({
     )
     .optional(),
 
-  // ✅ PRICING (REQUIRED)
+  // PRICING (REQUIRED)
   pricing: Yup.object({
     pricePerSlot: Yup.number()
       .typeError('Price per slot must be a number')
@@ -51,7 +51,7 @@ export const serviceSchema = Yup.object({
       .required('Advance amount is required'),
   }).required(),
 
-  // ✅ SCHEDULE
+  //  SCHEDULE
   schedule: Yup.object({
     visibilityStartDate: Yup.date().typeError('Invalid start date').optional(),
 
@@ -91,7 +91,7 @@ export const serviceSchema = Yup.object({
       .of(Yup.number().min(1, 'Invalid date').max(31, 'Invalid date'))
       .optional(),
 
-    // ✅ OVERRIDE BLOCK
+    //  OVERRIDE BLOCK
     overrideBlock: Yup.array()
       .of(
         Yup.object({
@@ -109,7 +109,7 @@ export const serviceSchema = Yup.object({
       )
       .optional(),
 
-    // ✅ OVERRIDE CUSTOM
+    //  OVERRIDE CUSTOM
     overrideCustom: Yup.array()
       .of(
         Yup.object({
@@ -129,7 +129,7 @@ export const serviceSchema = Yup.object({
       .optional(),
   }).required(),
 
-  // ✅ IMAGES
+  //  IMAGES
   images: Yup.array()
     .of(
       Yup.mixed<File>()

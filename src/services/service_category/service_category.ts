@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/interceptor'
+import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
 import { ADMIN_ROUTES, CUSTOMER_ROUTES } from '@/utils/constants/api.routes'
 import { ServiceCategoryItem } from '@/types/service_category/service_category'
 
@@ -28,11 +28,8 @@ export const createServiceCategories = async (
   formData.append('description', description)
   formData.append('ServiceCategoryBannerImage', bannerImage)
 
-  return axiosInstance.post(ADMIN_ROUTES.CREATE_SERVICE_CATEGORY, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+ 
+  return axiosInstanceMultipart.post(ADMIN_ROUTES.CREATE_SERVICE_CATEGORY,formData)
 }
 
 export const editServiceCategories = async (
@@ -50,14 +47,9 @@ export const editServiceCategories = async (
     formData.append('bannerImage', bannerImage)
   }
 
-  return axiosInstance.patch(
-    `${ADMIN_ROUTES.EDIT_SERVICE_CATEGORY}/${categoryId}`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
+
+  return axiosInstanceMultipart.patch(
+    `${ADMIN_ROUTES.EDIT_SERVICE_CATEGORY}/${categoryId}`,formData
   )
 }
 

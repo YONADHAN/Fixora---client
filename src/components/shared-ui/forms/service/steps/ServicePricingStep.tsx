@@ -18,7 +18,7 @@ export default function ServicePricingStep() {
 
   return (
     <div className='max-w-2xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-8'>
-      {/* ✅ HEADER */}
+      {/*  HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>Service Pricing</h2>
         <p className='text-sm text-gray-500 dark:text-muted-foreground'>
@@ -26,9 +26,9 @@ export default function ServicePricingStep() {
         </p>
       </div>
 
-      {/* ✅ PRICING GRID */}
+      {/* PRICING GRID */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        {/* ✅ PRICE PER SLOT */}
+        {/* PRICE PER SLOT */}
         <div className='space-y-1'>
           <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
             Price per Slot (₹)
@@ -55,7 +55,7 @@ export default function ServicePricingStep() {
           )}
         </div>
 
-        {/* ✅ ADVANCE AMOUNT */}
+        {/*  ADVANCE AMOUNT */}
         <div className='space-y-1'>
           <label className='block text-sm font-medium text-gray-700 dark:text-gray-300'>
             Advance Amount (₹)
@@ -84,7 +84,7 @@ export default function ServicePricingStep() {
         </div>
       </div>
 
-      {/* ✅ INFO BANNER */}
+      {/*  INFO BANNER */}
       <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
         💡 <span className='font-medium'>Tip:</span> The advance amount will be
         collected during booking to confirm the service slot.

@@ -12,7 +12,7 @@
 //           file ? file.size <= 5 * 1024 * 1024 : false
 //         )
 //     )
-//     .length(1, 'Only one image is allowed') // ✅ ENFORCES SINGLE IMAGE
+//     .length(1, 'Only one image is allowed') //  ENFORCES SINGLE IMAGE
 //     .required('Service image is required'),
 // })
 import * as Yup from 'yup'
@@ -28,7 +28,7 @@ export const serviceImageSchema = Yup.object({
           file ? file.size <= 5 * 1024 * 1024 : true
         )
     )
-    .max(1, 'Only one image is allowed') // ✅ still enforces 1 max
+    .max(1, 'Only one image is allowed') //  still enforces 1 max
     .when('mainImage', {
       is: (mainImage: string | undefined) => !mainImage,
       then: (schema) =>

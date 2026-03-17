@@ -40,7 +40,7 @@ export const mapFormToCreateServiceFormData = (
 ): FormData => {
   const fd = new FormData()
 
-  // ✅ BASIC FIELDS
+  //  BASIC FIELDS
   fd.append('serviceId', values.serviceId)
   fd.append('subServiceCategoryId', values.subServiceCategoryId)
   fd.append('name', values.name)
@@ -49,15 +49,15 @@ export const mapFormToCreateServiceFormData = (
     fd.append('description', values.description)
   }
 
-  // ✅ VARIANTS
+  //  VARIANTS
   if (values.serviceVariants?.length) {
     fd.append('serviceVariants', JSON.stringify(values.serviceVariants))
   }
 
-  // ✅ PRICING
+  // PRICING
   fd.append('pricing', JSON.stringify(values.pricing))
 
-  // ✅ CLEANED SCHEDULE
+  //  CLEANED SCHEDULE
   const cleanedSchedule = {
     ...values.schedule,
 
@@ -88,9 +88,9 @@ export const mapFormToCreateServiceFormData = (
 
   fd.append('schedule', JSON.stringify(cleanedSchedule))
 
-  // ✅ SINGLE IMAGE
+  //  SINGLE IMAGE
   if (values.images?.length === 1 && values.images[0] instanceof File) {
-    fd.append('images', values.images[0]) // ✅ IMPORTANT: use "images"
+    fd.append('images', values.images[0]) //  IMPORTANT: use "images"
   } else {
     console.error('❌ No valid image selected')
   }

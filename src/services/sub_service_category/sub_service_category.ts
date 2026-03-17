@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/interceptor'
+import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
 import {
   RequestAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
   RequestAllVendorSubServiceCategoriesDTO,
@@ -28,14 +28,11 @@ export const admin_createSubServiceCategories = async (
   // formData.append('serviceCategoryName', payload.serviceCategoryName)
   formData.append('SubServiceCategoryImage', payload.bannerImage)
 
-  const response = await axiosInstance.post(
+ 
+
+  const response = await axiosInstanceMultipart.post(
     ADMIN_ROUTES.CREATE_SUB_SERVICE_CATEGORY,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
+    formData
   )
 
   return response.data.data as ResponseCreateSubServiceCategoryDTO
@@ -51,14 +48,9 @@ export const vendor_createSubServiceCategories = async (
   // formData.append('serviceCategoryName', payload.serviceCategoryName)
   formData.append('SubServiceCategoryImage', payload.bannerImage)
 
-  const response = await axiosInstance.post(
-    VENDOR_ROUTES.CREATE_SUB_SERVICE_CATEGORY,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
+
+  const response = await axiosInstanceMultipart.post(
+    VENDOR_ROUTES.CREATE_SUB_SERVICE_CATEGORY,formData
   )
 
   return response.data.data as ResponseCreateSubServiceCategoryDTO
@@ -98,12 +90,11 @@ export const getAllVendorSubServiceCategories = async (
 
 // services/sub_service_category
 export const editSubServiceCategories = async (formData: FormData) => {
-  const response = await axiosInstance.patch(
-    ADMIN_ROUTES.EDIT_SUB_SERVICE_CATEGORY,
-    formData,
-    {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }
+
+
+  const response = await axiosInstanceMultipart.patch(
+    ADMIN_ROUTES.EDIT_SERVICE_CATEGORY,
+    formData
   )
 
   return response.data.data

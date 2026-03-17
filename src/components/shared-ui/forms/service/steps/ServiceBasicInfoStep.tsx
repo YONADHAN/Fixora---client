@@ -25,7 +25,7 @@ export default function ServiceBasicInfoStep() {
 
   return (
     <div className='max-w-2xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-6'>
-      {/* ✅ HEADER */}
+      {/*  HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Basic Information
@@ -35,7 +35,7 @@ export default function ServiceBasicInfoStep() {
         </p>
       </div>
 
-      {/* ✅ SERVICE NAME */}
+      {/*  SERVICE NAME */}
       <div className='space-y-1'>
         <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Service Name
@@ -52,7 +52,7 @@ export default function ServiceBasicInfoStep() {
         )}
       </div>
 
-      {/* ✅ DESCRIPTION */}
+      {/*  DESCRIPTION */}
       <div className='space-y-1'>
         <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Service Description
@@ -70,7 +70,7 @@ export default function ServiceBasicInfoStep() {
         )}
       </div>
 
-      {/* ✅ SUB CATEGORY (DYNAMIC FROM API) */}
+      {/*  SUB CATEGORY (DYNAMIC FROM API) */}
       <div className='space-y-1'>
         <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>
           Sub Service Category
@@ -99,7 +99,7 @@ export default function ServiceBasicInfoStep() {
         {touched.subServiceCategoryId && errors.subServiceCategoryId && (
           <p className='text-red-500 text-xs'>{errors.subServiceCategoryId}</p>
         )}
-        {/* ✅ INFO BANNER */}
+        {/*  INFO BANNER */}
         <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
           💡 <span className='font-medium'>Tip:</span> If you don&apos;t find
           your required sub service category, please{' '}

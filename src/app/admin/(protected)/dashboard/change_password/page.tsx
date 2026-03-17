@@ -21,7 +21,7 @@ const ChangePasswordPage = () => {
       <ChangePasswordForm onSubmit={handleSubmit} />
       {isPending && <p className='text-blue-600 mt-2'>Updating password...</p>}
       {isSuccess && (
-        <p className='text-green-600 mt-2'>Password changed successfully ✅</p>
+        <p className='text-green-600 mt-2'>Password changed successfully </p>
       )}
       {isError && <p className='text-red-600 mt-2'>Invalid Passwords</p>}
     </div>

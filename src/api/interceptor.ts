@@ -24,6 +24,7 @@ export const axiosInstanceMultipart: AxiosInstance = axios.create({
     'Content-Type': 'multipart/form-data',
   },
 })
+
 const handleLogout = (role: string) => {
   switch (role) {
     case URL_PART.customer:

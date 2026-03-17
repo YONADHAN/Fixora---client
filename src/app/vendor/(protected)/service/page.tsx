@@ -64,7 +64,7 @@ export default function AdminServicesPage() {
     )
   }
 
-  /* ✅ UPDATED COLUMNS */
+  /*  UPDATED COLUMNS */
   const columns: ColumnDefinition<ServiceRow>[] = [
     {
       key: 'name',

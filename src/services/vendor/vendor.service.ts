@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/interceptor'
+import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
 import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
 
 import { VENDOR_ROUTES } from '@/utils/constants/api.routes'
@@ -26,14 +26,11 @@ export const uploadVerificationDocuments = async (files: File[]) => {
     formData.append('files', file)
   })
 
-  const response = await axiosInstance.post(
+
+
+  const response = await axiosInstanceMultipart.post(
     VENDOR_ROUTES.UPLOAD_VERIFICATION_DOCUMENT,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
+    formData
   )
   return response.data
 }
@@ -59,14 +56,11 @@ export const vendorUploadProfileImage = async (file: File) => {
   const formData = new FormData()
   formData.append('profileImage', file)
 
-  const response = await axiosInstance.post(
+ 
+
+  const response = await axiosInstanceMultipart.post(
     VENDOR_ROUTES.UPLOAD_PROFILE_IMAGE,
     formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
   )
 
   return response.data

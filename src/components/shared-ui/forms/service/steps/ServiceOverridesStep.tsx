@@ -25,7 +25,7 @@ export default function ServiceOverridesStep() {
 
   const toTime = (dt: string) => new Date(dt).getTime()
 
-  // ✅ ADD BLOCK OVERRIDE
+  //  ADD BLOCK OVERRIDE
   const addBlockOverride = () => {
     setBlockError(null)
 
@@ -78,7 +78,7 @@ export default function ServiceOverridesStep() {
     setFieldValue('schedule.overrideBlock', updated, true)
   }
 
-  // ✅ ADD CUSTOM OVERRIDE
+  //  ADD CUSTOM OVERRIDE
   const addCustomOverride = () => {
     setCustomError(null)
 
@@ -135,7 +135,7 @@ export default function ServiceOverridesStep() {
 
   return (
     <div className='max-w-4xl mx-auto bg-white dark:bg-card border dark:border-border rounded-2xl shadow-sm p-6 space-y-10'>
-      {/* ✅ HEADER */}
+      {/*  HEADER */}
       <div>
         <h2 className='text-xl font-semibold text-gray-900 dark:text-foreground'>
           Service Overrides
@@ -208,7 +208,7 @@ export default function ServiceOverridesStep() {
               </button>
             </div>
           ))}
-          {/* ✅ INFO BANNER */}
+          {/*  INFO BANNER */}
           <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
             💡 <span className='font-medium'>Tip:</span> Block service period is
             means holidays. You can skip this, if you don&apos;t want it now.
@@ -281,7 +281,7 @@ export default function ServiceOverridesStep() {
               </button>
             </div>
           ))}
-          {/* ✅ INFO BANNER */}
+          {/*  INFO BANNER */}
           <div className='bg-gray-50 dark:bg-muted border dark:border-border rounded-lg p-4 text-sm text-gray-600 dark:text-muted-foreground'>
             💡 <span className='font-medium'>Tip:</span> You can add additional
             service schedule in this. If you don&apos;t want it now, skip this.

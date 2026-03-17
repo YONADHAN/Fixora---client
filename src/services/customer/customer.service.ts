@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/api/interceptor'
+import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
 
 import { CUSTOMER_ROUTES } from '@/utils/constants/api.routes'
 
@@ -37,15 +37,9 @@ export const customerUploadProfileImage = async (file: File) => {
   const formData = new FormData()
   formData.append('profileImage', file)
 
-  const response = await axiosInstance.post(
-    CUSTOMER_ROUTES.UPLOAD_PROFILE_IMAGE,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  )
+
+
+  const response = await axiosInstanceMultipart.post(CUSTOMER_ROUTES.UPLOAD_PROFILE_IMAGE,formData)
 
   return response.data
 }
