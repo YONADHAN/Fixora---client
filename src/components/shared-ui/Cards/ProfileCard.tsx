@@ -88,13 +88,13 @@ const ProfileCard = ({ user }: { user: ProfileUser | null }) => {
         )}
 
         {/* Location */}
-        {user.location && (
+        {user.location && (user.location.name || user.location.displayName || user.location.zipCode) && (
           <div className='flex items-start gap-3'>
             <div className='p-2 rounded-md bg-gray-100 dark:bg-slate-700 mt-1'>
               <MapPin size={18} className='text-gray-500' />
             </div>
             <div>
-              <p className='font-medium'>{user.location.name}</p>
+              <p className='font-medium'>{user.location.name || "No location added"}</p>
               <p className='text-gray-500 dark:text-gray-400 text-xs'>
                 {user.location.displayName}
               </p>
