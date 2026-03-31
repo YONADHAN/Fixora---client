@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useAdminDashboardStats } from "@/lib/hooks/useDashboardStats";
 import { TimeGranularity } from "@/types/dashboard.types";
 import { MetricCard } from "@/components/dashboard/MetricCard";
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Users, Calendar, TrendingUp, DollarSign, Briefcase } from "lucide-react";
+import { Users, Calendar, DollarSign, Briefcase } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const [interval, setInterval] = useState<TimeGranularity>("daily");

@@ -1,12 +1,11 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Search, CheckCircle, Clock, Shield, Star } from 'lucide-react'
+import {CheckCircle, Clock, Shield, Star } from 'lucide-react'
 import Image from 'next/image'
 import { useGetActiveServiceCategories } from '@/lib/hooks/userServiceCategory'
 import { useRouter } from 'next/navigation'
-// import { testingOnlyApi } from '@/services/notification/notification.service'
-// import { toast } from 'sonner'
+
 interface TypeCategoryItem {
   serviceCategoryId: string
   name: string
@@ -15,7 +14,7 @@ interface TypeCategoryItem {
 }
 export default function Page() {
   const router = useRouter()
-  const [searchQuery, setSearchQuery] = useState('')
+  // const [searchQuery, setSearchQuery] = useState('')
 
   const { data, isLoading } = useGetActiveServiceCategories()
 
