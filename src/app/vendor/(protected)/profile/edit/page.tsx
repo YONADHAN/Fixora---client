@@ -14,6 +14,7 @@ import {
   useVendorUploadProfileImage,
 } from '@/lib/hooks/useVendor'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
 
 
 const EditVendorProfilePage = () => {
@@ -26,7 +27,7 @@ const EditVendorProfilePage = () => {
 
   const { mutate: uploadImage, isPending: isUploadingImage } = useVendorUploadProfileImage()
 
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = (formData: ProfileUpdateDTO) => {
     const name = formData.name?.trim()
     const phone = formData.phone?.trim()
     const zip = formData.location?.zipCode?.trim()
@@ -126,9 +127,11 @@ const EditVendorProfilePage = () => {
               toast.success('Profile picture updated!')
               queryClient.invalidateQueries({ queryKey: ['vendorProfile'] })
             },
-            onError: (error: any) => {
-              toast.error('Failed to upload image')
+            onError: (error: unknown) => {
+             if(error instanceof AxiosError){
+               toast.error('Failed to upload image')
               console.error(error)
+             }
             }
           })}
           isUploadingImage={isUploadingImage}

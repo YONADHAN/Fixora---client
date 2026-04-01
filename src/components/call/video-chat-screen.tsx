@@ -53,7 +53,7 @@ const VideoCallPage = () => {
       call.onRemoteSteam((stream) => {
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = stream
-          remoteVideoRef.current.play().catch(() => {})
+          remoteVideoRef.current.play().catch(() => { })
         }
       })
 
@@ -71,6 +71,7 @@ const VideoCallPage = () => {
       callRef.current?.close()
       localStream?.getTracks().forEach((t) => t.stop())
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, mode])
 
   const toggleMic = () => {
@@ -147,18 +148,16 @@ const VideoCallPage = () => {
       <div className='h-20 flex justify-center items-center gap-6 bg-[#111]'>
         <button
           onClick={toggleMic}
-          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg ${
-            micOn ? 'bg-gray-700' : 'bg-red-600'
-          }`}
+          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg ${micOn ? 'bg-gray-700' : 'bg-red-600'
+            }`}
         >
           <Mic size={20} />
         </button>
 
         <button
           onClick={toggleCamera}
-          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg ${
-            cameraOn ? 'bg-gray-700' : 'bg-red-600'
-          }`}
+          className={`w-12 h-12 rounded-full flex items-center justify-center text-lg ${cameraOn ? 'bg-gray-700' : 'bg-red-600'
+            }`}
         >
           <Camera size={20} />
         </button>

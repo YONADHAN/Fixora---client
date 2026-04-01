@@ -25,12 +25,14 @@ const ImageCropper = ({
       drawCanvas(imgEl, scale, position)
     }
     imgEl.src = image
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image])
 
   useEffect(() => {
     if (img) {
       drawCanvas(img, scale, position)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scale, position, img])
 
   const drawCanvas = (imgEl, currentScale, currentPosition) => {
@@ -227,6 +229,7 @@ const TestCropPage = () => {
           <h2 className='font-semibold text-lg mb-3 text-gray-700'>
             Cropped Result:
           </h2>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={croppedImage}
             alt='Cropped'

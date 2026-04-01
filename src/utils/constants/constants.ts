@@ -107,12 +107,15 @@ export interface NotificationPayload {
   recipientRole: 'customer' | 'vendor' | 'admin'
 
   type:
-    | 'BOOKING_CREATED'
+     | 'BOOKING_CREATED'
     | 'BOOKING_CANCELLED'
     | 'BOOKING_CONFIRMED'
     | 'PAYMENT_SUCCESS'
     | 'PAYMENT_FAILED'
     | 'ADMIN_MESSAGE'
+    | 'VENDOR_DOCUMENTS_SUBMITTED'
+    | 'SUBSCRIPTION'
+    | 'SERVICE_COMPLETED'
 
   title: string
   message: string

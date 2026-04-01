@@ -118,6 +118,7 @@ export default function BookServicePage() {
   useEffect(() => {
     if (availableDates.length > 0) setSelectedDate(availableDates[0])
     else setSelectedDate(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, availableDates.length])
 
   const slotsForSelectedDate: Slot[] =
@@ -159,14 +160,24 @@ export default function BookServicePage() {
     setSelectedDate(null)
     setSelectedSlotStart(null)
 
-    month === 0 ? (setMonth(11), setYear((y) => y - 1)) : setMonth((m) => m - 1)
+    if (month === 0) {
+      setMonth(11)
+      setYear((y) => y - 1)
+    } else {
+      setMonth((m) => m - 1)
+    }
   }
 
   const goNextMonth = () => {
     setSelectedDate(null)
     setSelectedSlotStart(null)
 
-    month === 11 ? (setMonth(0), setYear((y) => y + 1)) : setMonth((m) => m + 1)
+    if (month === 11) {
+      setMonth(0)
+      setYear((y) => y + 1)
+    } else {
+      setMonth((m) => m + 1)
+    }
   }
 
   /* ───────────── Payment ───────────── */

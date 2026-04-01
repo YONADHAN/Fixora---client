@@ -22,12 +22,15 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog'
+import { NotificationPayload } from '@/utils/constants/constants'
 
 export default function NotificationsPage() {
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
-  const [selectedNotification, setSelectedNotification] = useState<any>(null)
+
+  const [selectedNotification, setSelectedNotification] =
+  useState<NotificationPayload | null>(null)
   const router = useRouter()
 
   const {
@@ -41,7 +44,7 @@ export default function NotificationsPage() {
     markAllAsRead,
   } = useNotifications(filter, true, debouncedSearch)
 
-  // Debounce search
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search)
@@ -49,7 +52,7 @@ export default function NotificationsPage() {
     return () => clearTimeout(timer)
   }, [search])
 
-  const handleNotificationClick = (notification: any) => {
+  const handleNotificationClick = (notification: NotificationPayload) => {
     if (!notification.isRead) markAsRead(notification.notificationId)
     setSelectedNotification(notification)
   }

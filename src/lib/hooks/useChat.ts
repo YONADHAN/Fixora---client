@@ -69,6 +69,7 @@ export function useChat(chatId: string | null) {
     setCursor(undefined)
     setHasMore(true)
     loadMessages(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId])
 
   useEffect(() => {

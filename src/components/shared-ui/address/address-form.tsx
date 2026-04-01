@@ -119,12 +119,12 @@ export function AddressForm({
         form.setValue('location', { name, displayName })
 
         if (displayName) {
-           
+
             const parts = displayName.split(', ')
             if (parts.length > 2) {
-               
+
                 // const lastPart = parts[parts.length - 1]
-               
+
             }
         }
         setMapOpen(false)
@@ -143,7 +143,7 @@ export function AddressForm({
                             name='label'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Label (e.g., My Home, Mom's House)</FormLabel>
+                                    <FormLabel>Label (e.g., My Home, Mom&apos;s House)</FormLabel>
                                     <FormControl>
                                         <Input placeholder='Home' {...field} />
                                     </FormControl>

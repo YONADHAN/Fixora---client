@@ -150,12 +150,12 @@ export const useCancelVendorBooking = (bookingId: string) => {
 }
 
 export const useBookingServiceStatus = (bookingGroupId: string) => {
- 
+
 
   return useMutation({
     mutationFn: () => bookingServiceStatus(bookingGroupId),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success('Service marked as completed')
 
       // queryClient.invalidateQueries({

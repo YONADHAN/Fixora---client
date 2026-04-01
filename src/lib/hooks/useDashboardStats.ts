@@ -36,6 +36,7 @@ export const useAdminDashboardStats = (
     } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.from, params.to, params.interval])
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export const useVendorDashboardStats = (
     } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.from, params.to, params.interval])
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export const useCustomerDashboardStats = (
     } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.from, params.to, params.interval])
 
   useEffect(() => {

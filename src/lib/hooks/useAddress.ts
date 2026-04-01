@@ -14,6 +14,7 @@ import {
 } from '@/dtos/address_dto'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { AxiosError } from 'axios'
 
 export const useAddresses = (
     params: GetAddressRequestDTO,
@@ -53,8 +54,10 @@ export const useAddAddress = (options?: {
                 router.push(options?.redirectPath || '/customer/address')
             }
         },
-        onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Failed to add address')
+        onError: (error: unknown) => {
+           if(error instanceof AxiosError){
+             toast.error(error.response?.data?.message || 'Failed to add address')
+           }
         },
     })
 }
@@ -78,8 +81,10 @@ export const useEditAddress = (options?: {
                 router.push(options?.redirectPath || '/customer/address')
             }
         },
-        onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Failed to update address')
+        onError: (error: unknown) => {
+           if (error instanceof AxiosError){
+              toast.error(error.response?.data?.message || 'Failed to update address')
+           }
         },
     })
 }
@@ -93,10 +98,12 @@ export const useSetDefaultAddress = () => {
             toast.success('Default address updated')
             queryClient.invalidateQueries({ queryKey: ['addresses'] })
         },
-        onError: (error: any) => {
-            toast.error(
+        onError: (error: unknown) => {
+           if(error instanceof AxiosError){
+             toast.error(
                 error.response?.data?.message || 'Failed to set default address'
             )
+           }
         },
     })
 }
@@ -110,8 +117,10 @@ export const useDeleteAddress = () => {
             toast.success('Address deleted successfully')
             queryClient.invalidateQueries({ queryKey: ['addresses'] })
         },
-        onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Failed to delete address')
+        onError: (error: unknown) => {
+           if(error instanceof AxiosError){
+             toast.error(error.response?.data?.message || 'Failed to delete address')
+           }
         },
     })
 }

@@ -59,13 +59,13 @@ function getRoleFromUrl(url?: string) {
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError<any>) => {
+  async (error: AxiosError<unknown>) => {
     console.log(
       'Interceptor triggered',
       error.response?.status,
       error.response?.data,
     )
-    const originalRequest: any = error.config
+    const originalRequest = error.config as Record<string, unknown> & { _retry?: boolean; url?: string }
     const role = getRoleFromUrl(originalRequest.url)
     const message = error.response?.data?.message || ''
 
@@ -110,9 +110,9 @@ axiosInstance.interceptors.response.use(
           isRefreshing = false
           onRefreshed(data?.token)
           return axiosInstance(originalRequest)
-        } catch (refreshError: any) {
+        } catch (refreshError: unknown) {
           const errorMessage =
-            refreshError.response?.data?.message || 'Failed to refresh'
+            (refreshError as AxiosError<{ message?: string }>).response?.data?.message || 'Failed to refresh'
           toast.info(errorMessage)
           isRefreshing = false
 
@@ -163,7 +163,7 @@ axiosInstance.interceptors.response.use(
     ) {
       toast.info(
         error.response?.data?.message ||
-          'An active subscription is required to access this feature',
+        'An active subscription is required to access this feature',
       )
 
       if (!window.location.pathname.startsWith('/vendor/subscription')) {

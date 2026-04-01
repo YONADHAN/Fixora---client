@@ -3,9 +3,10 @@ export function getErrorMessage(error: unknown): string {
     typeof error === 'object' &&
     error !== null &&
     'response' in error &&
-    typeof (error as any).response === 'object'
+    typeof (error as Record<string, unknown>).response === 'object'
   ) {
-    const data = (error as any).response?.data
+    const errorWithResponse = error as { response?: { data?: { message?: unknown } } }
+    const data = errorWithResponse.response?.data
     if (data?.message && typeof data.message === 'string') {
       return data.message
     }

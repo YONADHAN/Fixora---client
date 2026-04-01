@@ -9,6 +9,7 @@ import {
   vendorVerificationDocStatusCheck,
 } from '@/services/vendor/vendor.service'
 import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
 
 export const useVendorLogout = () => {
   return useMutation({
@@ -28,7 +29,7 @@ export const useVendorProfileInfo = () => {
 
 export const useVenderProfileInfoUpdate = () => {
   return useMutation({
-    mutationFn: (data) => venderProfileInfoUpdate(data),
+    mutationFn: (data:ProfileUpdateDTO) => venderProfileInfoUpdate(data),
   })
 }
 

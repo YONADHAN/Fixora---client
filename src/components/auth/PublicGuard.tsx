@@ -21,26 +21,27 @@ export default function PublicGuard({ children }: PublicGuardProps) {
   const activeRole = admin
     ? 'admin'
     : vendor
-    ? 'vendor'
-    : customer
-    ? 'customer'
-    : null
+      ? 'vendor'
+      : customer
+        ? 'customer'
+        : null
   const isLoggedIn = Boolean(activeRole)
 
   useEffect(() => {
     if (isLoggedIn) {
-    if (activeRole === 'vendor') {
-      const status = vendor?.isVerified?.status
+      if (activeRole === 'vendor') {
+        const status = vendor?.isVerified?.status
 
-      if (status === 'accepted') {
-        router.replace('/vendor/dashboard')
+        if (status === 'accepted') {
+          router.replace('/vendor/dashboard')
+        } else {
+          router.replace('/vendor/verification')
+        }
       } else {
-        router.replace('/vendor/verification')
+        router.replace(`/${activeRole}/dashboard`)
       }
-    } else {
-      router.replace(`/${activeRole}/dashboard`)
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn, activeRole, router])
 
   if (isLoggedIn) return <AuthLoader />

@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 
 import { RootState } from '@/store/store'
 import { useSelector } from 'react-redux'
+import { AddressDTO } from '@/dtos/address_dto'
 
 interface AddressSelectorProps {
     selectedAddressId: string | null
@@ -22,12 +23,12 @@ export function AddressSelector({ selectedAddressId, onSelect }: AddressSelector
     const isAuthenticated = !!customer
 
     const [isAddingNew, setIsAddingNew] = useState(false)
-    const [editingAddress, setEditingAddress] = useState<any | null>(null)
+    const [editingAddress, setEditingAddress] = useState<AddressDTO | null>(null)
 
     const { data, isLoading } = useAddresses(
         { page: 1, limit: 100 },
         { enabled: isAuthenticated }
-    ) // Fetch all for selection
+    )
 
     const addMutation = useAddAddress({
         redirectPath: null,
@@ -118,8 +119,7 @@ export function AddressSelector({ selectedAddressId, onSelect }: AddressSelector
                     <AddressForm
                         defaultValues={{
                             ...editingAddress,
-                            // Ensure geoLocation matches schema structure if needed, 
-                            // assuming API response matches what form expects for coordinates
+                          
                         }}
                         onSubmit={handleEditSubmit}
                         isLoading={editMutation.isPending}
