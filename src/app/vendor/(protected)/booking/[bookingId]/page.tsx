@@ -373,6 +373,7 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { format } from 'date-fns'
@@ -576,9 +577,11 @@ export default function VendorBookingDetailsPage() {
                   </div>
                 </div>
                 {service.mainImage ? (
-                  <img
+                  <Image
                     src={service.mainImage}
-                    alt={service.name}
+                    alt={service.name || 'Service main image'}
+                    width={80}
+                    height={80}
                     className='h-20 w-20 object-cover rounded-md border bg-muted'
                   />
                 ) : (

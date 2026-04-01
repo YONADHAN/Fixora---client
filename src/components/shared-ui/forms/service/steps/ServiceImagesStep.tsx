@@ -84,9 +84,10 @@ export default function ServiceImagesStep() {
       {preview && (
         <div className='flex items-center gap-4 border dark:border-border rounded-xl p-4'>
           <div className='relative w-40 h-28 rounded-lg overflow-hidden border dark:border-border'>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={preview}
-              alt='preview'
+              alt='Service Image Preview'
               className='w-full h-full object-cover'
             />
 

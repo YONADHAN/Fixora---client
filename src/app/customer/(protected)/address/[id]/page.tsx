@@ -6,13 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader2, MapPin, Phone, User, Home, Building, Briefcase } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import dynamic from 'next/dynamic'
-
-// Simple Map Display component (reusing MapSelector but read-only if possible, or just a marker)
-// Since MapSelector is interactive, we might just use it and disable interaction if we could, 
-// but for now let's just show coordinates text or use MapContainer directly.
-// To keep it simple and consistent, we'll import MapSelector but maybe not set an onSelect.
-// Actually, let's just show the details for now. Map display would be nice but MapSelector is an input component.
 
 export default function ViewAddressPage() {
     const router = useRouter()

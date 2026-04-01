@@ -10,8 +10,8 @@ interface PublicGuardProps {
   children: React.ReactNode
   role: 'admin' | 'vendor' | 'customer'
 }
-
-export default function PublicGuard({ children, role }: PublicGuardProps) {
+//export default function PublicGuard({ children, role }: PublicGuardProps) {
+export default function PublicGuard({ children }: PublicGuardProps) {
   const router = useRouter()
 
   const { admin } = useSelector((state: RootState) => state.admin)

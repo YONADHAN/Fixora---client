@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+
 import {
     ColumnDefinition,
     ResponsiveTable,
@@ -31,7 +31,7 @@ const formatDate = (date: Date) => {
 }
 
 export default function PaymentListPage() {
-    const router = useRouter()
+   
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
 

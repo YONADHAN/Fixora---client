@@ -278,6 +278,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { ResponsiveTable } from '@/components/shared-ui/resusable_components/table/table'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -355,10 +356,12 @@ const VendorVerificationPage = () => {
           setShowDialog(false)
           await refetch()
         },
-        onError: (error: any) => {
-          toast.error(
-            error?.response?.data?.message || '❌ Failed to approve vendor.'
+        onError: (error) => {
+          if(error instanceof AxiosError){
+            toast.error(
+            error?.response?.data?.message || ' Failed to approve vendor.'
           )
+          }
         },
         onSettled: () => {
           setUpdatingItems((prev) => {
@@ -444,15 +447,15 @@ const VendorVerificationPage = () => {
     header: string
     render?: (item: VendorRequest) => React.ReactNode
   }[] = [
-    { key: 'userId', header: 'User ID' },
-    { key: 'name', header: 'Name' },
-    { key: 'email', header: 'Email' },
-    {
-      key: 'verificationStatus',
-      header: 'Verification Status',
-      render: (item: VendorRequest) => item.isVerified?.status || 'N/A',
-    },
-  ]
+      { key: 'userId', header: 'User ID' },
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+      {
+        key: 'verificationStatus',
+        header: 'Verification Status',
+        render: (item: VendorRequest) => item.isVerified?.status || 'N/A',
+      },
+    ]
 
   // ------- JSX -------
   return (
@@ -476,8 +479,8 @@ const VendorVerificationPage = () => {
           item: null,
           action: 'block',
         }}
-        onConfirmAction={() => {}}
-        onCancelAction={() => {}}
+        onConfirmAction={() => { }}
+        onCancelAction={() => { }}
         showActionsColumn={true}
         customActions={(item: VendorRequest) => (
           <Button
@@ -512,10 +515,12 @@ const VendorVerificationPage = () => {
               <p className='font-semibold mt-3'>Uploaded Documents:</p>
               <div className='grid grid-cols-3 gap-3'>
                 {selectedVendor.documents.map((doc, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={doc.url}
-                    alt={doc.name}
+                    alt={doc.name || 'Vendor document'}
+                    width={300}
+                    height={96}
                     className='w-full h-24 object-cover rounded border cursor-pointer hover:scale-105 transition'
                     onClick={() => handleImageClick(doc.url)}
                   />
@@ -580,11 +585,12 @@ const VendorVerificationPage = () => {
 
             {/* Image Preview */}
             {selectedImage && (
-              <div className='w-full h-full flex items-center justify-center'>
-                <img
+              <div className='relative w-full h-full flex items-center justify-center'>
+                <Image
                   src={selectedImage}
                   alt='Full Preview'
-                  className='max-w-full max-h-full w-auto h-auto object-contain cursor-zoom-in'
+                  fill
+                  className='max-w-full max-h-full object-contain cursor-zoom-in'
                   style={{ maxHeight: 'calc(95vh - 2rem)' }}
                 />
               </div>

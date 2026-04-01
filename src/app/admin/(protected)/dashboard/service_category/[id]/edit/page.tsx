@@ -97,11 +97,14 @@ export default function EditServiceCategoryPage() {
 
       {/* Preview */}
       {previewImage && (
-        <img
-          src={previewImage}
-          alt='Preview'
-          className='w-48 h-32 object-cover rounded mb-4'
-        />
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={previewImage}
+            alt='Category Banner Preview'
+            className='w-48 h-32 object-cover rounded mb-4'
+          />
+        </>
       )}
 
       <Button onClick={handleSubmit} className='w-full'>

@@ -1,4 +1,4 @@
-type CallState = {
+export type CallState = {
   status: 'idle' | 'incoming' | 'calling' | 'active'
   chatId?: string
   caller?: {

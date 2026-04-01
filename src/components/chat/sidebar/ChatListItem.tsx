@@ -1,4 +1,5 @@
 import { useChatUI } from '../context/ChatUIContext'
+import Image from 'next/image'
 
 interface ChatListItemProps {
   chat: {
@@ -17,22 +18,22 @@ export function ChatListItem({ chat }: ChatListItemProps) {
 
   return (
     <div
-      className={`p-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors ${
-        isActive ? 'bg-neutral-100 dark:bg-neutral-800' : ''
-      }`}
+      className={`p-3 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors ${isActive ? 'bg-neutral-100 dark:bg-neutral-800' : ''
+        }`}
     >
       <div className='flex items-start gap-3'>
         <div className='relative'>
-          <img
+          <Image
             src={chat.image || '/avatar-placeholder.png'}
-            alt={chat.name}
+            alt={chat.name || 'User avatar'}
+            width={40}
+            height={40}
             className='w-10 h-10 rounded-full object-cover'
           />
 
           <span
-            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
-              chat.isOnline ? 'bg-green-500' : 'bg-neutral-400'
-            }`}
+            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${chat.isOnline ? 'bg-green-500' : 'bg-neutral-400'
+              }`}
           />
         </div>
 

@@ -150,7 +150,7 @@ export const useCancelVendorBooking = (bookingId: string) => {
 }
 
 export const useBookingServiceStatus = (bookingGroupId: string) => {
-  const queryClient = useQueryClient()
+ 
 
   return useMutation({
     mutationFn: () => bookingServiceStatus(bookingGroupId),

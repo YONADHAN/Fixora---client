@@ -2,7 +2,7 @@ import { axiosInstance } from '@/api/interceptor'
 import {
   GetBookingDetailsForCustomerStrategyResponseDTO,
   GetBookingDetailsForVendorStrategyResponseDTO,
-  ISlot,
+ 
   RequestCreateBookingHoldDTO,
   RequestGetAvalilableSlotsDTO,
   RequestGetMyBookingsDTO,

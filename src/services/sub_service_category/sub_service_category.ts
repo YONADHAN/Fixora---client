@@ -3,7 +3,7 @@ import {
   RequestAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
   RequestAllVendorSubServiceCategoriesDTO,
   RequestCreateSubServiceCategoryDTO,
-  RequestEditSubServiceCategoriesDTO,
+
   RequestGetAllSubServiceCategoriesDTO,
   RequestGetSingleSubServiceCategoryDTO,
   RequestToggleBlockStatusOfSubServiceCategoryDTO,
@@ -11,7 +11,7 @@ import {
   ResponseAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
   ResponseAllVendorSubServiceCategoriesDTO,
   ResponseCreateSubServiceCategoryDTO,
-  ResponseEditSubServiceCategoriesDTO,
+
   ResponseGetAllSubServiceCategoriesDTO,
   ResponseGetSingleSubServiceCategoryDTO,
 } from '@/dtos/sub_service_categories_dto'

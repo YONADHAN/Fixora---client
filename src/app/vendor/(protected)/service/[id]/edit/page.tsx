@@ -86,7 +86,9 @@ export default function EditServicePage() {
       ...payloadWithoutPreview,
       images: values.images?.filter((img) => img instanceof File),
     }
-
+    if(mainImage){
+      console.log("main Image is there")
+    }
     console.log('FINAL PAYLOAD TO API:', safePayload)
     console.log('in json,', JSON.stringify(safePayload))
 

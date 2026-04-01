@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
+import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -10,7 +11,7 @@ import {
 
   MapPin,
   AlertCircle,
- 
+
   Building2,
   Phone,
   Mail,
@@ -200,9 +201,11 @@ export default function CustomerBookingDetailsPage() {
                   </div>
                 </div>
                 {service.mainImage ? (
-                  <img
+                  <Image
                     src={service.mainImage}
-                    alt={service.name}
+                    alt={service.name || 'Service image'}
+                    width={64}
+                    height={64}
                     className='h-16 w-16 object-cover rounded-md border'
                   />
                 ) : (
@@ -376,7 +379,7 @@ export default function CustomerBookingDetailsPage() {
                     -
                     {formatCurrency(
                       service.pricing.pricePerSlot -
-                        service.pricing.advanceAmountPerSlot,
+                      service.pricing.advanceAmountPerSlot,
                     )}
                   </span>
                 </div>
@@ -388,9 +391,9 @@ export default function CustomerBookingDetailsPage() {
                   {isFullyPaid
                     ? formatCurrency(0)
                     : formatCurrency(
-                        service.pricing.pricePerSlot -
-                          service.pricing.advanceAmountPerSlot,
-                      )}
+                      service.pricing.pricePerSlot -
+                      service.pricing.advanceAmountPerSlot,
+                    )}
                 </span>
               </div>
             </CardContent>

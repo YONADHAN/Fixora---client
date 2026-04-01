@@ -1,5 +1,5 @@
 'use client'
-
+import Image from 'next/image'
 import { useState } from 'react'
 import {
   ColumnDefinition,
@@ -74,9 +74,11 @@ export default function AdminServicesPage() {
       key: 'mainImage',
       header: 'Image',
       render: (item) => (
-        <img
+        <Image
           src={item.mainImage || '/placeholder.jpg'}
-          alt={item.name}
+          alt={item.name || 'Service thumbnail'}
+          width={56}
+          height={56}
           className='w-14 h-14 rounded-md object-cover'
         />
       ),

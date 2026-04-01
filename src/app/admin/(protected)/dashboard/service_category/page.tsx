@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
@@ -87,9 +88,11 @@ export default function ServiceCategoryListPage() {
       key: 'bannerUrl',
       header: 'Banner',
       render: (item) => (
-        <img
+        <Image
           src={item.bannerUrl || '/placeholder.svg'}
-          alt={item.name}
+          alt={item.name || 'Category banner'}
+          width={64}
+          height={48}
           className='w-16 h-12 object-cover rounded'
         />
       ),

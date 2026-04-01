@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
@@ -13,7 +13,8 @@ import {
   useCustomerUploadProfileImage,
 } from '@/lib/hooks/useCustomer'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
-import ProfileUpdatePage from '@/components/shared-ui/forms/profile-form/profile-image-update-form'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
+
 
 const EditCustomerProfilePage = () => {
   const router = useRouter()
@@ -21,7 +22,7 @@ const EditCustomerProfilePage = () => {
   const { mutate: updateProfile, isPending } = useCustomerProfileInfoUpdate()
   const { mutate: uploadImage, isPending: isUploadingImage } = useCustomerUploadProfileImage()
 
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = (formData: ProfileUpdateDTO) => {
     const name = formData.name?.trim()
     const phone = formData.phone?.trim()
     const zip = formData.location?.zipCode?.trim()
@@ -109,8 +110,7 @@ const EditCustomerProfilePage = () => {
             Back
           </button>
         </div>
-        {/* <ProfileUpdatePage role='customer' /> */}
-        {/* Form */}
+
         <EditProfileForm
           user={user}
           role='customer'
@@ -122,9 +122,11 @@ const EditCustomerProfilePage = () => {
               toast.success('Profile picture updated!')
               queryClient.invalidateQueries({ queryKey: ['customerProfile'] })
             },
-            onError: (error: any) => {
-              toast.error('Failed to upload image')
-              console.error(error)
+            onError: (error) => {
+              if (error instanceof AxiosError) {
+                toast.error('Failed to upload image')
+                console.error(error)
+              }
             }
           })}
           isUploadingImage={isUploadingImage}

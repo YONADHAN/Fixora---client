@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { useNotifications } from '@/lib/hooks/useNotification'
 import { formatDistanceToNow } from 'date-fns'
-import { Loader2, Search, Bell, CheckCheck, X, ExternalLink } from 'lucide-react'
+import { Loader2, Search, Bell, CheckCheck, ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
@@ -58,7 +57,7 @@ export default function NotificationsPage() {
   const handleRedirect = () => {
     if (selectedNotification?.metadata?.redirectUrl) {
       router.push(selectedNotification.metadata.redirectUrl)
-      setSelectedNotification(null) // Close modal after redirect
+      setSelectedNotification(null) 
     }
   }
 

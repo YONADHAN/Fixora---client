@@ -95,11 +95,14 @@ const ServiceAddPage: React.FC = () => {
           />
 
           {preview && (
-            <img
-              src={preview}
-              alt='Preview'
-              className='mt-3 w-full h-40 object-cover rounded border'
-            />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview}
+                alt='Category Banner Preview'
+                className='mt-3 w-full h-40 object-cover rounded border'
+              />
+            </>
           )}
         </div>
 

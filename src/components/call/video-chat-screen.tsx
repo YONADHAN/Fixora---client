@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { getSocket } from '@/lib/socket/socket.client'
 import { SOCKET_EVENTS } from '@/utils/constants/constants'

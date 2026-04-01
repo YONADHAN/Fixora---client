@@ -21,6 +21,23 @@ export interface CreateSubscriptionPlan {
   updatedAt?: Date
 }
 
+export type CreateSubscriptionPlanPayload = {
+  name: string
+  description: string
+  price: number
+  currency: string
+  interval: 'month' | 'year'
+  features: {
+    maxServices: number
+    videoCallAccess: boolean
+    aiChatbotAccess: boolean
+  }
+  benefits: string[]
+
+//   createdByAdminId: string
+//   isActive: boolean
+
+}
 export interface SubscriptionPlan {
   planId: string
   name: string

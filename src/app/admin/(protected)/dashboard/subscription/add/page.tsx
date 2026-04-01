@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { useCreateSubscriptionPlan } from '@/lib/hooks/useSubscription'
@@ -18,6 +18,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
+import { AxiosError } from 'axios'
+import { CreateSubscriptionPlanPayload } from '@/types/subscription/subscription.type'
+
 
 interface SubscriptionFormValues {
     name: string
@@ -30,7 +33,7 @@ interface SubscriptionFormValues {
         videoCallAccess: boolean
         aiChatbotAccess: boolean
     }
-    benefits: string // Comma separated for input
+    benefits: string 
 }
 
 export default function AddSubscriptionPage() {
@@ -59,10 +62,8 @@ export default function AddSubscriptionPage() {
     })
 
     const onSubmit = (data: SubscriptionFormValues) => {
-        // Transform data to match backend expectations
-        // We need to cast to any because the client type might be missing 'interval' strictly
-        // but the backend requires it.
-        const payload: any = {
+       
+        const payload:CreateSubscriptionPlanPayload = {
             name: data.name,
             description: data.description,
             price: Number(data.price),
@@ -74,8 +75,8 @@ export default function AddSubscriptionPage() {
                 aiChatbotAccess: data.features.aiChatbotAccess,
             },
             benefits: data.benefits.split(',').map((b) => b.trim()).filter(Boolean),
-            isActive: true,
-            createdByAdminId: '', // Backend handles this from token
+            // isActive: true,
+            // createdByAdminId: '', 
         }
 
         createPlan(payload, {
@@ -83,10 +84,12 @@ export default function AddSubscriptionPage() {
                 toast.success('Subscription plan created successfully')
                 router.push('/admin/dashboard/subscription')
             },
-            onError: (error: any) => {
-                toast.error(
+            onError: (error) => {
+               if(error instanceof AxiosError){
+                 toast.error(
                     error?.response?.data?.message || 'Failed to create subscription plan',
                 )
+               }
             },
         })
     }

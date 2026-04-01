@@ -1,4 +1,5 @@
 import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
 
 import { CUSTOMER_ROUTES } from '@/utils/constants/api.routes'
 
@@ -14,7 +15,7 @@ export const customerProfileInfo = async () => {
   return response
 }
 
-export const customerProfileInfoUpdate = async (data: any) => {
+export const customerProfileInfoUpdate = async (data: ProfileUpdateDTO) => {
   const response = await axiosInstance.patch(
     CUSTOMER_ROUTES.UPDATE_PROFILE_INFO,
     data

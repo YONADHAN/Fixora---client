@@ -51,11 +51,14 @@ const ProfileUpdatePage: React.FC<ProfileUpdatePageProps> = ({ role }) => {
   return (
     <div className='p-3 max-w-[140px] mx-auto text-center'>
       {croppedPreview ? (
-        <img
-          src={croppedPreview}
-          className='w-20 h-20 rounded-full object-cover border shadow-sm mx-auto'
-          alt='Preview'
-        />
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={croppedPreview}
+            className='w-20 h-20 rounded-full object-cover border shadow-sm mx-auto'
+            alt='Profile image preview'
+          />
+        </>
       ) : (
         <div className='w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500 mx-auto'>
           No Image

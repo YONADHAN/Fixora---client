@@ -53,9 +53,9 @@ export function generateTimeSlots(date: string, schedule: ScheduleDTO) {
   const duration = schedule.slotDurationMinutes
 
   const blocked = schedule.overrideBlock || []
-  const custom = schedule.overrideCustom || []
+  // const custom = schedule.overrideCustom || []
 
-  const selectedDate = new Date(date)
+  // const selectedDate = new Date(date)
   const slots: string[] = []
 
   windows.forEach((win) => {

@@ -47,7 +47,7 @@ export default function BookServicePage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [pendingPayment, setPendingPayment] = useState(false)
+  // const [pendingPayment, setPendingPayment] = useState(false)
 
   /* ───────────── Slot State ───────────── */
 
@@ -89,7 +89,7 @@ export default function BookServicePage() {
   )
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
 
-  const { mutate: createHold, isPending, isSuccess } = useCreateBookingHold()
+  const { mutate: createHold } = useCreateBookingHold()
   /* ───────────── Derived Data ───────────── */
 
   const availableDates = Object.keys(slotsByDate)
@@ -183,7 +183,7 @@ export default function BookServicePage() {
     }
 
     if (!customer) {
-      setPendingPayment(true)
+      // setPendingPayment(true)
       setShowLoginModal(true)
       return
     }
@@ -262,7 +262,7 @@ export default function BookServicePage() {
         onClose={() => setShowLoginModal(false)}
         onSuccess={() => {
           setShowLoginModal(false)
-          setPendingPayment(false)
+          // setPendingPayment(false)
           // Stay on this page so user can continue booking
         }}
       />

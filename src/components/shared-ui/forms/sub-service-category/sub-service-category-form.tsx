@@ -67,9 +67,9 @@ export default function SubServiceCategoryForm({
 
   // Update category name based on selected ID
   const handleCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = categories.find(
-      (c) => c.serviceCategoryId === e.target.value
-    )
+    // const selected = categories.find(
+    //   (c) => c.serviceCategoryId === e.target.value
+    // )
 
     setFormValues((prev) => ({
       ...prev,
@@ -156,11 +156,14 @@ export default function SubServiceCategoryForm({
       <div className='space-y-2'>
         <Label>Banner Image</Label>
         {existingImagePreview && (
-          <img
-            src={existingImagePreview}
-            alt='Preview'
-            className='w-32 h-32 object-cover rounded mb-2 border'
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={existingImagePreview}
+              alt='Sub-service Category Banner Preview'
+              className='w-32 h-32 object-cover rounded mb-2 border'
+            />
+          </>
         )}
 
         <Input type='file' accept='image/*' onChange={handleFileChange} />

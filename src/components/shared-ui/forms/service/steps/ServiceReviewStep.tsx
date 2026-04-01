@@ -149,11 +149,14 @@ export default function ServiceReviewStep() {
         <h3 className='font-medium text-gray-800 dark:text-gray-200'>Main Service Image</h3>
 
         {imagePreview ? (
-          <img
-            src={imagePreview}
-            alt='Service Preview'
-            className='w-64 h-40 object-cover rounded-lg border dark:border-border'
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={imagePreview}
+              alt='Service Image Preview'
+              className='w-64 h-40 object-cover rounded-lg border dark:border-border'
+            />
+          </>
         ) : (
           <p className='text-sm text-red-500'>No image selected</p>
         )}

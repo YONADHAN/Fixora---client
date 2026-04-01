@@ -25,7 +25,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import dynamic from 'next/dynamic'
-import { Card, CardContent } from '@/components/ui/card'
+
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { MapPin } from 'lucide-react'
 
@@ -118,17 +118,13 @@ export function AddressForm({
         })
         form.setValue('location', { name, displayName })
 
-        // Auto-fill address details from reverse geocoding if available
-        // Note: The simple MapSelector implementation assumes basic string returns.
-        // Ideally, we'd parse the displayName or use separate address components if available.
-        // For now, we'll set what we can.
         if (displayName) {
-            // Very basic heuristic split, can be improved or rely on user input
+           
             const parts = displayName.split(', ')
             if (parts.length > 2) {
-                // Try to pick zip code if it looks like one (last part usually)
-                const lastPart = parts[parts.length - 1]
-                // form.setValue('zipCode', lastPart) // Risky without validation, let user fill
+               
+                // const lastPart = parts[parts.length - 1]
+               
             }
         }
         setMapOpen(false)

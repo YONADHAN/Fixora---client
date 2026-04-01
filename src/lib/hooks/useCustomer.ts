@@ -6,6 +6,7 @@ import {
   customerProfileInfoUpdate,
   customerUploadProfileImage,
 } from '@/services/customer/customer.service'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
 
 export const useCustomerLogout = () => {
   return useMutation({
@@ -25,7 +26,7 @@ export const useCustomerProfileInfo = () => {
 
 export const useCustomerProfileInfoUpdate = () => {
   return useMutation({
-    mutationFn: (data: any) => customerProfileInfoUpdate(data),
+    mutationFn: (data: ProfileUpdateDTO) => customerProfileInfoUpdate(data),
   })
 }
 

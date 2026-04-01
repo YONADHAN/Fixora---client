@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { formatDistanceToNow } from 'date-fns'
-import { Check, Bell, Loader2 } from 'lucide-react'
+import { Bell, Loader2 } from 'lucide-react'
 import { useNotifications } from '@/lib/hooks/useNotification'
 
 export const NotificationModal = () => {

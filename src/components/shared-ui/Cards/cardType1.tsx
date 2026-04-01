@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Card,  CardFooter } from '@/components/ui/card'
 
 interface CardType1Props {
   Title: string

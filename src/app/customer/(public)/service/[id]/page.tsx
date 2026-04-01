@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { useGetServicesById } from '@/lib/hooks/useService'
 import { useServiceReviews } from '@/lib/hooks/useReviewRating'
 import { Button } from '@/components/ui/button'
@@ -37,8 +38,8 @@ export default function ServiceDetailPage() {
   const avgRating =
     reviews.length > 0
       ? (
-          reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        ).toFixed(1)
+        reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+      ).toFixed(1)
       : null
 
   const formatDate = (date?: string | Date) => {
@@ -55,10 +56,11 @@ export default function ServiceDetailPage() {
     <div className='max-w-5xl mx-auto p-6 space-y-10 pb-28'>
       {/* ================= SERVICE HEADER ================= */}
       <div className='grid md:grid-cols-2 gap-6'>
-        <div className='w-full h-80 rounded-xl overflow-hidden bg-muted'>
-          <img
+        <div className='relative w-full h-80 rounded-xl overflow-hidden bg-muted'>
+          <Image
             src={data.mainImage}
-            alt={data.name}
+            alt={data.name || 'Main service image'}
+            fill
             className='w-full h-full object-cover'
           />
         </div>
@@ -156,8 +158,11 @@ export default function ServiceDetailPage() {
                 className='flex gap-4 border-b pb-4 last:border-none'
               >
                 <div className='w-10 h-10 rounded-full bg-muted overflow-hidden'>
-                  <img
+                  <Image
                     src={review.customer.profileImage || '/placeholder.svg'}
+                    alt={review.customer.name || 'User avatar'}
+                    width={40}
+                    height={40}
                     className='w-full h-full object-cover'
                   />
                 </div>
@@ -206,8 +211,11 @@ export default function ServiceDetailPage() {
 
           <div className='flex items-center gap-4'>
             <div className='w-14 h-14 rounded-full bg-muted overflow-hidden'>
-              <img
+              <Image
                 src={vendor.profileImage || '/placeholder.svg'}
+                alt={vendor.name || 'Vendor avatar'}
+                width={56}
+                height={56}
                 className='w-full h-full object-cover'
               />
             </div>

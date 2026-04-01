@@ -1,6 +1,6 @@
 
 import { format, isToday } from 'date-fns'
-import { Check, CheckCheck } from 'lucide-react'
+
 import { ChatMessage } from '@/types/chat/chat.type'
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
 

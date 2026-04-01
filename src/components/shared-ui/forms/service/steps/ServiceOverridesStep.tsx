@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { useFormikContext, FormikErrors } from 'formik'
+import { useFormikContext } from 'formik'
 import { IServiceFormValues } from '@/types/service_feature/service.types'
 
 export default function ServiceOverridesStep() {
-  const { values, setFieldValue, touched, errors, setFieldTouched } =
+  const { values, setFieldValue,  setFieldTouched } =
     useFormikContext<IServiceFormValues>()
-
-  const scheduleErrors = errors.schedule as
-    | FormikErrors<IServiceFormValues['schedule']>
-    | undefined
+    
+//  const { values, setFieldValue, touched, errors, setFieldTouched } =
+//     useFormikContext<IServiceFormValues>()
+  // const scheduleErrors = errors.schedule as
+  //   | FormikErrors<IServiceFormValues['schedule']>
+  //   | undefined
 
   // ---------------- BLOCK OVERRIDES ----------------
   const [blockStart, setBlockStart] = useState('')

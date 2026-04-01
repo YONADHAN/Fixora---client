@@ -15,7 +15,7 @@ import {
   RequestAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
   RequestAllVendorSubServiceCategoriesDTO,
   RequestCreateSubServiceCategoryDTO,
-  RequestEditSubServiceCategoriesDTO,
+
   RequestGetAllSubServiceCategoriesDTO,
   ResponseAllSubServiceCategoriesBasedOnServiceCategoryIdDTO,
   ResponseAllVendorSubServiceCategoriesDTO,

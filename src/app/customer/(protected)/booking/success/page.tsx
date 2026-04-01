@@ -11,7 +11,7 @@ import {
   CheckCircle2,
   Calendar,
   Clock,
-  IndianRupee,
+
   AlertTriangle,
 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'

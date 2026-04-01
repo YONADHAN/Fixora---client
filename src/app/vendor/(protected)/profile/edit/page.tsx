@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+
 
 import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
@@ -14,7 +14,7 @@ import {
   useVendorUploadProfileImage,
 } from '@/lib/hooks/useVendor'
 import { EditProfileForm } from '@/components/shared-ui/forms/profile-form/edit-profile-form'
-import ProfileUpdatePage from '@/components/shared-ui/forms/profile-form/profile-image-update-form'
+
 
 const EditVendorProfilePage = () => {
   const router = useRouter()

@@ -5,7 +5,6 @@ import {
   AdminDashboardResponseDTO,
   VendorDashboardStatsResponseDTO,
   DashboardStatsParams,
-  CustomerDashboardResponseDTO,
   CustomerDashboardStatsResponseDTO,
 } from '@/types/dashboard.types'
 import { getCustomerDashboardStats } from '@/services/customer/customerDashboard.service'

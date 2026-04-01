@@ -76,7 +76,7 @@ const SearchPage = () => {
   )
 
   const { data, isLoading, isError } = useSearchServicesForCustomer(payload)
-  const router = useRouter()
+
   const services = data?.data ?? []
   const totalPages = data?.totalPages ?? 1
 
@@ -343,6 +343,8 @@ const FilterSidebar = ({
   </div>
 )
 
+import Image from 'next/image'
+
 // ServiceCard
 const ServiceCard = ({
   service,
@@ -356,9 +358,11 @@ const ServiceCard = ({
 
   return (
     <div className='group bg-card border border-border rounded-xl shadow-sm hover:shadow-lg transition-all'>
-      <div className='h-48 overflow-hidden rounded-t-xl'>
-        <img
+      <div className='h-48 relative overflow-hidden rounded-t-xl'>
+        <Image
           src={service.mainImage}
+          alt={service.name || 'Service thumbnail'}
+          fill
           className='w-full h-full object-cover group-hover:scale-105 transition-transform'
         />
       </div>
