@@ -29,7 +29,7 @@ export const ADMIN_ROUTES = {
   CREATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
   TOGGLE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
   UPDATE_SUBSCRIPTION_PLANS: `${BASE_URL.ADMIN}/subscription/subscription-plans`,
-  GET_ADMIN_WALLET:`${BASE_URL.ADMIN}/wallet`,
+  GET_ADMIN_WALLET: `${BASE_URL.ADMIN}/wallet`,
 }
 
 export const VENDOR_ROUTES = {
@@ -90,6 +90,7 @@ export const CUSTOMER_ROUTES = {
   REVIEWS: `${BASE_URL.CUSTOMER}/review`,
   BOOKED_REVIEWS: `${BASE_URL.CUSTOMER}/review/booked-services`,
   DASHBOARD: `${BASE_URL.CUSTOMER}/dashboard-stats`,
+  ASK_CHATBOT: `${BASE_URL.CUSTOMER}/chatbot`,
 }
 
 export const AUTH_ROUTES = {

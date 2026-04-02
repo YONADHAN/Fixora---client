@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Navbar from '../shared/Navbar'
 import Footer from '../shared/Footer'
 import { RootState } from '@/store/store'
+import AIChatBot from '../chat/AIChatBot'
 
 export const metadata: Metadata = {
   title: 'My App',
@@ -23,6 +24,7 @@ export default function CustomerLayout({
     <section lang='en'>
       <Navbar role='customer' isAuthenticated={isAuthenticated} />
       {children}
+      <AIChatBot />
       <Footer />
     </section>
   )

@@ -59,13 +59,13 @@ function getRoleFromUrl(url?: string) {
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError<unknown>) => {
+  async (error: AxiosError<any>) => {
     console.log(
       'Interceptor triggered',
       error.response?.status,
       error.response?.data,
     )
-    const originalRequest = error.config as Record<string, unknown> & { _retry?: boolean; url?: string }
+    const originalRequest: any = error.config
     const role = getRoleFromUrl(originalRequest.url)
     const message = error.response?.data?.message || ''
 
