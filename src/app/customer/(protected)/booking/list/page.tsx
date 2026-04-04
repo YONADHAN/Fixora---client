@@ -17,6 +17,8 @@ import { toast } from 'sonner'
 interface BookingTableItem {
   id: string
   bookingId: string
+  bookingGroupCode?: string
+  bookingCode?: string
   paymentStatus: string
   serviceStatus: string
   status: 'Active' | 'Cancelled'
@@ -66,6 +68,8 @@ export default function BookingListPage() {
     data?.data.map((booking) => ({
       id: booking.bookingGroupId || booking.bookingId,
       bookingId: booking.bookingId,
+      bookingCode: booking.bookingCode,
+      bookingGroupCode: booking.bookingGroupCode,
       paymentStatus: booking.paymentStatus,
       serviceStatus: booking.serviceStatus,
       status: booking.cancelInfo ? 'Cancelled' : 'Active',
@@ -107,6 +111,13 @@ export default function BookingListPage() {
       render: (item) => (
         <span className='font-medium'>{item.serviceName || 'N/A'}</span>
       ),
+    },
+    {
+      key: 'bookingId',
+      header: "Booking Code",
+      render: (item) => (
+        <span className='font-medium'>{item.bookingGroupCode}</span>
+      )
     },
     {
       key: 'bookingId',

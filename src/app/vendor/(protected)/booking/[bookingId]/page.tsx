@@ -532,7 +532,7 @@ export default function VendorBookingDetailsPage() {
           <p className='text-muted-foreground ml-10'>
             ID:{' '}
             <span className='font-mono font-medium text-foreground'>
-              {booking.bookingId}
+              {booking.bookingGroupCode!==""?booking.bookingGroupCode:booking.bookingId}
             </span>
           </p>
         </div>

@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 interface BookingTableItem {
   id: string
   bookingId: string
+  bookingGroupCode: string
   paymentStatus: string
   serviceStatus: string
   status: 'Active' | 'Cancelled'
@@ -35,6 +36,7 @@ export default function VendorBookingListPage() {
     data?.data.map((booking) => ({
       id: booking.bookingId,
       bookingId: booking.bookingId,
+      bookingGroupCode: booking.bookingGroupCode||"",
       paymentStatus: booking.paymentStatus,
       serviceStatus: booking.serviceStatus,
       status: booking.cancelInfo ? 'Cancelled' : 'Active',
@@ -42,8 +44,8 @@ export default function VendorBookingListPage() {
 
   const columns: ColumnDefinition<BookingTableItem>[] = [
     {
-      key: 'bookingId',
-      header: 'Booking ID',
+      key: 'bookingGroupCode',
+      header: 'Booking Code',
     },
     {
       key: 'paymentStatus',

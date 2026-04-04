@@ -154,7 +154,7 @@ export default function CustomerBookingDetailsPage() {
           <p className='text-muted-foreground mt-1'>
             Order ID:{' '}
             <span className='font-mono text-foreground'>
-              {booking.bookingId}
+              {booking.bookingGroupCode!==""?booking.bookingGroupCode:booking.bookingId}
             </span>
           </p>
         </div>

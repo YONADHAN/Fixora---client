@@ -22,7 +22,7 @@ export default function BookingSuccessPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
- 
+
   const rawBookingId = searchParams.get('bookingId')
   const groupId = searchParams.get('groupId') || searchParams.get('holdId')
   const bookingId =
@@ -44,26 +44,26 @@ export default function BookingSuccessPage() {
         limit: 50,
         search: groupId,
       }
-      : { page: 1, limit: 1, search: '____' } 
+      : { page: 1, limit: 1, search: '____' }
   )
 
   const groupBookings = groupId ? groupBookingsData?.data : null
 
-  
+
   const targetBookingId =
     bookingId ||
     (groupBookings && groupBookings.length > 0
       ? groupBookings[0].bookingId
       : null)
 
- 
+
   const {
     data: bookingDetails,
     isLoading: isLoadingDetails,
     error: errorDetails,
   } = useCustomerBookingDetails(targetBookingId)
 
-  
+
   const {
     data: bookingByPayment,
     isLoading: isLoadingByPayment,
@@ -123,13 +123,13 @@ export default function BookingSuccessPage() {
 
   const { service, booking: mainBooking } = finalBookingDetails
 
-  
+
   const slotsToShow =
     groupBookings && groupBookings.length > 0
       ? groupBookings
       : [{ ...mainBooking }]
 
- 
+
   return (
     <div className='min-h-[70vh] flex justify-center px-4 py-16'>
       <Card className='w-full max-w-2xl border-green-200 shadow-xl'>
@@ -147,13 +147,27 @@ export default function BookingSuccessPage() {
 
         <CardContent className='pt-8 space-y-6'>
           {/* Booking Reference */}
-          <div className='text-center pb-6 border-b'>
-            <p className='text-sm text-muted-foreground mb-1'>
-              Booking Group ID:
-            </p>
-            <p className='font-mono font-semibold text-lg'>
-              {mainBooking.bookingGroupId}
-            </p>
+          <div className='text-center pb-6 border-b space-y-2'>
+            {(mainBooking.bookingGroupCode ||
+              groupBookings?.[0]?.bookingGroupCode) && (
+                <div>
+                  <p className='text-xs text-muted-foreground uppercase tracking-wider mb-1'>
+                    Booking Reference
+                  </p>
+                  <p className='font-mono font-bold text-2xl text-green-700 tracking-widest'>
+                    {mainBooking.bookingGroupCode ||
+                      groupBookings?.[0]?.bookingGroupCode}
+                  </p>
+                </div>
+              )}
+            {/* <div>
+              <p className='text-xs text-muted-foreground uppercase tracking-wider mb-1'>
+                Booking Group ID
+              </p>
+              <p className='font-mono text-xs text-muted-foreground break-all'>
+                {mainBooking.bookingGroupId}
+              </p>
+            </div> */}
           </div>
 
           {/* Service Details */}

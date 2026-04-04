@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react'
 import CheckoutForm from '../../checkoutForm/page'
 import { useCreatePaymentIntent } from '@/lib/hooks/usePayment'
 import { useParams } from 'next/navigation'
+import { CreatePaymentIntentResponseDTO } from '@/dtos/payment_dto'
 
 export default function PaymentPage() {
   const params = useParams()
   const holdId = params.holdId as string
 
-  console.log('Hold Id is:', holdId)
-
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [bookingSummary, setBookingSummary] = useState<Omit<CreatePaymentIntentResponseDTO, 'clientSecret'> | null>(null)
 
   const { mutateAsync: createPaymentIntent, isPending } =
     useCreatePaymentIntent()
@@ -24,6 +24,11 @@ export default function PaymentPage() {
     const initPayment = async () => {
       const response = await createPaymentIntent(holdId)
       setClientSecret(response.clientSecret)
+      setBookingSummary({
+        serviceName: response.serviceName,
+        slots: response.slots,
+        pricing: response.pricing,
+      })
     }
 
     initPayment()
@@ -35,7 +40,7 @@ export default function PaymentPage() {
 
   return (
     <Elements stripe={stripePromise} options={{ clientSecret }}>
-      <CheckoutForm />
+      <CheckoutForm bookingSummary={bookingSummary} />
     </Elements>
   )
 }

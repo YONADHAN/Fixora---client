@@ -65,7 +65,9 @@ export interface RequestGetMyBookingsDTO {
 export interface ResponseGetMyBookingsDTO {
   data: {
     bookingId: string
-    bookingGroupId: string
+    bookingGroupId: string,
+    bookingGroupCode?: string,
+    bookingCode?: string,
     paymentStatus: string
     serviceStatus: string
     cancelInfo?: {
@@ -94,6 +96,7 @@ export interface GetBookingDetailsForCustomerStrategyResponseDTO {
     bookingId: string
     bookingGroupId: string
     bookingGroupCode?: string
+    bookingCode?: string
     date: string
     slotStart?: string
     slotEnd?: string
@@ -140,7 +143,9 @@ export interface GetBookingDetailsForCustomerStrategyResponseDTO {
 export interface GetBookingDetailsForVendorStrategyResponseDTO {
   booking: {
     bookingId: string
-    bookingGroupId: string
+    bookingGroupId: string,
+    bookingGroupCode?: string,
+    bookingCode?: string,
     date: string
     slotStart?: string
     slotEnd?: string

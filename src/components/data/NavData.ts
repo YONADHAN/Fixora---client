@@ -148,11 +148,11 @@ export const navData: Record<'admin' | 'vendor' | 'customer', RoleMenus> = {
       },
       { title: 'My Wallet', href: '/customer/wallet', icon: FaMoneyBill },
       { title: 'My Address', href: '/customer/address', icon: FaAddressBook },
-      {
-        title: 'Payment History',
-        href: '/customer/payments',
-        icon: FaMoneyCheck,
-      },
+      // {
+      //   title: 'Payment History',
+      //   href: '/customer/payments',
+      //   icon: FaMoneyCheck,
+      // },
       {
         title: 'Chat',
         href: '/customer/chat',

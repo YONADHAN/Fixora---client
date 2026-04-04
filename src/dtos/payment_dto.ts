@@ -1,5 +1,18 @@
 export interface CreatePaymentIntentResponseDTO {
   clientSecret: string
+  serviceName: string
+  slots: {
+    date: string
+    start: string
+    end: string
+    advancePerSlot: number
+    variant?: { name?: string; price?: number }
+  }[]
+  pricing: {
+    totalAmount: number
+    advanceAmount: number
+    remainingAmount: number
+  }
 }
 
 export interface GetPaymentHistoryRequestDTO {

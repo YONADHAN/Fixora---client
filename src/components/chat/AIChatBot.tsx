@@ -57,7 +57,7 @@ export default function AIChatBot() {
 
     return (
         <>
-            <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+            <div className="fixed bottom-14 right-6 z-50 flex flex-col items-end">
                 {isOpen && (
                     <div className="mb-4 flex flex-col w-[350px] sm:w-[400px] h-[500px] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 transform origin-bottom-right">
                         {/* Header */}
