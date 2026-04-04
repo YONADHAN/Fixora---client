@@ -93,6 +93,7 @@ export interface GetBookingDetailsForCustomerStrategyResponseDTO {
   booking: {
     bookingId: string
     bookingGroupId: string
+    bookingGroupCode?: string
     date: string
     slotStart?: string
     slotEnd?: string

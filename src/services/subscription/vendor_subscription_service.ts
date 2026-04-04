@@ -15,4 +15,10 @@ export const VendorSubscriptionService = {
     axiosInstance.post(VENDOR_ROUTES.CREATE_SUBSCRIPTION_CHECKOUT, {
       planId,
     }),
+
+  getMySubscriptionPlans: () => axiosInstance.get(VENDOR_ROUTES.GET_MY_ACTIVE_SUBSCRIPTION_PLANS),
+ 
+  cancelMySubscriptionPlans: (subscriptionId: string) => axiosInstance.post(VENDOR_ROUTES.CANCEL_MY_SUBCRIPTION,{
+    subscriptionId,
+  })
 }

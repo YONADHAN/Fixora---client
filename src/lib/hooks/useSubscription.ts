@@ -4,6 +4,10 @@ import { EditSubscriptionPlan } from '@/types/subscription/subscription.type'
 import { VendorSubscriptionService } from '@/services/subscription/vendor_subscription_service'
 import { toast } from 'sonner'
 import { AxiosError } from 'axios'
+import {
+  GetMySubscriptionsResponseDTO,
+  CancelSubscriptionResponseDTO,
+} from '@/dtos/subscription_dto'
 
 export const useAdminSubscriptionPlans = (
   page: number,
@@ -85,6 +89,41 @@ export const useCreateSubscriptionCheckout = () => {
           error?.message ||
           'Something went wrong'
 
+        toast.error(message)
+      }
+    },
+  })
+}
+
+
+export const useGetMySubscriptions = () => {
+  return useQuery<GetMySubscriptionsResponseDTO, AxiosError>({
+    queryKey: ['vendor-my-subscriptions'],
+    queryFn: async () => {
+      const res = await VendorSubscriptionService.getMySubscriptionPlans()
+      return res.data
+    },
+  })
+}
+
+export const useCancelSubscription = () => {
+  const qc = useQueryClient()
+  return useMutation<CancelSubscriptionResponseDTO, AxiosError, string>({
+    mutationFn: async (subscriptionId: string) => {
+      const res =
+        await VendorSubscriptionService.cancelMySubscriptionPlans(subscriptionId)
+      return res.data
+    },
+    onSuccess: (data) => {
+      toast.success(data.message ?? 'Subscription cancelled successfully')
+      qc.invalidateQueries({ queryKey: ['vendor-my-subscriptions'] })
+    },
+    onError: (error: unknown) => {
+      if (error instanceof AxiosError) {
+        const message =
+          error?.response?.data?.message ??
+          error?.message ??
+          'Failed to cancel subscription'
         toast.error(message)
       }
     },

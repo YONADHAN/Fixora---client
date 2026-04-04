@@ -70,13 +70,18 @@ export default function VendorWalletPage() {
           <>
             <ul className='divide-y'>
               {data.data.map((tx) => (
+                  
                 <li
-                  key={tx.transactionId}
+                   key={tx.transactionCode??tx.transactionId}
                   className='flex justify-between px-6 py-4'
                 >
                   <div>
                     <p className='font-medium'>
-                      {tx.description ?? 'Wallet transaction'}
+                       Txn: {tx.transactionCode??tx.transactionId}
+                      
+                    </p>
+                    <p className='text-xs text-gray-500'>
+                     {tx.description ?? 'Wallet transaction'}
                     </p>
                     <p className='text-xs text-gray-500'>
                       {new Date(tx.createdAt).toLocaleString()}

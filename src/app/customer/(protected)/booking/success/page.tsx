@@ -22,7 +22,7 @@ export default function BookingSuccessPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  // SAFELY PARSE QUERY PARAMS
+ 
   const rawBookingId = searchParams.get('bookingId')
   const groupId = searchParams.get('groupId') || searchParams.get('holdId')
   const bookingId =
@@ -32,8 +32,7 @@ export default function BookingSuccessPage() {
 
   const paymentIntentId = searchParams.get('payment_intent')
 
-  // 1. Fetch Group Bookings (if groupId/holdId present)
-  // We explicitly search by the group ID to get all slots.
+
   const {
     data: groupBookingsData,
     isLoading: isLoadingGroup,
@@ -45,28 +44,26 @@ export default function BookingSuccessPage() {
         limit: 50,
         search: groupId,
       }
-      : { page: 1, limit: 1, search: '____' } // Dummy call if no groupId
+      : { page: 1, limit: 1, search: '____' } 
   )
 
   const groupBookings = groupId ? groupBookingsData?.data : null
 
-  // 2. Determine Booking ID for Details Fetch
-  // If we have a group, pick the first booking to get service/vendor details.
-  // Otherwise use the param bookingId.
+  
   const targetBookingId =
     bookingId ||
     (groupBookings && groupBookings.length > 0
       ? groupBookings[0].bookingId
       : null)
 
-  // 3. Fetch Full Details (for Service/Vendor info)
+ 
   const {
     data: bookingDetails,
     isLoading: isLoadingDetails,
     error: errorDetails,
   } = useCustomerBookingDetails(targetBookingId)
 
-  // 4. Fallback: Fetch by Payment Intent
+  
   const {
     data: bookingByPayment,
     isLoading: isLoadingByPayment,
@@ -126,13 +123,13 @@ export default function BookingSuccessPage() {
 
   const { service, booking: mainBooking } = finalBookingDetails
 
-  // If we have a group list, use that. Otherwise create a single-item list from the detail.
+  
   const slotsToShow =
     groupBookings && groupBookings.length > 0
       ? groupBookings
       : [{ ...mainBooking }]
 
-  //  Success state
+ 
   return (
     <div className='min-h-[70vh] flex justify-center px-4 py-16'>
       <Card className='w-full max-w-2xl border-green-200 shadow-xl'>
@@ -152,7 +149,7 @@ export default function BookingSuccessPage() {
           {/* Booking Reference */}
           <div className='text-center pb-6 border-b'>
             <p className='text-sm text-muted-foreground mb-1'>
-              Booking Group ID
+              Booking Group ID:
             </p>
             <p className='font-mono font-semibold text-lg'>
               {mainBooking.bookingGroupId}

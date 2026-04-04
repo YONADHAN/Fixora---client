@@ -60,6 +60,8 @@ export const VENDOR_ROUTES = {
   DASHBOARD: `${BASE_URL.VENDOR}/dashboard-stats`,
   GET_ACTIVE_SUBSCRIPTION_PLANS: `${BASE_URL.VENDOR}/subscription/subscription-plans/active`,
   CREATE_SUBSCRIPTION_CHECKOUT: `${BASE_URL.VENDOR}/subscription/checkout`,
+  GET_MY_ACTIVE_SUBSCRIPTION_PLANS: `${BASE_URL.VENDOR}/subscription/my-subscriptions`,
+  CANCEL_MY_SUBCRIPTION: `${BASE_URL.VENDOR}/subscription/cancel`,
   CHANGE_SERVICE_STATUS_OF_BOOKING: `${BASE_URL.VENDOR}/booking`,
 }
 

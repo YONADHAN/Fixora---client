@@ -6,6 +6,7 @@ export type Wallet = {
 
 export type WalletTransaction = {
   transactionId: string
+  transactionCode?: string
   type: 'credit' | 'debit'
   source:
     | 'service-booking'

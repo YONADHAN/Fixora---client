@@ -92,13 +92,13 @@ export default function AdminWalletPage() {
             <ul className='divide-y divide-gray-100 dark:divide-gray-800'>
               {data.data.map((tx) => (
                 <li
-                  key={tx.transactionId}
+                  key={tx.transactionCode??tx.transactionId}
                   className='flex items-center justify-between px-6 py-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors'
                 >
                   <div>
                     <div className='flex items-center gap-2'>
                       <p className='text-sm font-medium text-gray-900 dark:text-gray-200'>
-                        {tx.description ?? 'Wallet transaction'}
+                        Txn: {tx.transactionCode??tx.transactionId}
                       </p>
                       <span
                         className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
@@ -110,6 +110,9 @@ export default function AdminWalletPage() {
                         {tx.type.toUpperCase()}
                       </span>
                     </div>
+                      <p className='text-xs text-gray-500'>
+                      {tx.description ?? 'Wallet transaction'}
+                    </p>
                     <p className='text-xs text-gray-500 dark:text-gray-500 mt-0.5'>
                       {new Date(tx.createdAt).toLocaleString()}
                     </p>
