@@ -100,12 +100,12 @@ export function useChat(chatId: string | null) {
     }
   }, [socket])
 
-  const sendMessage = (content: string): void => {
+  const sendMessage = (content: string, messageType: 'text' | 'image' = 'text'): void => {
     if (!chatId || !socket) return
 
     socket.emit(
       SOCKET_EVENTS.CHAT_SEND,
-      { chatId, content },
+      { chatId, content, messageType },
       (res: SocketAckResponse) => {
         if (!res.success) {
           console.error('[useChat] Send failed:', res.message)

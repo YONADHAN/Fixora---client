@@ -78,23 +78,25 @@ export function ResponsiveTable<T extends TableItem>({
   return (
     <Card className='w-full '>
       <div className='p-6 space-y-6'>
-        {/* Header */}
-        <div className='flex justify-between items-center mb-4 flex-wrap gap-4'>
-          <h1 className='text-2xl font-semibold'>{title}</h1>
-          {headerActions && <div className='flex gap-3'>{headerActions}</div>}
-        </div>
+        {/* Search + Optional Actions */}
+        <div className='flex items-center justify-between gap-4 mb-4 flex-wrap'>
+          <div className='flex items-center gap-4 '>
+            <Input
+              type='text'
+              placeholder={searchPlaceholder || 'Search...'}
+              className='w-full max-w-sm'
+              value={searchTerm}
+              onChange={onSearchTermChange}
+              onKeyUp={(e) => e.key === 'Enter' && onSearchClick()}
+            />
+            <Button onClick={onSearchClick}>Search</Button>
+          </div>
 
-        {/* Search */}
-        <div className='flex items-center gap-4 mb-4 flex-wrap'>
-          <Input
-            type='text'
-            placeholder={searchPlaceholder || 'Search...'}
-            className='w-full max-w-sm'
-            value={searchTerm}
-            onChange={onSearchTermChange}
-            onKeyUp={(e) => e.key === 'Enter' && onSearchClick()}
-          />
-          <Button onClick={onSearchClick}>Search</Button>
+          {/* Right side (SORT / FILTER) */}
+          <div className='flex'>
+
+            {headerActions && <div className='flex gap-3'>{headerActions}</div>}
+          </div>
         </div>
 
         {/* Loader / Empty / Table */}

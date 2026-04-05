@@ -55,11 +55,26 @@ export interface ResponseCreateBookingHoldDTO {
   }
   expiresAt: Date
 }
+export type SortOption =
+  | 'latest'
+  | 'oldest'
+  | 'service_name_asc'
+  | 'service_name_desc'
 
+
+export type FilterOption =
+  | 'active'
+  | 'cancelled'
+  | 'fully_paid'
+  | 'adv_paid'
+  | 'refunded'
+  | 'all'
 export interface RequestGetMyBookingsDTO {
   page: number
   limit: number
-  search: string
+  search?: string
+  sortOption?: SortOption
+  filterOption?: FilterOption
 }
 
 export interface ResponseGetMyBookingsDTO {

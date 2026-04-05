@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { FilterOption, SortOption } from '@/dtos/booking_dto'
 import {
   ColumnDefinition,
   ResponsiveTable,
@@ -53,6 +54,9 @@ const formatTime = (isoString?: string) => {
 }
 
 export default function BookingListPage() {
+  const [sort, setSort] = useState<SortOption>('latest')
+  const [filter, setFilter] = useState<FilterOption>('all')
+
   const router = useRouter()
 
   const [page, setPage] = useState(1)
@@ -62,6 +66,8 @@ export default function BookingListPage() {
     page,
     limit: 4,
     search,
+    sortOption: sort,
+    filterOption: filter,
   })
 
   const tableData: BookingTableItem[] =
@@ -113,14 +119,14 @@ export default function BookingListPage() {
       ),
     },
     {
-      key: 'bookingId',
+      key: 'bookingGroupCode',
       header: "Booking Code",
       render: (item) => (
         <span className='font-medium'>{item.bookingGroupCode}</span>
       )
     },
     {
-      key: 'bookingId',
+      key: 'slots',
       header: 'Slots',
       render: (item) => (
         <div className='flex flex-col gap-1'>
@@ -167,7 +173,7 @@ export default function BookingListPage() {
   ] as const
 
   return (
-    
+
     <ResponsiveTable<BookingTableItem>
       title='My Bookings'
       data={tableData}
@@ -200,6 +206,36 @@ export default function BookingListPage() {
           )}
         </div>
       )}
+
+      headerActions={
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="latest">Latest</SelectItem>
+              <SelectItem value="oldest">Oldest</SelectItem>
+              <SelectItem value="service_name_asc">Service Name (A-Z)</SelectItem>
+              <SelectItem value="service_name_desc">Service Name (Z-A)</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={filter} onValueChange={(value) => setFilter(value as FilterOption)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="active">Active Bookings</SelectItem>
+              <SelectItem value="cancelled">Cancelled Bookings</SelectItem>
+              <SelectItem value="fully_paid">Fully Paid Bookings</SelectItem>
+              <SelectItem value="adv_paid">Advance Paid Bookings</SelectItem>
+              <SelectItem value="refunded">Refunded Bookings</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      }
     />
   )
 }

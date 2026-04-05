@@ -39,4 +39,14 @@ export const chatService = {
       nextCursor?: string
     }
   },
+
+  async uploadChatFile(role: Role, file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const route = role === 'customer' ? CUSTOMER_ROUTES.POST_CHAT_IMAGE : VENDOR_ROUTES.POST_CHAT_IMAGE
+
+    const res = await axiosInstance.post(route, formData)
+    return res.data.data.fileUrl as string
+  },
 }

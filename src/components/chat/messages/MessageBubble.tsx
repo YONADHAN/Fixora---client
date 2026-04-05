@@ -26,7 +26,16 @@ export function MessageBubble({ message }: Props) {
             : 'bg-muted'
         }`}
       >
-        <div>{message.content}</div>
+        {message.messageType === 'image' ? (
+          <img
+            src={message.content}
+            alt="Uploaded content"
+            className="rounded-md max-w-full h-auto object-cover max-h-64 mb-1"
+            loading="lazy"
+          />
+        ) : (
+          <div className="break-words whitespace-pre-wrap">{message.content}</div>
+        )}
 
         <div className="mt-1 flex items-center justify-end gap-1 text-[10px] opacity-70">
           <span>{formattedTime}</span>

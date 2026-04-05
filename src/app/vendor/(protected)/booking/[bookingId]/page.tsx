@@ -815,7 +815,7 @@ export default function VendorBookingDetailsPage() {
           )}
 
           {isCancelled && (
-            <div className='p-4 rounded-2xl border-2 border-red-900 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800'>
+            <div className='p-4 rounded-2xl border-2 border-red-900 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400  dark:border-red-800'>
               <h1>Cancellation Reason: {cancellation?.reason}</h1>
               <h2>Cancelled by: {cancellation?.cancelledByRole}</h2>
             </div>
