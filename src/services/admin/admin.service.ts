@@ -12,15 +12,21 @@ export const getAllCustomers = async ({
   limit,
   search,
   role,
+  sortField,
+  sortOrder,
+  status,
 }: {
   page: number
   limit: number
   search: string
   role: string
+  sortField?: string
+  sortOrder?: string
+  status?: string
 }) => {
   const response = await axiosInstance.post(
     `${ADMIN_ROUTES.GET_ALL_CUSTOMERS}`,
-    { page, limit, search, role }
+    { page, limit, search, role, sortField, sortOrder, status }
   )
   return response
 }
@@ -29,15 +35,27 @@ export const getAllVendors = async ({
   page,
   limit,
   search,
+  role,
+  sortField,
+  sortOrder,
+  status,
 }: {
   page: number
   limit: number
   search: string
+  role?: string
+  sortField?: string
+  sortOrder?: string
+  status?: string
 }) => {
   const response = await axiosInstance.post(`${ADMIN_ROUTES.GET_ALL_VENDORS}`, {
     page,
     limit,
     search,
+    role,
+    sortField,
+    sortOrder,
+    status,
   })
   return response
 }

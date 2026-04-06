@@ -8,8 +8,13 @@ import {
 } from '@/lib/hooks/useAdmin'
 import { ConfirmDialog } from '@/components/shared-ui/resusable_components/DialogBox/confirmationPopup'
 import { Button } from '@/components/ui/button'
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+type SortField = 'name' | 'email' | 'createdAt';
+type Status = 'all' | 'pending' | 'active' | 'blocked'
 type StatusType = 'active' | 'blocked'
+
+type SortOption = 'latest' | 'oldest' | 'name_asc' | 'name_desc' | 'email_asc' | 'email_desc';
+type FilterOption = 'all' | 'active' | 'blocked';
 
 interface Customer {
   id: string
@@ -29,12 +34,37 @@ const CustomerPage = () => {
   const [appliedSearch, setAppliedSearch] = useState('')
   const limit = 4
 
+  const [sort, setSort] = useState<SortOption>('latest');
+  const [filter, setFilter] = useState<FilterOption>('all');
+
+  let sortField = 'createdAt';
+  let sortOrder = 'desc';
+
+  if (sort === 'oldest') {
+    sortOrder = 'asc';
+  } else if (sort === 'name_asc') {
+    sortField = 'name';
+    sortOrder = 'asc';
+  } else if (sort === 'name_desc') {
+    sortField = 'name';
+    sortOrder = 'desc';
+  } else if (sort === 'email_asc') {
+    sortField = 'email';
+    sortOrder = 'asc';
+  } else if (sort === 'email_desc') {
+    sortField = 'email';
+    sortOrder = 'desc';
+  }
+
   // ----------------------- React Query: Fetch Customers -----------------------
   const { data, isLoading, refetch } = useGetAllCustomers({
     page: currentPage,
     limit,
     search: appliedSearch,
     role: 'customer',
+    sortField,
+    sortOrder,
+    status: filter,
   })
 
   // Map users to include 'id' required by TableItem
@@ -137,7 +167,7 @@ const CustomerPage = () => {
     },
   ]
 
-  // ----------------------- Render -----------------------
+
   return (
     <div className='p-6'>
       <ResponsiveTable<Customer>
@@ -166,6 +196,36 @@ const CustomerPage = () => {
                 : 'Unblock'}
           </Button>
         )}
+
+        headerActions={
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">Latest</SelectItem>
+                <SelectItem value="oldest">Oldest</SelectItem>
+                <SelectItem value="name_asc">Name (A-Z)</SelectItem>
+                <SelectItem value="name_desc">Name (Z-A)</SelectItem>
+                <SelectItem value="email_asc">Email (A-Z)</SelectItem>
+                <SelectItem value="email_desc">Email (Z-A)</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={filter} onValueChange={(value) => setFilter(value as FilterOption)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="active">Active Users</SelectItem>
+                <SelectItem value="blocked">Blocked Users</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        }
+
       />
 
       <ConfirmDialog

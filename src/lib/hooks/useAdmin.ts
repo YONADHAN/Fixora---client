@@ -18,6 +18,9 @@ interface UsePaginatedParams {
   page: number
   limit: number
   search: string
+  sortField?: string
+  sortOrder?: string
+  status?: string
 }
 
 import { PaginatedVendorRequests } from '@/types/users/admin/vendor_request.types'
@@ -33,15 +36,21 @@ export const useGetAllCustomers = ({
   limit,
   search,
   role,
+  sortField,
+  sortOrder,
+  status,
 }: {
   page: number
   limit: number
   search: string
   role: string
+  sortField?: string
+  sortOrder?: string
+  status?: string
 }) => {
   return useQuery({
-    queryKey: ['admin-customers', page, limit, search, role],
-    queryFn: () => getAllCustomers({ page, limit, search, role }),
+    queryKey: ['admin-customers', page, limit, search, role, sortField, sortOrder, status],
+    queryFn: () => getAllCustomers({ page, limit, search, role, sortField, sortOrder, status }),
   })
 }
 
@@ -49,10 +58,13 @@ export const useGetAllVendors = ({
   page,
   limit,
   search,
+  sortField,
+  sortOrder,
+  status,
 }: UsePaginatedParams) => {
   return useQuery({
-    queryKey: ['admin-vendors', page, limit, search],
-    queryFn: () => getAllVendors({ page, limit, search }),
+    queryKey: ['admin-vendors', page, limit, search, sortField, sortOrder, status],
+    queryFn: () => getAllVendors({ page, limit, search, role: 'vendor', sortField, sortOrder, status }),
   })
 }
 

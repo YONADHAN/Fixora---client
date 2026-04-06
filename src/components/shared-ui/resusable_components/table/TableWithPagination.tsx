@@ -14,16 +14,12 @@ import {
 } from '@/components/ui/table'
 import { Pagination } from '../pagination/pagination'
 
-/* --------------------------------------
-   BASE ITEM TYPE 
--------------------------------------- */
+
 export interface TableItem {
   id: string | number
 }
 
-/* --------------------------------------
-   COLUMN DEFINITION
--------------------------------------- */
+
 export interface ColumnDefinition<T extends TableItem> {
   key: keyof T
   header: string
@@ -31,9 +27,7 @@ export interface ColumnDefinition<T extends TableItem> {
   className?: string
 }
 
-/* --------------------------------------
-   TABLE PROPS
--------------------------------------- */
+//table props
 interface ResponsiveTableProps<T extends TableItem> {
   title: string
   data: T[]
@@ -48,7 +42,7 @@ interface ResponsiveTableProps<T extends TableItem> {
   onSearchClick: () => void
   searchPlaceholder?: string
 
-  /** Optional top-right custom header button(s) */
+//optional header
   headerActions?: React.ReactNode
 }
 const trimText = (text: string, charLimit = 80) => {
@@ -57,9 +51,7 @@ const trimText = (text: string, charLimit = 80) => {
     ? text.substring(0, charLimit) + '...'
     : text
 }
-/* --------------------------------------
-   MAIN COMPONENT
--------------------------------------- */
+
 export function ResponsiveTable<T extends TableItem>({
   title,
   data,
