@@ -38,7 +38,12 @@ export default function AIChatBot() {
         setIsLoading(true)
 
         try {
-            const resData = await askAIChatBotByCustomer(userMessage)
+            const formattedHistory = messages.map((msg) => ({
+                role: msg.role,
+                parts: [{ text: msg.content }]
+            }))
+
+            const resData = await askAIChatBotByCustomer(userMessage, formattedHistory)
 
             const reply = resData?.data?.reply || resData?.reply || 'I received empty data... Please try again.'
 

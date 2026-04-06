@@ -1,11 +1,10 @@
 import { axiosInstance } from "@/api/interceptor";
 import { CUSTOMER_ROUTES } from "@/utils/constants/api.routes";
 
-export const askAIChatBotByCustomer = async (message: string) => {
+export const askAIChatBotByCustomer = async (message: string, history?: any[]) => {
     const response = await axiosInstance.post(
         CUSTOMER_ROUTES.ASK_CHATBOT,
-        { message },
-
+        { message, history },
     )
     return response.data
 }
