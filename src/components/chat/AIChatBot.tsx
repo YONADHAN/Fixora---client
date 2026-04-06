@@ -92,13 +92,13 @@ export default function AIChatBot() {
                                             <ReactMarkdown 
                                                 remarkPlugins={[remarkGfm]}
                                                 components={{
-                                                    p: ({node, ...props}) => <p className="mb-2 last:mb-0 space-y-1" {...props} />,
-                                                    ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />,
-                                                    ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-2 space-y-1" {...props} />,
-                                                    li: ({node, ...props}) => <li className="leading-snug" {...props} />,
-                                                    strong: ({node, ...props}) => <strong className="font-semibold text-zinc-900 dark:text-zinc-100" {...props} />,
-                                                    a: ({node, ...props}) => <a className="text-blue-500 hover:underline" {...props} />,
-                                                    h3: ({node, ...props}) => <h3 className="font-bold text-base mt-2 mb-1" {...props} />,
+                                                    p: ({...props}) => <p className="mb-2 last:mb-0 space-y-1" {...props} />,
+                                                    ul: ({...props}) => <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />,
+                                                    ol: ({...props}) => <ol className="list-decimal pl-5 mb-2 space-y-1" {...props} />,
+                                                    li: ({...props}) => <li className="leading-snug" {...props} />,
+                                                    strong: ({...props}) => <strong className="font-semibold text-zinc-900 dark:text-zinc-100" {...props} />,
+                                                    a: ({...props}) => <a className="text-blue-500 hover:underline" {...props} />,
+                                                    h3: ({...props}) => <h3 className="font-bold text-base mt-2 mb-1" {...props} />,
                                                 }}
                                             >
                                                 {msg.content}

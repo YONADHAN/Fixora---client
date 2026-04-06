@@ -134,9 +134,8 @@ export function ChatSidebar() {
           const name =
             role === 'customer'
               ? chat.service?.name || 'Service'
-              : `${chat.customer?.name || 'Customer'} • ${
-                  chat.service?.name || 'Service'
-                }`
+              : `${chat.customer?.name || 'Customer'} • ${chat.service?.name || 'Service'
+              }`
 
           const image =
             role === 'customer'

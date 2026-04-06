@@ -11,8 +11,6 @@ import { Button } from '@/components/ui/button'
 
 type StatusType = 'active' | 'blocked'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-type SortField = 'name' | 'email' | 'createdAt';
-type Status = 'all' | 'pending' | 'active' | 'blocked'
 type SortOption = 'latest' | 'oldest' | 'name_asc' | 'name_desc' | 'email_asc' | 'email_desc';
 type FilterOption = 'all' | 'active' | 'blocked';
 

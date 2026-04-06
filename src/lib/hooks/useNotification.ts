@@ -53,11 +53,11 @@ export const useNotifications = (
 
       const previousData = queryClient.getQueryData(['notifications', filter])
 
-      queryClient.setQueryData(['notifications', filter], (old: any) => {
+      queryClient.setQueryData(['notifications', filter], (old: { pages: { data: NotificationPayload[], unreadCount: number }[] } | undefined) => {
         if (!old) return old
         return {
           ...old,
-          pages: old.pages.map((page: any) => ({
+          pages: old.pages.map((page: { data: NotificationPayload[], unreadCount: number }) => ({
             ...page,
             data: page.data.map((n: NotificationPayload) =>
               n.notificationId === notificationId
@@ -89,11 +89,11 @@ export const useNotifications = (
       await queryClient.cancelQueries({ queryKey: ['notifications'] })
       const previousData = queryClient.getQueryData(['notifications', filter])
 
-      queryClient.setQueryData(['notifications', filter], (old: any) => {
+      queryClient.setQueryData(['notifications', filter], (old: { pages: { data: NotificationPayload[], unreadCount: number }[] } | undefined) => {
         if (!old) return old
         return {
           ...old,
-          pages: old.pages.map((page: any) => ({
+          pages: old.pages.map((page: { data: NotificationPayload[], unreadCount: number }) => ({
             ...page,
             data: page.data.map((n: NotificationPayload) => ({
               ...n,

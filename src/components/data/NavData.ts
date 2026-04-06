@@ -7,7 +7,6 @@ import {
   FaScrewdriver,
   FaRegAddressBook,
   FaMoneyBill,
-  FaMoneyCheck,
   FaRegBookmark,
   FaWallet,
   FaAddressBook,

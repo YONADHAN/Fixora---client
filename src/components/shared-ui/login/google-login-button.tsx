@@ -4,7 +4,7 @@
 
 'use client'
 
-import { GoogleLogin } from '@react-oauth/google'
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import { useGoogleAuthentication } from '@/lib/hooks/useAuth'
 import { isGoogleLoginAllowed } from '@/lib/utils/roleGuards'
 import { Loader2 } from 'lucide-react'
@@ -28,7 +28,7 @@ export default function GoogleLoginButton({ role }: { role: string }) {
     )
   }
 
-  const handleSuccess = async (credentialResponse: any) => {
+  const handleSuccess = async (credentialResponse: CredentialResponse) => {
     try {
       const credential = credentialResponse.credential
       if (!credential) {

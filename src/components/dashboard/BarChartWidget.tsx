@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface BarChartWidgetProps {
     title: string;
-    data: any[];
+    data: Record<string, string | number>[];
     dataKey: string;
     xAxisKey?: string;
     color?: string;

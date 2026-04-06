@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LineChartWidgetProps {
     title: string;
-    data: any[];
+    data: Record<string, string | number>[];
     dataKey: string; // The key for the y-axis value
     xAxisKey?: string; // The key for the x-axis label (default "label")
     color?: string;

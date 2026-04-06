@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation'
 import { formatDistanceToNow } from 'date-fns'
 import { Bell, Loader2 } from 'lucide-react'
 import { useNotifications } from '@/lib/hooks/useNotification'
+import { NotificationPayload } from '@/utils/constants/constants'
 
 export const NotificationModal = () => {
     const [filter, setFilter] = useState<'all' | 'unread'>('all')
@@ -33,7 +34,7 @@ export const NotificationModal = () => {
         return () => observer.disconnect()
     }, [hasNextPage, fetchNextPage])
 
-    const handleClick = (notification: any) => {
+    const handleClick = (notification: NotificationPayload) => {
         if (!notification.isRead) markAsRead(notification.notificationId)
         if (notification.metadata?.redirectUrl) {
             router.push(notification.metadata.redirectUrl)

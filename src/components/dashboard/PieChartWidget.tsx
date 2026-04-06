@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PieChartWidgetProps {
     title: string;
-    data: any[]; // Expects { name: string, value: number }[]
+    data: { name: string; value: number }[]; // Expects { name: string, value: number }[]
     colors?: string[];
 }
 
