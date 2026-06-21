@@ -53,7 +53,7 @@ const trimText = (text: string, charLimit = 80) => {
 }
 
 export function ResponsiveTable<T extends TableItem>({
-  title,
+  //title,
   data,
   loading,
   columns,

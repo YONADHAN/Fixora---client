@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
 import { useSocket } from '@/providers/SocketProvider'
 import { SOCKET_EVENTS } from '@/utils/constants/constants'
-
+import { ChatListUpdatePayload } from '@/types/chat/ai_chat.type'
 export function ChatSidebar() {
   const { setActiveChatId } = useChatUI()
   const socket = useSocket()
@@ -73,6 +73,7 @@ export function ChatSidebar() {
     if (!socket || !userId) return
 
     const handleListUpdate = (updatedChat: any) => {
+      console.log('Received chat list update:', updatedChat)
       setChats((prev) => {
         const filtered = prev.filter((c) => c.chatId !== updatedChat.chatId)
         const existing = prev.find((c) => c.chatId === updatedChat.chatId)

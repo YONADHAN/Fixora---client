@@ -1,8 +1,8 @@
-export interface ApiResponse {
-  success: boolean
-  message: string
-  data?: any
-}
+// export interface ApiResponse {
+//   success: boolean
+//   message: string
+//   data?: any
+// }
 export interface signinData {
   email: string
   password: string

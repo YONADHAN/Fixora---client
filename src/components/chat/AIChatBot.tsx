@@ -38,18 +38,21 @@ export default function AIChatBot() {
         setIsLoading(true)
 
         try {
-            const formattedHistory = messages.map((msg) => ({
-                role: msg.role,
-                parts: [{ text: msg.content }]
-            }))
+            // const formattedHistory = messages.map((msg) => ({
+            //     role: msg.role,
+            //     parts: [{ text: msg.content }]
+            // }))
 
-            const resData = await askAIChatBotByCustomer(userMessage, formattedHistory)
+            const resData = await askAIChatBotByCustomer(userMessage
+                // , formattedHistory
+            )
 
             const reply = resData?.data?.reply || resData?.reply || 'I received empty data... Please try again.'
 
             setMessages((prev) => [...prev, { role: 'model', content: reply }])
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Chat error:', error)
+           
             const errorMsg = error.response?.data?.message || 'Oops, something went wrong. Please try again later.'
             setMessages((prev) => [
                 ...prev,

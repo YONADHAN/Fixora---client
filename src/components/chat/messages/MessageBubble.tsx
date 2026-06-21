@@ -3,6 +3,7 @@ import { format, isToday } from 'date-fns'
 
 import { ChatMessage } from '@/types/chat/chat.type'
 import { useCurrentUser } from '@/lib/hooks/useCurrentUser'
+import Image from 'next/image'
 
 interface Props {
   message: ChatMessage
@@ -20,18 +21,24 @@ export function MessageBubble({ message }: Props) {
   return (
     <div className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-xs rounded-lg px-4 py-2 text-sm ${
-          isMe
+        className={`max-w-xs rounded-lg px-4 py-2 text-sm ${isMe
             ? 'bg-primary text-primary-foreground'
             : 'bg-muted'
-        }`}
+          }`}
       >
         {message.messageType === 'image' ? (
-          <img
+          // <img
+          //   src={message.content}
+          //   alt="Uploaded content"
+          //   className="rounded-md max-w-full h-auto object-cover max-h-64 mb-1"
+          //   loading="lazy"
+          // />
+          <Image
             src={message.content}
             alt="Uploaded content"
-            className="rounded-md max-w-full h-auto object-cover max-h-64 mb-1"
-            loading="lazy"
+            width={300} 
+            height={200} 
+            className="rounded-md object-cover max-h-64 mb-1"
           />
         ) : (
           <div className="break-words whitespace-pre-wrap">{message.content}</div>

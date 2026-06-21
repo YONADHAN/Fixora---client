@@ -1,4 +1,5 @@
 import { axiosInstance, axiosInstanceMultipart } from '@/api/interceptor'
+import { ProfileUpdateDTO } from '@/types/profile/profile.type'
 import { VendorVerificationStatus } from '@/types/users/vendor/api_return.types'
 
 import { VENDOR_ROUTES } from '@/utils/constants/api.routes'
@@ -12,7 +13,7 @@ export const vendorProfileInfo = async () => {
   return response
 }
 
-export const venderProfileInfoUpdate = async (data: any) => {
+export const venderProfileInfoUpdate = async (data: ProfileUpdateDTO) => {
   const response = await axiosInstance.patch(
     VENDOR_ROUTES.UPDATE_PROFILE_INFO,
     data
