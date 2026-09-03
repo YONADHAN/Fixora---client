@@ -74,12 +74,12 @@ export default function Page() {
       <section className='relative  mt-[64px] md:mt-[3px] pt-16 pb-40 lg:pt-10 lg:pb-56 px-6  dark:bg-background overflow-hidden min-h-[600px] lg:min-h-[800px] flex items-center'>
 
         {/* Full width background image */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 md:">
           <Image
             src="/hero.png"
             alt="Professionals"
             fill
-            className="object-cover object-center"
+            className="object-cover md:object-center object-right"
             priority
           />
           {/* Subtle gradient overlay to ensure text readability */}
@@ -107,26 +107,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Search Bar - Centered at the bottom */}
-        {/* 
-        <div className="absolute bottom-20 md:bottom-24 left-0 right-0 z-20 flex justify-center px-6">
-          <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-[2rem] md:rounded-full shadow-2xl p-2 md:p-3 flex flex-col md:flex-row items-center divide-y md:divide-y-0 md:divide-x divide-slate-100 dark:divide-slate-800 border border-slate-100 dark:border-slate-800">
-            <div className="flex-1 flex items-center gap-3 px-5 py-4 md:py-1 w-full">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
-              <input type="text" placeholder="Enter your location" className="w-full bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder:text-slate-400 font-medium" />
-            </div>
-            <div className="flex-1 flex items-center gap-3 px-5 py-4 md:py-1 w-full">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-              <input type="text" placeholder="Search for services" className="w-full bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder:text-slate-400 font-medium" />
-            </div>
-            <div className="pt-2 md:pt-0 md:pl-2 md:pr-1 py-1 w-full md:w-auto">
-              <button className="w-full md:w-auto bg-[#0b2053] hover:bg-blue-900 text-white font-bold py-3.5 px-8 rounded-full transition-colors whitespace-nowrap">
-                Find Services
-              </button>
-            </div>
-          </div>
-        </div>
-        */}
+       
 
         {/* Wave SVG separator positioned at the bottom of hero */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
