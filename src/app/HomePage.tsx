@@ -1,7 +1,15 @@
 'use client'
 
-
-import {CheckCircle, Clock, Shield, Star } from 'lucide-react'
+import {
+  CheckCircle,
+  Clock,
+  Shield,
+  Star,
+  Search,
+  CalendarCheck,
+  Wrench,
+  ArrowRight
+} from 'lucide-react'
 import Image from 'next/image'
 import { useGetActiveServiceCategories } from '@/lib/hooks/userServiceCategory'
 import { useRouter } from 'next/navigation'
@@ -12,157 +20,221 @@ interface TypeCategoryItem {
   description: string
   bannerImage: string
 }
+
 export default function Page() {
   const router = useRouter()
-
-
   const { data, isLoading } = useGetActiveServiceCategories()
-
   const activeCategories = data?.data?.data?.data || []
 
   const features = [
     {
       icon: CheckCircle,
       title: 'Verified Professionals',
-      desc: 'All service providers are background checked',
+      desc: 'All service providers undergo background verification.',
     },
     {
       icon: Clock,
       title: 'Quick Booking',
-      desc: 'Get service within 2 hours or schedule for later',
+      desc: 'Schedule services at a time that works for you.',
     },
     {
       icon: Shield,
       title: 'Service Guarantee',
-      desc: '100% satisfaction or money back guarantee',
+      desc: 'Your satisfaction is prioritized through our service standards.',
     },
     {
       icon: Star,
       title: 'Top Rated',
-      desc: 'Only the best professionals with 4.5+ ratings',
+      desc: 'Connect with professionals maintaining high customer ratings.',
     },
   ]
 
-  // function createNotificationFunction() {
-  //   testingOnlyApi()
-  //   toast.success('notification send successfully: testing done')
-  // }
+  const workflows = [
+    {
+      icon: Search,
+      title: 'Discover Services',
+      desc: 'Browse our categories to find the specific professional service you require.',
+    },
+    {
+      icon: CalendarCheck,
+      title: 'Book an Appointment',
+      desc: 'Select your preferred service provider and schedule a convenient time.',
+    },
+    {
+      icon: Wrench,
+      title: 'Service Completion',
+      desc: 'The professional arrives at your location to complete the requested job.',
+    },
+  ]
 
   return (
-    <div className='flex flex-col min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-background dark:to-background'>
+    <div className='flex flex-col min-h-screen bg-slate-50 dark:bg-background'>
+
       {/* HERO SECTION */}
-      <section className='relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden'>
-        <div className='absolute inset-0 overflow-hidden'>
-          <div className='absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl animate-pulse'></div>
-          <div
-            className='absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-3xl animate-pulse'
-            style={{ animationDelay: '1s' }}
-          ></div>
+      <section className='relative  mt-[64px] md:mt-[3px] pt-16 pb-40 lg:pt-10 lg:pb-56 px-6  dark:bg-background overflow-hidden min-h-[600px] lg:min-h-[800px] flex items-center'>
+
+        {/* Full width background image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero.png"
+            alt="Professionals"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          {/* Subtle gradient overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r md:from-white/90 md:via-white/30  to-transparent dark:from-slate-950/95 dark:via-slate-950/70 dark:to-transparent" />
         </div>
 
-        <div className='relative z-10 max-w-5xl mx-auto text-center space-y-8'>
-          <div className='inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-full text-sm text-blue-700 dark:text-blue-400 font-medium'>
-            <span className='w-2 h-2 bg-blue-500 rounded-full animate-pulse'></span>
-            Trusted by 50,000+ happy customers
-          </div>
+        <div className='max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12'>
+          <div className='space-y-6 text-center lg:text-left pt-24 lg:pt-0'>
 
-          <h1 className='text-5xl md:text-7xl font-bold text-gray-900 dark:text-foreground leading-tight'>
-            Your Home Services,
-            <span className='block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2'>
-              Just a Click Away
-            </span>
-          </h1>
-
-          <p className='text-xl md:text-2xl text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
-            Connect with verified local professionals for all your home service
-            needs. Fast, reliable, and affordable.
-          </p>
-
-          {/* SEARCH BAR
-          <div className='max-w-2xl mx-auto mt-12'>
-            <div className='relative group'>
-              <div className='absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300'></div>
-              <div className='relative flex items-center bg-white dark:bg-card rounded-2xl shadow-2xl p-2'>
-                <Search className='text-gray-400 dark:text-muted-foreground ml-4' size={24} />
-                <input
-                  type='text'
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder='What service do you need today?'
-                  className='flex-1 px-4 py-4 text-lg outline-none text-gray-800 dark:text-foreground bg-transparent placeholder:text-gray-400 dark:placeholder:text-muted-foreground'
-                />
-                <button className='bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition duration-200'>
-                  Search
-                </button>
-              </div>
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 mb-2 shadow-sm">
+              <Shield className="w-4 h-4 text-[#0b2053] dark:text-blue-400" />
+              <span className="text-sm font-bold text-[#0b2053] dark:text-blue-200 tracking-wide">
+                Trusted Professionals. Quality Service.
+              </span>
             </div>
-          </div> */}
 
-          {/* POPULAR SEARCHES */}
-          <div className='flex flex-wrap items-center justify-center gap-3 text-sm'>
-            <span className='text-gray-500 dark:text-muted-foreground'>
-              Popular:
-            </span>
-            {activeCategories.map(
-              (serviceCategories: TypeCategoryItem, index: string) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    router.push(
-                      `/customer/service_category/${serviceCategories.serviceCategoryId}`,
-                    )
-                  }
-                  className='px-4 py-2 bg-white dark:bg-card border border-gray-200 dark:border-border rounded-full text-gray-700 dark:text-foreground hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition'
+            <h1 className='text-4xl md:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight text-white md:text-[#0b2053] dark:text-white leading-[1.1] drop-shadow-sm'>
+              Find the right professional <br className='hidden lg:block' /> for the job.
+            </h1>
+
+            <p className='text-lg md:text-xl text-white md:text-slate-700 dark:text-slate-200 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium drop-shadow-sm'>
+              Discover and book trusted local professionals for all your service needs.
+            </p>
+          </div>
+        </div>
+
+        {/* Search Bar - Centered at the bottom */}
+        {/* 
+        <div className="absolute bottom-20 md:bottom-24 left-0 right-0 z-20 flex justify-center px-6">
+          <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-[2rem] md:rounded-full shadow-2xl p-2 md:p-3 flex flex-col md:flex-row items-center divide-y md:divide-y-0 md:divide-x divide-slate-100 dark:divide-slate-800 border border-slate-100 dark:border-slate-800">
+            <div className="flex-1 flex items-center gap-3 px-5 py-4 md:py-1 w-full">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+              <input type="text" placeholder="Enter your location" className="w-full bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder:text-slate-400 font-medium" />
+            </div>
+            <div className="flex-1 flex items-center gap-3 px-5 py-4 md:py-1 w-full">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+              <input type="text" placeholder="Search for services" className="w-full bg-transparent outline-none text-slate-700 dark:text-slate-200 placeholder:text-slate-400 font-medium" />
+            </div>
+            <div className="pt-2 md:pt-0 md:pl-2 md:pr-1 py-1 w-full md:w-auto">
+              <button className="w-full md:w-auto bg-[#0b2053] hover:bg-blue-900 text-white font-bold py-3.5 px-8 rounded-full transition-colors whitespace-nowrap">
+                Find Services
+              </button>
+            </div>
+          </div>
+        </div>
+        */}
+
+        {/* Wave SVG separator positioned at the bottom of hero */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-0">
+          <svg className="relative block w-full h-[60px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.06,130.83,120.22,192.65,108.99c60.31-10.96,116-35.32,176.62-43.14Z" className="fill-white dark:fill-slate-900"></path>
+          </svg>
+        </div>
+      </section>
+
+      {/* FEATURES SECTION (Overlapping Wave) */}
+      <section className='relative z-20 -mt-16  md:-mt-24 px-6 pb-24'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100 dark:border-slate-800 p-8 md:p-12'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100 dark:divide-slate-800'>
+              {features.map((feature, idx) => (
+                <div
+                  key={idx}
+                  className={`flex items-center gap-4 ${idx !== 0 ? 'pt-8 md:pt-0 md:pl-8 lg:pl-10' : ''}`}
                 >
-                  {serviceCategories.name}
-                </button>
-              ),
-            )}
+                  <div className='w-14 h-14 shrink-0 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center'>
+                    <feature.icon className='w-7 h-7' strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className='text-base font-bold text-slate-900 dark:text-slate-100 mb-1'>
+                      {feature.title}
+                    </h3>
+                    <p className='text-slate-500 dark:text-slate-400 text-sm leading-snug'>
+                      {feature.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ACTIVE SERVICE CATEGORIES  */}
+      {/* HOW IT WORKS SECTION */}
+      <section className='py-24 px-6 bg-white dark:bg-slate-900'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='text-center mb-20'>
+            <h2 className='text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4'>
+              How Fixora Works
+            </h2>
+          </div>
+
+          <div className='grid md:grid-cols-3 gap-12 relative'>
+            {/* Connecting line for desktop */}
+            <div className='hidden md:block absolute top-10 left-1/6 right-1/6 h-[2px] border-t-2 border-dashed border-slate-200 dark:border-slate-700 z-0' style={{ width: '66%', left: '17%' }}></div>
+
+            {workflows.map((step, idx) => (
+              <div key={idx} className='flex flex-col items-center text-center relative z-10'>
+                <div className='w-20 h-20 bg-white dark:bg-slate-900 border-4 border-slate-50 dark:border-slate-800 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mb-6 shadow-sm'>
+                  <step.icon className='w-8 h-8' strokeWidth={1.5} />
+                </div>
+                <h3 className='text-xl font-bold text-slate-900 dark:text-slate-100 mb-3'>
+                  {idx + 1}. {step.title}
+                </h3>
+                <p className='text-slate-500 dark:text-slate-400 text-base leading-relaxed max-w-xs'>
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ACTIVE SERVICE CATEGORIES */}
       {!isLoading && activeCategories.length > 0 && (
-        <section className='py-24 px-4 bg-white dark:bg-background'>
+        <section id="categories" className='py-24 px-6 bg-slate-50 dark:bg-background'>
           <div className='max-w-7xl mx-auto'>
-            <div className='text-center mb-16'>
-              <h2 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4'>
-                Popular Services
+            <div className='flex flex-col mb-12 gap-4 text-center'>
+              <h2 className='text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4'>
+                Service Categories
               </h2>
-              <p className='text-xl text-gray-600 dark:text-muted-foreground'>
-                Book the most in-demand home services
+              <p className='text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto'>
+                Explore the range of services offered by our professionals.
               </p>
             </div>
 
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
               {activeCategories.map((cat: TypeCategoryItem) => (
                 <div
                   key={cat.serviceCategoryId}
-                  onClick={() =>
-                    router.push(
-                      `/customer/service_category/${cat.serviceCategoryId}`,
-                    )
-                  }
-                  className='group cursor-pointer pb-1 text-center bg-gray-50 dark:bg-muted p-2 rounded-3xl'
+                  onClick={() => router.push(`/customer/service_category/${cat.serviceCategoryId}`)}
+                  className='group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300 flex flex-col'
                 >
-                  <div className='relative overflow-hidden rounded-2xl h-40 flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl'>
-                    <Image
-                      src={cat.bannerImage}
-                      alt={cat.name}
-                      sizes=''
-                      fill
-                      className='object-cover transition-transform duration-300 group-hover:scale-110'
-                    />
-
-                    <div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/20 group-hover:from-black/50 group-hover:to-black/40 transition-all'></div>
-
-                    <span className='relative z-10 text-white font-semibold text-lg drop-shadow-md'>
-                      {cat.name}
-                    </span>
+                  <div className='relative h-56 w-full overflow-hidden bg-slate-100 dark:bg-slate-800'>
+                    {cat.bannerImage ? (
+                      <Image
+                        src={cat.bannerImage}
+                        alt={cat.name}
+                        fill
+                        className='object-cover transition-transform duration-500 group-hover:scale-105'
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-slate-400">
+                        <Wrench className="w-8 h-8 opacity-50" />
+                      </div>
+                    )}
                   </div>
-                  <div className='mt-2 text-gray-900 dark:text-foreground'>
-                    {cat.description}
+                  <div className='p-6 flex flex-col flex-grow'>
+                    <h3 className='text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
+                      {cat.name}
+                    </h3>
+                    <p className='text-slate-500 dark:text-slate-400 text-sm line-clamp-2'>
+                      {cat.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -171,82 +243,43 @@ export default function Page() {
         </section>
       )}
 
-      {/* <div>
-        <p>Testing Socket Notification</p>
-        <div>
-          <button
-            onClick={() => createNotificationFunction()}
-            className='px-3 py-1 bg-green-500'
-          >
-            create notifications
-          </button>
-        </div>
-      </div> */}
-      <section className='py-24 px-4 bg-gradient-to-b from-gray-50 to-white dark:from-background dark:to-background'>
+      {/* CALL TO ACTION */}
+      <section className='py-24 px-6 bg-slate-50 dark:bg-background'>
         <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-16'>
-            <h2 className='text-4xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4'>
-              Why Choose Fixora?
-            </h2>
-            <p className='text-xl text-gray-600 dark:text-muted-foreground'>
-              Your satisfaction is our top priority
-            </p>
-          </div>
+          <div className='relative rounded-[2.5rem] overflow-hidden bg-[#0b2053] shadow-2xl flex flex-col lg:flex-row'>
+            <div className='p-12 md:p-16 lg:p-20 flex-1 relative z-10 flex flex-col justify-center text-center lg:text-left'>
+              <h2 className='text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight'>
+                Ready to find the right professional?
+              </h2>
+              <p className='text-lg md:text-xl text-blue-100 max-w-2xl mx-auto lg:mx-0 mb-10'>
+                Whether you are looking for a service or offering your professional skills, get started with Fixora today.
+              </p>
 
-          <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8'>
-            {features.map((feature, idx) => (
-              <div
-                key={idx}
-                className='group p-8 bg-white dark:bg-card rounded-2xl border border-gray-200 dark:border-border hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-xl transition-all duration-300'
-              >
-                <div className='w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300'>
-                  <feature.icon className='text-white' size={28} />
-                </div>
-                <h3 className='text-xl font-bold text-gray-900 dark:text-foreground mb-3'>
-                  {feature.title}
-                </h3>
-                <p className='text-gray-600 dark:text-muted-foreground leading-relaxed'>
-                  {feature.desc}
-                </p>
+              <div className='flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center'>
+                <button
+                  onClick={() => router.push('/vendor/signin')}
+                  className='px-8 py-4 bg-white text-[#0b2053] hover:bg-slate-100 rounded-full font-bold transition-colors shadow-sm w-full sm:w-auto text-base'
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => router.push('/vendor/signup')}
+                  className='px-8 py-4 bg-transparent border-2 border-white/30 text-white hover:bg-white/10 rounded-full font-bold transition-colors w-full sm:w-auto text-base'
+                >
+                  Become a Professional
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className='relative py-24 px-4 overflow-hidden'>
-        <div className='absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700'></div>
-
-        <div className='relative z-10 max-w-4xl mx-auto text-center text-white'>
-          <h2 className='text-4xl md:text-6xl font-bold mb-6'>
-            Ready to Get Started?
-          </h2>
-          <p className='text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed'>
-            Join thousands of satisfied customers who trust Fixora for their
-            home service needs
-          </p>
-
-          <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-            <button className='group relative px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200'>
-              <span className='relative z-10'>Book a Service Now</span>
-            </button>
-            <button className='px-8 py-4 border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-200'>
-              Become a Professional
-            </button>
-          </div>
-
-          <div className='mt-16 flex flex-wrap justify-center gap-12 text-center'>
-            <div>
-              <div className='text-4xl font-bold mb-2'>50K+</div>
-              <div className='text-blue-200'>Happy Customers</div>
             </div>
-            <div>
-              <div className='text-4xl font-bold mb-2'>2,500+</div>
-              <div className='text-blue-200'>Verified Pros</div>
-            </div>
-            <div>
-              <div className='text-4xl font-bold mb-2'>4.8★</div>
-              <div className='text-blue-200'>Average Rating</div>
+
+            <div className='relative w-full lg:w-5/12 min-h-[300px] lg:min-h-full hidden md:block'>
+              {/* Gradient mask to blend image seamlessly into the card background */}
+              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#0b2053] via-[#0b2053]/50 to-transparent z-10"></div>
+              <Image
+                src="/hero.png"
+                alt="Join Fixora Professionals"
+                fill
+                className="object-cover object-right"
+              />
             </div>
           </div>
         </div>
