@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 import { useAdminLogout } from '@/lib/hooks/useAdmin'
 import { useVendorLogout } from '@/lib/hooks/useVendor'
@@ -45,6 +45,7 @@ export default function Navbar({
   isAuthenticated,
 }: NavbarProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const dispatch = useDispatch()
   const { topNav, sideNav } = navData[role]
 
@@ -94,7 +95,7 @@ export default function Navbar({
       }
 
       toast.success(res?.data?.message || 'Logged out successfully')
-      router.push(`/${role}/signin`)
+      router.push(`/${role}/signin?returnUrl=${encodeURIComponent(pathname)}`)
     } catch (error) {
       toast.error('Logout failed')
       console.error(error)
@@ -167,7 +168,7 @@ export default function Navbar({
                     <>
                       <Button
                         variant='outline'
-                        onClick={() => router.push(`/${role}/signin`)}
+                        onClick={() => router.push(`/${role}/signin?returnUrl=${encodeURIComponent(pathname)}`)}
                         className='w-full'
                       >
                         Login
@@ -288,7 +289,7 @@ export default function Navbar({
             <div className='flex place-items-center gap-2'>
               <Button
                 variant='outline'
-                onClick={() => router.push(`/${role}/signin`)}
+                onClick={() => router.push(`/${role}/signin?returnUrl=${encodeURIComponent(pathname)}`)}
                 className='hidden sm:flex'
               >
                 Login

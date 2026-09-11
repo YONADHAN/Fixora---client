@@ -54,13 +54,20 @@ export const useCreateBookingHold = () => {
   })
 }
 
-export const useCustomerBookings = (params: RequestGetMyBookingsDTO) => {
+export const useCustomerBookings = (params: RequestGetMyBookingsDTO, retryOn404?: boolean) => {
   return useQuery<ResponseGetMyBookingsDTO>({
     queryKey: ['customerBookings', params],
     queryFn: async () => {
       const res = await getCustomerBookings(params)
       return res.data.data
     },
+    retry: retryOn404 ? (failureCount, error) => {
+      if (error instanceof AxiosError && error.response?.status === 404 && failureCount < 10) {
+        return true
+      }
+      return false
+    } : undefined,
+    retryDelay: retryOn404 ? 1500 : undefined,
   })
 }
 
@@ -99,6 +106,13 @@ export const useCustomerBookingDetailsByPaymentId = (
     queryKey: ['booking-details-payment', paymentId],
     queryFn: () => getBookingDetailsByPaymentId(paymentId!),
     enabled: !!paymentId,
+    retry: (failureCount, error) => {
+      if (error instanceof AxiosError && error.response?.status === 404 && failureCount < 10) {
+        return true
+      }
+      return false
+    },
+    retryDelay: 1500,
   })
 }
 

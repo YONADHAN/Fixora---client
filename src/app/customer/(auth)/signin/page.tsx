@@ -4,14 +4,17 @@ import { LoginForm } from '@/components/shared-ui/login/login-form'
 import type { LoginFormData } from '@/lib/schemas/loginSchema'
 import { useSignin } from '@/lib/hooks/useAuth'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAppDispatch } from '@/store/store'
 import { customerLogin } from '@/store/slices/customer.slice'
 import { AxiosError } from 'axios'
 export default function CustomerLoginPage() {
   const signinMutation = useSignin()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
+  
+  const returnUrl = searchParams.get('returnUrl') || '/customer/dashboard'
   const handleSubmit = async (data: LoginFormData) => {
     try {
       const response = await signinMutation.mutateAsync({
@@ -23,7 +26,7 @@ export default function CustomerLoginPage() {
         dispatch(customerLogin(response.user))
         toast.success('Login successful!')
 
-        router.replace('/customer/dashboard')
+        router.replace(returnUrl)
       } else {
         toast.error(response.message || 'Login failed')
       }
@@ -41,7 +44,7 @@ export default function CustomerLoginPage() {
   return (
     <div className='flex flex-col items-center justify-center min-h-screen p-5 md:p-10'>
       <div className='w-full max-w-sm md:max-w-3xl'>
-        <LoginForm role='customer' onSubmit={handleSubmit} />
+        <LoginForm role='customer' onSubmit={handleSubmit} onGoogleSuccess={() => router.replace(returnUrl)} />
       </div>
     </div>
   )

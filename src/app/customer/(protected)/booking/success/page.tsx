@@ -44,7 +44,8 @@ export default function BookingSuccessPage() {
         limit: 50,
         search: groupId,
       }
-      : { page: 1, limit: 1, search: '____' }
+      : { page: 1, limit: 1, search: '____' },
+    true
   )
 
   const groupBookings = groupId ? groupBookingsData?.data : null
@@ -83,7 +84,7 @@ export default function BookingSuccessPage() {
         <div className='flex flex-col items-center gap-4'>
           <div className='animate-spin rounded-full h-10 w-10 border-b-2 border-primary'></div>
           <p className='text-muted-foreground text-sm'>
-            Fetching your booking details…
+            Payment successful. Finalizing your booking...
           </p>
         </div>
       </div>
@@ -100,11 +101,10 @@ export default function BookingSuccessPage() {
               <AlertTriangle className='h-14 w-14 text-destructive' />
             </div>
             <CardTitle className='text-xl text-destructive'>
-              Unable to Load Booking
+              Finalization Pending
             </CardTitle>
             <p className='text-muted-foreground mt-2'>
-              Your payment was successful, but we couldn’t fetch your booking
-              details right now.
+              Your payment was successful, but your booking is still being finalized.
             </p>
           </CardHeader>
 
