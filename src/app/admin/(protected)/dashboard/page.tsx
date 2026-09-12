@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
   const { summary, booking, vendor, customer, service } = data || {};
 
   return (
-    <div className="p-8 space-y-8 bg-gray-50/50 min-h-screen">
+    <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>

@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { Pagination } from '@/components/shared-ui/resusable_components/pagination/pagination'
 import EmptySubServices from '@/components/pages/service-category/Empty-subservices'
 import { useRouter } from 'next/navigation'
+import { Search, Loader2, AlertCircle, ArrowRight } from 'lucide-react'
 
 export default function ServiceCategoryDetailsPage() {
   const router = useRouter()
@@ -39,7 +40,7 @@ export default function ServiceCategoryDetailsPage() {
 
   if (subs.length === 0 && !isLoading && !isError && !isSearchActive) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <EmptySubServices />
       </div>
     )
@@ -50,121 +51,109 @@ export default function ServiceCategoryDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        <div className="text-center space-y-6 max-w-3xl mx-auto mt-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-950 tracking-tight">
-            Sub-Service <span className="text-blue-600">Categories</span>
+    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-6xl mx-auto space-y-10">
+        
+        {/* Header Section */}
+        <div className="text-center max-w-2xl mx-auto mt-6 space-y-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            Sub-Service Categories
           </h1>
-          <p className="text-lg text-blue-900/60 font-medium">
+          <p className="text-slate-600 text-lg">
             Discover and book the perfect service tailored to your specific needs.
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto relative group">
-          <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full transition-all duration-500 group-hover:bg-blue-400/30"></div>
-          <div className="relative flex items-center bg-white p-2 rounded-full shadow-lg border border-blue-100 transition-all duration-300 focus-within:ring-4 focus-within:ring-blue-100">
-            <div className="pl-5 pr-3 text-blue-400">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto">
+          <div className="relative flex items-center bg-white rounded-xl shadow-sm border border-slate-200 focus-within:border-slate-400 focus-within:ring-4 focus-within:ring-slate-100 transition-all duration-200">
+            <div className="pl-4 text-slate-400">
+              <Search className="w-5 h-5" />
             </div>
             <Input
               placeholder="Search sub-services..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 border-0 shadow-none focus-visible:ring-0 text-blue-950 placeholder:text-blue-300 text-lg bg-transparent py-6"
+              className="flex-1 border-0 shadow-none focus-visible:ring-0 text-slate-900 placeholder:text-slate-400 h-14 bg-transparent text-base"
             />
-            <Button 
-              onClick={() => setPage(1)}
-              className="rounded-full px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold transition-colors shadow-md hover:shadow-lg ml-2"
-            >
-              Search
-            </Button>
+            <div className="pr-2">
+              <Button 
+                onClick={() => setPage(1)}
+                className="bg-slate-900 hover:bg-slate-800 text-white px-6 h-10 rounded-lg font-medium transition-colors"
+              >
+                Search
+              </Button>
+            </div>
           </div>
         </div>
 
+        {/* Loading State */}
         {isLoading && (
-          <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <svg className="w-10 h-10 text-blue-500 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p className="text-blue-900/60 font-medium animate-pulse">Fetching categories…</p>
+          <div className="flex flex-col items-center justify-center py-24 space-y-4">
+            <Loader2 className="w-8 h-8 text-slate-400 animate-spin" />
+            <p className="text-slate-500 font-medium">Loading categories...</p>
           </div>
         )}
 
+        {/* Error State */}
         {isError && (
-          <div className="flex flex-col items-center justify-center py-20 space-y-4 bg-red-50/50 rounded-3xl border border-red-100 max-w-2xl mx-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <p className="text-red-600 font-medium text-lg">Unable to load categories right now.</p>
-            <Button variant="outline" onClick={() => window.location.reload()} className="border-red-200 text-red-600 hover:bg-red-50 mt-2">
+          <div className="flex flex-col items-center justify-center py-16 space-y-4 bg-white rounded-2xl border border-red-100 max-w-xl mx-auto shadow-sm">
+            <AlertCircle className="w-10 h-10 text-red-500" />
+            <p className="text-red-700 font-medium">Unable to load categories right now.</p>
+            <Button variant="outline" onClick={() => window.location.reload()} className="mt-2">
               Try Again
             </Button>
           </div>
         )}
 
+        {/* Empty Search State */}
         {!isLoading && !isError && subs.length === 0 && isSearchActive && (
-          <div className="flex flex-col items-center justify-center py-16 space-y-4 bg-white/60 backdrop-blur-md rounded-[2rem] border border-blue-100 max-w-2xl mx-auto shadow-sm mt-8">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-300">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <p className="text-blue-900/70 font-medium text-lg text-center px-4">
-              We couldn't find any services matching "<span className="text-blue-600 font-semibold">{debouncedSearch}</span>".<br/>Try searching with different keywords.
+          <div className="flex flex-col items-center justify-center py-16 space-y-4 bg-white rounded-2xl border border-slate-200 max-w-xl mx-auto shadow-sm">
+            <Search className="w-10 h-10 text-slate-300" />
+            <p className="text-slate-600 text-center px-6">
+              We couldn't find any services matching "<span className="text-slate-900 font-semibold">{debouncedSearch}</span>".<br/>Try adjusting your search terms.
             </p>
-            <Button variant="outline" onClick={() => setSearch('')} className="mt-4 border-blue-200 text-blue-600 hover:bg-blue-50 rounded-full px-8">
+            <Button variant="outline" onClick={() => setSearch('')} className="mt-4">
               Clear Search
             </Button>
           </div>
         )}
 
+        {/* Results Grid */}
         {!isLoading && !isError && subs.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-10 mt-8">
-            {subs.map((sub) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {subs.map((sub: any) => (
               <Card
                 key={sub.subServiceCategoryId}
                 onClick={() => navigateToSearchPage(sub.subServiceCategoryId)}
-                className="group border-0 bg-white/60 backdrop-blur-md rounded-[2rem] overflow-hidden shadow-xl shadow-blue-900/5 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col h-full"
+                className="group border border-slate-200 bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full"
               >
-                <div className="relative w-full h-64 bg-gradient-to-br from-blue-50/50 to-blue-100/30 p-8 flex items-center justify-center overflow-hidden">
-                  <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors duration-500 z-10"></div>
+                <div className="relative w-full h-56 bg-slate-50 border-b border-slate-100 p-6 flex items-center justify-center overflow-hidden">
                   {sub.bannerImage ? (
                     <Image
                       src={sub.bannerImage}
                       alt={sub.name}
                       fill
-                      className="object-contain p-6 transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full bg-blue-100/50 rounded-2xl flex items-center justify-center">
-                      <span className="text-blue-300 font-medium">No image</span>
-                    </div>
+                    <div className="text-slate-400 font-medium">No Image Available</div>
                   )}
                 </div>
 
-                <CardContent className="p-8 flex-1 flex flex-col bg-white">
-                  <h3 className="text-2xl font-bold text-blue-950 mb-4 group-hover:text-blue-600 transition-colors duration-300 line-clamp-1">
+                <CardContent className="p-6 flex-1 flex flex-col">
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors line-clamp-1">
                     {sub.name}
                   </h3>
-                  <p className="text-base text-blue-900/70 leading-relaxed line-clamp-3 flex-1">
+                  <p className="text-slate-500 leading-relaxed line-clamp-2 flex-1 text-sm">
                     {sub.description}
                   </p>
                   
-                  <div className="mt-8 pt-6 border-t border-blue-50 flex items-center justify-between">
-                    <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider group-hover:tracking-widest transition-all duration-300">
-                      Explore Services
+                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-slate-700 font-medium text-sm transition-colors group-hover:text-slate-900">
+                      View Details
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
-                      <svg className="w-4 h-4 text-blue-600 group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all duration-300" />
                   </div>
                 </CardContent>
               </Card>
@@ -172,9 +161,10 @@ export default function ServiceCategoryDetailsPage() {
           </div>
         )}
 
+        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="pt-12 pb-8 flex justify-center">
-            <div className="bg-white px-4 py-2 rounded-2xl shadow-sm border border-blue-50">
+          <div className="pt-8 pb-12 flex justify-center">
+            <div className="bg-white px-2 py-1 rounded-xl shadow-sm border border-slate-200">
               <Pagination
                 totalPages={totalPages}
                 currentPage={currentPage}
@@ -187,3 +177,4 @@ export default function ServiceCategoryDetailsPage() {
     </div>
   )
 }
+
