@@ -17,12 +17,14 @@ interface LoginFormProps extends Omit<React.ComponentProps<'div'>, 'onSubmit'> {
   role: 'customer' | 'vendor' | 'admin'
   onSubmit: (data: LoginFormData) => Promise<void>
   variant?: 'page' | 'modal'
+  onGoogleSuccess?: () => void
 }
 
 export function LoginForm({
   role,
   onSubmit,
   variant = 'page',
+  onGoogleSuccess,
   className,
   ...props
 }: LoginFormProps) {
@@ -123,7 +125,7 @@ export function LoginForm({
                 </span>
               </div>
 
-              <GoogleLoginButton role={role} />
+              <GoogleLoginButton role={role} onSuccess={onGoogleSuccess} />
               {/* Footer link */}
               {role !== 'admin' && (
                 <div className='text-center text-sm'>

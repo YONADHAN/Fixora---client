@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { AxiosError } from 'axios'
 
-export default function GoogleLoginButton({ role }: { role: string }) {
+export default function GoogleLoginButton({ role, onSuccess }: { role: string; onSuccess?: () => void }) {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { mutateAsync: googleLogin, isPending } = useGoogleAuthentication()
@@ -58,14 +58,22 @@ export default function GoogleLoginButton({ role }: { role: string }) {
           return
         }
 
-        router.replace('/vendor/dashboard')
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.replace('/vendor/dashboard')
+        }
         return
       }
 
 
       if (role as "customer" | "vendor" === 'customer') {
         dispatch(customerLogin(user))
-        router.replace('/')
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.replace('/')
+        }
         return
       }
 

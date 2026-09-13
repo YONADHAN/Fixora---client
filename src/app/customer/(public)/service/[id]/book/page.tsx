@@ -267,46 +267,49 @@ export default function BookServicePage() {
   }
 
   return (
-    <div className='max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6'>
+    <div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 xl:gap-12 animate-in fade-in duration-500'>
       <SignInModal
         open={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onSuccess={() => {
           setShowLoginModal(false)
-          // setPendingPayment(false)
-          // Stay on this page so user can continue booking
         }}
       />
 
       {/* ───────────── LEFT ───────────── */}
-      <div className='space-y-4'>
+      <div className='space-y-8'>
+        <div className="space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Book Service</h1>
+          <p className="text-muted-foreground font-medium">Select a date and time that works best for you.</p>
+        </div>
+
         {/* Calendar */}
-        <Card className='p-3'>
-          <div className='flex justify-between mb-2'>
-            <Button size='sm' variant='outline' onClick={goPrevMonth}>
-              ‹
-            </Button>
-            <h2 className='text-sm font-semibold'>
+        <Card className='p-6 rounded-2xl border-none shadow-sm ring-1 ring-border/50 bg-card'>
+          <div className='flex items-center justify-between mb-6'>
+            <h2 className='text-lg font-semibold tracking-tight'>
               {new Date(year, month).toLocaleString('default', {
                 month: 'long',
                 year: 'numeric',
               })}
             </h2>
-            <Button size='sm' variant='outline' onClick={goNextMonth}>
-              ›
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button size='icon' variant='outline' className="h-8 w-8 rounded-full shadow-sm" onClick={goPrevMonth}>
+                ‹
+              </Button>
+              <Button size='icon' variant='outline' className="h-8 w-8 rounded-full shadow-sm" onClick={goNextMonth}>
+                ›
+              </Button>
+            </div>
           </div>
 
-          <div className='grid grid-cols-7 gap-1.5'>
+          <div className='grid grid-cols-7 gap-2 sm:gap-3'>
             {availableDates.filter((d) => !isDateInPast(d)).map((d) => (
               <Button
                 key={d}
-                size='sm'
-                variant={
-                  selectedDate === d
-                    ? 'default'
-                    : 'outline'
-                }
+                variant={selectedDate === d ? 'default' : 'outline'}
+                className={`h-12 sm:h-14 w-full rounded-xl font-semibold transition-all ${
+                  selectedDate === d ? 'shadow-md scale-105' : 'hover:bg-muted text-muted-foreground'
+                }`}
                 onClick={() => {
                   setSelectedDate(d)
                   setSelectedSlotStart(null)
@@ -319,89 +322,77 @@ export default function BookServicePage() {
         </Card>
 
         {/* Slots */}
-        <Card className='p-3'>
-          <div className='flex items-center justify-between mb-2'>
-            <h2 className='text-sm font-semibold flex gap-2'>
-              <Clock size={14} /> Select Time Slot
+        <Card className='p-6 rounded-2xl border-none shadow-sm ring-1 ring-border/50 bg-card'>
+          <div className='flex items-center justify-between mb-6'>
+            <h2 className='text-lg font-semibold tracking-tight flex items-center gap-2'>
+              <Clock size={20} className="text-primary" /> Select Time Slot
             </h2>
             {selectedSlot && (
-              <span className='text-xs text-muted-foreground'>
-                Selected: {selectedSlot.start} - {selectedSlot.end}
+              <span className='text-sm font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full'>
+                Selected: {selectedSlot.start}
               </span>
             )}
           </div>
 
-          <div className='grid grid-cols-3 md:grid-cols-4 gap-1.5 mb-2'>
+          <div className='grid grid-cols-3 sm:grid-cols-4 gap-3 mb-2'>
             {slotsForSelectedDate.map((slot) => {
               const slotDate = selectedDate ? new Date(selectedDate) : null
-
-              const disabled =
-                !slotDate || isSlotInPast(slotDate, slot.start)
+              const disabled = !slotDate || isSlotInPast(slotDate, slot.start)
 
               return (
                 <Button
                   key={slot.start}
-                  size='sm'
                   disabled={disabled}
-                  variant={
-                    selectedSlotStart === slot.start
-                      ? 'default'
-                      : 'outline'
-                  }
+                  variant={selectedSlotStart === slot.start ? 'default' : 'outline'}
+                  className={`h-14 rounded-xl transition-all ${
+                    selectedSlotStart === slot.start ? 'shadow-md scale-105' : ''
+                  }`}
                   onClick={() => !disabled && handleSlotClick(slot.start)}
                 >
-                  {slot.start}–{slot.end}
+                  <div className="flex flex-col items-center">
+                    <span className="font-bold">{slot.start}</span>
+                    <span className="text-[10px] font-medium opacity-80">{slot.end}</span>
+                  </div>
                 </Button>
               )
             })}
-            {/* {slotsForSelectedDate.map((slot) => (
-              <Button
-                key={slot.start}
-                size='sm'
-                variant={
-                  selectedSlotStart === slot.start
-                    ? 'default'
-                    : 'outline'
-                }
-                onClick={() => handleSlotClick(slot.start)}
-              >
-                {slot.start}–{slot.end}
-              </Button>
-            ))} */}
           </div>
           {slotsForSelectedDate.length === 0 && (
-            <p className='text-xs text-muted-foreground p-2 text-center'>No slots available for this date.</p>
+            <div className='py-8 text-center bg-muted/20 rounded-xl border border-dashed border-border/60 mt-4'>
+              <p className='text-muted-foreground font-medium'>No slots available for this date.</p>
+            </div>
           )}
         </Card>
 
-        {/* Variant  */}
+        {/* Variant */}
         {hasVariants && (
-          <Card className='p-3'>
-            <h2 className='text-sm font-semibold mb-2'>
-              Select Service Variant (Optional)
+          <Card className='p-6 rounded-2xl border-none shadow-sm ring-1 ring-border/50 bg-card'>
+            <h2 className='text-lg font-semibold tracking-tight mb-4'>
+              Select Service Variant <span className="text-muted-foreground font-normal text-sm">(Optional)</span>
             </h2>
 
-            <div className='space-y-2'>
+            <div className='grid sm:grid-cols-2 gap-3'>
               <Button
                 variant={selectedVariantIndex === null ? 'default' : 'outline'}
-                className='w-full justify-between'
+                className={`h-16 justify-between px-5 rounded-xl transition-all ${
+                  selectedVariantIndex === null ? 'shadow-md ring-2 ring-primary ring-offset-2' : ''
+                }`}
                 onClick={() => setSelectedVariantIndex(null)}
               >
-                <span>No Variant</span>
-                <span className='text-xs text-muted-foreground'>
-                  ₹{basePrice}
-                </span>
+                <span className="font-semibold text-base">No Variant</span>
+                <span className='text-sm font-bold opacity-90'>₹{basePrice}</span>
               </Button>
-              {/* Variant options */}
               {service.serviceVariants!.map((variant, idx) => (
                 <Button
                   key={idx}
                   variant={selectedVariantIndex === idx ? 'default' : 'outline'}
-                  className='w-full justify-between'
+                  className={`h-16 justify-between px-5 rounded-xl transition-all ${
+                    selectedVariantIndex === idx ? 'shadow-md ring-2 ring-primary ring-offset-2' : ''
+                  }`}
                   onClick={() => setSelectedVariantIndex(idx)}
                 >
-                  <span>{variant.name}</span>
-                  {variant.price && <span>₹{variant.price}</span>}
+                  <span className="font-semibold text-base truncate pr-2">{variant.name}</span>
+                  {variant.price && <span className="text-sm font-bold opacity-90 shrink-0">₹{variant.price}</span>}
                 </Button>
               ))}
             </div>
@@ -409,8 +400,8 @@ export default function BookServicePage() {
         )}
 
         {/* Address Selection */}
-        <Card className='p-3' id="address-section">
-          <h2 className='text-sm font-semibold mb-2'>Select Address</h2>
+        <Card className='p-6 rounded-2xl border-none shadow-sm ring-1 ring-border/50 bg-card' id="address-section">
+          <h2 className='text-lg font-semibold tracking-tight mb-4'>Service Location</h2>
           <AddressSelector
             selectedAddressId={selectedAddressId}
             onSelect={setSelectedAddressId}
@@ -419,88 +410,94 @@ export default function BookServicePage() {
       </div>
 
       {/* ───────────── RIGHT ───────────── */}
-      <Card className='p-4 h-fit sticky top-4 space-y-4'>
-        <h2 className='text-base font-semibold'>Booking Summary</h2>
+      <div className="w-full">
+        <Card className='p-6 rounded-3xl border-none shadow-lg shadow-black/5 ring-1 ring-border/50 bg-card sticky top-24 space-y-6'>
+          <h2 className='text-xl font-bold tracking-tight'>Booking Summary</h2>
 
-        {selectedAddressId && addressData?.data?.find(a => a.addressId === selectedAddressId) && (
-          <div className="bg-muted/50 p-2 rounded text-xs space-y-1 border">
-            <p className="font-semibold flex items-center gap-1"><MapPin className="h-3 w-3" /> Service Address:</p>
-            <p className="text-muted-foreground line-clamp-2">
-              {addressData.data.find(a => a.addressId === selectedAddressId)?.addressLine1}, {addressData.data.find(a => a.addressId === selectedAddressId)?.city}
-            </p>
+          {selectedAddressId && addressData?.data?.find(a => a.addressId === selectedAddressId) && (
+            <div className="bg-muted/30 p-4 rounded-xl border border-border/50 space-y-2">
+              <p className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                <MapPin size={16} className="text-primary" /> Service Address
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {addressData.data.find(a => a.addressId === selectedAddressId)?.addressLine1},{' '}
+                {addressData.data.find(a => a.addressId === selectedAddressId)?.city}
+              </p>
+            </div>
+          )}
+
+          {selectedSlot ? (
+            <div className='relative bg-primary/5 border border-primary/20 p-4 rounded-xl flex justify-between items-start gap-4'>
+              <div className="space-y-1">
+                <p className='text-sm font-bold text-foreground'>
+                  {selectedSlot.date}
+                </p>
+                <p className='text-xs font-medium text-muted-foreground'>
+                  {selectedSlot.start} – {selectedSlot.end}
+                </p>
+                {selectedSlot.variant?.name && (
+                  <p className='text-xs font-semibold text-primary mt-1'>
+                    {selectedSlot.variant.name}
+                  </p>
+                )}
+              </div>
+
+              <div className='flex flex-col items-end gap-3'>
+                <button
+                  onClick={() => setSelectedSlotStart(null)}
+                  className='p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors'
+                  title='Remove slot'
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className='text-sm font-medium text-muted-foreground text-center py-6 border border-dashed border-border/60 rounded-xl bg-muted/10'>
+              Please select a slot
+            </div>
+          )}
+
+          <div className='space-y-3 pt-4 border-t border-border/50'>
+            <div className='flex justify-between text-sm'>
+              <span className='text-muted-foreground'>Service Price</span>
+              <span className='font-semibold text-foreground'>₹{totalPrice}</span>
+            </div>
+            <div className='flex justify-between text-sm'>
+              <span className='text-muted-foreground'>Advance Payment</span>
+              <span className='font-semibold text-foreground'>₹{totalAdvance}</span>
+            </div>
           </div>
-        )}
+          
+          <div className='flex justify-between items-center py-4 border-y border-border/50'>
+            <span className='font-bold text-foreground'>Total Payable Now</span>
+            <span className='text-2xl font-black text-primary'>₹{totalAdvance}</span>
+          </div>
 
-        {selectedSlot ? (
-          <div
-            className='text-xs flex justify-between items-start gap-2 bg-accent/20 p-2 rounded'
+          <div className='space-y-2'>
+            <label className='text-sm font-semibold text-foreground'>Payment Method</label>
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value as 'stripe')}
+              className='w-full border-2 border-border/50 bg-background rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all'
+            >
+              <option value='stripe'>Stripe (Card / UPI)</option>
+            </select>
+          </div>
+
+          <Button
+            size="lg"
+            className='w-full h-14 rounded-xl text-base font-bold shadow-md active:scale-95 transition-all'
+            disabled={!selectedSlot}
+            onClick={PayAdvanceButtonClick}
           >
-            <div>
-              <div className='font-medium'>
-                {selectedSlot.date} • {selectedSlot.start}–{selectedSlot.end}
-              </div>
-              {selectedSlot.variant?.name && (
-                <div className='text-[10px] text-muted-foreground'>
-                  {selectedSlot.variant.name}
-                </div>
-              )}
-            </div>
-
-            <div className='flex items-center gap-2 text-right text-[10px]'>
-              <div className='text-muted-foreground leading-tight'>
-                <div>₹{totalPrice}</div>
-                <div>Adv ₹{totalAdvance}</div>
-              </div>
-
-              <button
-                onClick={() => setSelectedSlotStart(null)}
-                className='text-red-500 hover:text-red-600'
-                title='Remove slot'
-              >
-                <Trash2 size={12} />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <p className='text-xs text-muted-foreground text-center py-4 border border-dashed rounded'>
-            Select a slot to continue
+            Pay Advance ₹{totalAdvance}
+          </Button>
+          <p className="text-xs text-center text-muted-foreground font-medium">
+            Secure and encrypted payment
           </p>
-        )}
-
-        <div className='text-xs space-y-1 border-t pt-2'>
-          <div className='flex justify-between'>
-            <span>Price</span>
-            <span>₹{totalPrice}</span>
-          </div>
-          <div className='flex justify-between'>
-            <span>Advance</span>
-            <span>₹{totalAdvance}</span>
-          </div>
-          <div className='flex justify-between font-medium text-sm pt-1'>
-            <span>Total Payable</span>
-            <span>₹{totalAdvance}</span>
-          </div>
-        </div>
-        <div className='space-y-1 text-xs'>
-          <label className='font-medium'>Payment Method</label>
-          <select
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value as 'stripe')}
-            className='w-full border rounded-md px-2 py-1 text-sm'
-          >
-            <option value='stripe'>Stripe (Card / UPI)</option>
-          </select>
-        </div>
-
-        <Button
-          className='w-full justify-between'
-          disabled={!selectedSlot}
-          onClick={PayAdvanceButtonClick}
-        >
-          <span>Pay Advance</span>
-          <span>₹{totalAdvance}</span>
-        </Button>
-      </Card>
-    </div >
+        </Card>
+      </div>
+    </div>
   )
 }

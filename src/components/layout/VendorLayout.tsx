@@ -18,9 +18,11 @@ export default function VendorLayout({
   const vendor = useSelector((state: RootState) => state.vendor.vendor)
   const isAuthenticated = !!vendor
   return (
-    <section lang='en'>
+    <section lang='en' className='min-h-screen flex flex-col bg-gray-50/50'>
       <Navbar role='vendor' isAuthenticated={isAuthenticated} />
-      {children}
+      <main className='flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+        {children}
+      </main>
       <Footer />
     </section>
   )

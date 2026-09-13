@@ -52,7 +52,7 @@ export default function SignInModal({ open, onClose, onSuccess }: Props) {
         className='bg-background rounded-lg w-full max-w-md p-4'
         onClick={(e) => e.stopPropagation()}
       >
-        <LoginForm role='customer' onSubmit={handleLogin} variant='modal' />
+        <LoginForm role='customer' onSubmit={handleLogin} variant='modal' onGoogleSuccess={onSuccess} />
       </div>
     </div>
   )

@@ -53,7 +53,7 @@ export default function CheckoutForm({ bookingSummary }: CheckoutFormProps) {
   const elements = useElements()
   const searchParams = useSearchParams()
   const params = useParams()
-  const bookingId = searchParams.get('bookingId')
+
 
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -68,7 +68,7 @@ export default function CheckoutForm({ bookingSummary }: CheckoutFormProps) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/customer/booking/success?bookingId=${bookingId}&holdId=${params.holdId}`,
+        return_url: `${window.location.origin}/customer/booking/success?holdId=${params.holdId}`,
       },
     })
 
