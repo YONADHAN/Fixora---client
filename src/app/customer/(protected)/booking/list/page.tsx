@@ -173,69 +173,70 @@ export default function BookingListPage() {
   ] as const
 
   return (
-
-    <ResponsiveTable<BookingTableItem>
-      title='My Bookings'
-      data={tableData}
-      loading={isLoading}
-      columns={columns}
-      currentPage={data?.currentPage ?? 1}
-      totalPages={data?.totalPages ?? 1}
-      onPageChange={(p) => setPage(p)}
-      searchTerm={search}
-      onSearchTermChange={(e) => setSearch(e.target.value)}
-      onSearchClick={() => setPage(1)}
-      actions={(item) => (
-        <div className='flex gap-2'>
-          <Button
-            size='sm'
-            variant='outline'
-            onClick={() => router.push(`/customer/booking/${item.bookingId}`)}
-          >
-            View Details
-          </Button>
-          {item.status !== 'Cancelled' && (
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => handleChat(item.bookingId)}
-            >
-              <MessageCircle className='w-4 h-4 mr-2' />
-              Chat
-            </Button>
+    <div className="bg-gray-50/50 min-h-[calc(100vh-64px)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ResponsiveTable<BookingTableItem>
+          title='My Bookings'
+          data={tableData}
+          loading={isLoading}
+          columns={columns}
+          currentPage={data?.currentPage ?? 1}
+          totalPages={data?.totalPages ?? 1}
+          onPageChange={(p) => setPage(p)}
+          searchTerm={search}
+          onSearchTermChange={(e) => setSearch(e.target.value)}
+          onSearchClick={() => setPage(1)}
+          actions={(item) => (
+            <div className='flex gap-2'>
+              <Button
+                size='sm'
+                variant='outline'
+                onClick={() => router.push(`/customer/booking/${item.bookingId}`)}
+              >
+                View Details
+              </Button>
+              {item.status !== 'Cancelled' && (
+                <Button
+                  size='sm'
+                  variant='outline'
+                  onClick={() => handleChat(item.bookingId)}
+                >
+                  <MessageCircle className='w-4 h-4 mr-2' />
+                  Chat
+                </Button>
+              )}
+            </div>
           )}
-        </div>
-      )}
-
-      headerActions={
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">Latest</SelectItem>
-              <SelectItem value="oldest">Oldest</SelectItem>
-              <SelectItem value="service_name_asc">Service Name (A-Z)</SelectItem>
-              <SelectItem value="service_name_desc">Service Name (Z-A)</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={filter} onValueChange={(value) => setFilter(value as FilterOption)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="active">Active Bookings</SelectItem>
-              <SelectItem value="cancelled">Cancelled Bookings</SelectItem>
-              <SelectItem value="fully_paid">Fully Paid Bookings</SelectItem>
-              <SelectItem value="adv_paid">Advance Paid Bookings</SelectItem>
-              <SelectItem value="refunded">Refunded Bookings</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      }
-    />
+          headerActions={
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={sort} onValueChange={(value) => setSort(value as SortOption)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort By" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="latest">Latest</SelectItem>
+                  <SelectItem value="oldest">Oldest</SelectItem>
+                  <SelectItem value="service_name_asc">Service Name (A-Z)</SelectItem>
+                  <SelectItem value="service_name_desc">Service Name (Z-A)</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={filter} onValueChange={(value) => setFilter(value as FilterOption)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter By" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="active">Active Bookings</SelectItem>
+                  <SelectItem value="cancelled">Cancelled Bookings</SelectItem>
+                  <SelectItem value="fully_paid">Fully Paid Bookings</SelectItem>
+                  <SelectItem value="adv_paid">Advance Paid Bookings</SelectItem>
+                  <SelectItem value="refunded">Refunded Bookings</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          }
+        />
+      </div>
+    </div>
   )
 }

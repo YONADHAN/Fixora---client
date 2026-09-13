@@ -114,77 +114,91 @@ export default function Navbar({
                 <Menu className='h-6 w-6' />
               </Button>
             </SheetTrigger>
-            <SheetContent side='left' className='w-64'>
-              <SheetHeader>
-                <SheetTitle>
+            <SheetContent side='left' className='w-72 border-r-0 shadow-2xl p-0 flex flex-col'>
+              <div className='p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50'>
+                <SheetTitle className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
                   Fixora {role.charAt(0).toUpperCase() + role.slice(1)}
                 </SheetTitle>
-              </SheetHeader>
+              </div>
 
-              <nav className='mt-6 flex flex-col gap-4'>
+              <div className='flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-6'>
                 {/* Show top nav items on mobile */}
-                <div className='flex flex-col gap-4 pb-4 border-b'>
-                  {topNav.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className='text-lg font-medium hover:text-blue-600'
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
+                <div className='flex flex-col gap-1.5'>
+                  <p className='text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-2'>Main Menu</p>
+                  {topNav.map((item) => {
+                    const isActive = pathname === item.href
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                          isActive
+                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
+                        }`}
+                      >
+                        {item.title}
+                      </Link>
+                    )
+                  })}
                 </div>
 
                 {/* Show side nav items if authenticated */}
                 {isAuthenticated && sideNav.length > 0 && (
-                  <div className='flex flex-col gap-4'>
+                  <div className='flex flex-col gap-1.5'>
+                    <p className='text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-2'>Dashboard</p>
                     {sideNav.map((item) => {
                       const Icon = item.icon
+                      const isActive = pathname === item.href
                       return (
                         <Link
                           key={item.href}
                           href={item.href}
-                          className='flex items-center gap-2 text-lg font-medium hover:text-blue-600'
+                          className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                            isActive
+                              ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
+                          }`}
                         >
-                          <Icon />
+                          <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'}`} />
                           {item.title}
                         </Link>
                       )
                     })}
                   </div>
                 )}
+              </div>
 
-                {/* Auth buttons for mobile */}
-                <div className='mt-4 flex flex-col gap-3'>
-                  {isAuthenticated ? (
+              {/* Auth buttons for mobile */}
+              <div className='p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50'>
+                {isAuthenticated ? (
+                  <Button
+                    variant='destructive'
+                    onClick={onLogout}
+                    className='w-full rounded-xl'
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <div className='flex flex-col gap-2'>
                     <Button
-                      variant='destructive'
-                      onClick={onLogout}
-                      className='w-full'
+                      variant='outline'
+                      onClick={() => router.push(`/${role}/signin?returnUrl=${encodeURIComponent(pathname)}`)}
+                      className='w-full rounded-xl'
                     >
-                      Logout
+                      Login
                     </Button>
-                  ) : (
-                    <>
+                    {role !== 'admin' && (
                       <Button
-                        variant='outline'
-                        onClick={() => router.push(`/${role}/signin?returnUrl=${encodeURIComponent(pathname)}`)}
-                        className='w-full'
+                        onClick={() => router.push(`/${role}/signup`)}
+                        className='w-full rounded-xl'
                       >
-                        Login
+                        Sign Up
                       </Button>
-                      {role !== 'admin' && (
-                        <Button
-                          onClick={() => router.push(`/${role}/signup`)}
-                          className='w-full'
-                        >
-                          Sign Up
-                        </Button>
-                      )}
-                    </>
-                  )}
-                </div>
-              </nav>
+                    )}
+                  </div>
+                )}
+              </div>
             </SheetContent>
           </Sheet>
 
@@ -196,36 +210,47 @@ export default function Navbar({
                   <Menu className='h-6 w-6' />
                 </Button>
               </SheetTrigger>
-              <SheetContent side='left' className='w-64'>
-                <SheetHeader>
-                  <SheetTitle>
-                    Fixora {role.charAt(0).toUpperCase() + role.slice(1)}
-                  </SheetTitle>
-                </SheetHeader>
+              <SheetContent side='left' className='w-72 border-r-0 shadow-2xl p-0 flex flex-col'>
+              <div className='p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50'>
+                <SheetTitle className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
+                  Fixora {role.charAt(0).toUpperCase() + role.slice(1)}
+                </SheetTitle>
+              </div>
 
-                <nav className='mt-6 ml-2 flex flex-col gap-4'>
+              <div className='flex-1 overflow-y-auto py-6 px-4'>
+                <p className='text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3 px-2'>Navigation</p>
+                <nav className='flex flex-col gap-1.5'>
                   {sideNav.map((item) => {
                     const Icon = item.icon
+                    const isActive = pathname === item.href
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
-                        className='flex items-center gap-2 text-lg font-medium hover:text-blue-600'
+                        className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                          isActive
+                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
+                        }`}
                       >
-                        <Icon />
+                        <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'}`} />
                         {item.title}
                       </Link>
                     )
                   })}
-                  <Button
-                    variant='destructive'
-                    onClick={onLogout}
-                    className='absolute bottom-5 w-44'
-                  >
-                    Logout
-                  </Button>
                 </nav>
-              </SheetContent>
+              </div>
+
+              <div className='p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-slate-900/50'>
+                <Button
+                  variant='destructive'
+                  onClick={onLogout}
+                  className='w-full rounded-xl'
+                >
+                  Logout
+                </Button>
+              </div>
+            </SheetContent>
             </Sheet>
           )}
 
