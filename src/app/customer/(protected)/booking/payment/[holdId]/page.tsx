@@ -35,7 +35,14 @@ export default function PaymentPage() {
   }, [holdId, createPaymentIntent])
 
   if (isPending || !clientSecret) {
-    return <p>Loading payment…</p>
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+          <p className="text-muted-foreground text-sm">Loading payment...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
