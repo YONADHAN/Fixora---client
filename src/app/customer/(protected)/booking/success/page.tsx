@@ -94,25 +94,39 @@ export default function BookingSuccessPage() {
   //Failure
   if (error || !finalBookingDetails) {
     return (
-      <div className='container max-w-2xl py-20'>
-        <Card className='border-destructive/20 shadow-md'>
-          <CardHeader className='text-center'>
-            <div className='flex justify-center mb-3'>
-              <AlertTriangle className='h-14 w-14 text-destructive' />
+      <div className='min-h-[70vh] flex items-center justify-center px-4 py-16'>
+        <Card className='w-full max-w-lg border-amber-200 shadow-2xl bg-gradient-to-b from-amber-50/50 to-white'>
+          <CardHeader className='text-center pb-6 border-b border-amber-100'>
+            <div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-amber-100 shadow-inner'>
+              <Clock className='h-10 w-10 text-amber-600 animate-pulse' />
             </div>
-            <CardTitle className='text-xl text-destructive'>
+            <CardTitle className='text-3xl font-bold tracking-tight text-amber-800'>
               Finalization Pending
             </CardTitle>
-            <p className='text-muted-foreground mt-2'>
+            <p className='text-amber-700/80 mt-3 text-sm font-medium px-4'>
               Your payment was successful, but your booking is still being finalized.
             </p>
           </CardHeader>
 
-          <CardContent className='flex flex-col gap-3'>
-            <Button onClick={() => router.refresh()} variant='outline'>
+          <CardContent className='pt-8 pb-8 px-8 flex flex-col gap-4'>
+            <div className="rounded-lg bg-amber-50 p-4 border border-amber-100 mb-2">
+              <p className="text-sm text-amber-800 text-center">
+                Please wait a few moments and try refreshing. If the issue persists, check your bookings list.
+              </p>
+            </div>
+            <Button 
+              onClick={() => router.refresh()} 
+              variant='outline' 
+              className="w-full border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-800 transition-colors"
+              size="lg"
+            >
               Try Again
             </Button>
-            <Button onClick={() => router.push('/customer/booking/list')}>
+            <Button 
+              onClick={() => router.push('/customer/booking/list')}
+              className="w-full bg-amber-600 hover:bg-amber-700 text-white shadow-md transition-all hover:shadow-lg"
+              size="lg"
+            >
               Go to My Bookings
             </Button>
           </CardContent>
