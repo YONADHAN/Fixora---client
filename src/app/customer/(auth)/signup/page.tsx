@@ -67,7 +67,7 @@ export default function CustomerSignupPage() {
   }
 
   return (
-    <div>
+    <div className='px-32'>
       <RegisterForm
         role='customer'
         onSubmit={handleFormSubmit}

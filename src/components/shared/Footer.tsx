@@ -1,108 +1,238 @@
+// 'use client'
+
+// import Link from 'next/link'
+
+// interface FooterLink {
+//   label: string
+//   href: string
+// }
+
+// interface FooterSection {
+//   title: string
+//   links: FooterLink[]
+// }
+
+// interface SiteFooterProps {
+//   sections: FooterSection[]
+// }
+
+// export default function Footer({ sections }: SiteFooterProps) {
+//   return (
+//     <footer className="bg-gray-950 text-gray-300">
+//       <div className="mx-auto max-w-7xl px-6 py-12">
+
+//         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+//           {/* Brand column */}
+//           <div>
+//             <h2 className="text-2xl font-bold text-white">Fixora</h2>
+//             <p className="mt-3 text-sm">
+//               Your trusted partner for home and office services.
+//             </p>
+//           </div>
+
+//           {/* Dynamic sections */}
+//           {sections.map((section) => (
+//             <div key={section.title}>
+//               <h3 className="text-lg font-semibold text-white mb-3">
+//                 {section.title}
+//               </h3>
+//               <ul className="space-y-3 text-sm">
+//                 {section.links.map((link) => (
+//                   <li key={link.href}>
+//                     <Link
+//                       href={link.href}
+//                       className="hover:text-white transition-colors"
+//                     >
+//                       {link.label}
+//                     </Link>
+//                   </li>
+//                 ))}
+//               </ul>
+//             </div>
+//           ))}
+
+//         </div>
+
+//         <div className="border-t border-gray-800 mt-10 pt-6 text-center text-xs">
+//           © {new Date().getFullYear()} Fixora. All rights reserved.
+//         </div>
+
+//       </div>
+//     </footer>
+//   )
+// }
+
+
+
+
+
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import React from 'react'
-import {
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
-  FaLocationArrow,
-} from 'react-icons/fa'
 
-const Footer = () => {
-  const [year, setYear] = React.useState(2025)
+interface FooterLink {
+  label: string
+  href: string
+}
 
-  React.useEffect(() => {
-    setYear(new Date().getFullYear())
+interface FooterSection {
+  title: string
+  links: FooterLink[]
+}
+
+interface ServiceCategory {
+  serviceCategoryId: string
+  name: string
+  description: string
+  bannerImage: string
+}
+
+interface CategoryApiResponse {
+  success: boolean
+  message: string
+  data: {
+    data: ServiceCategory[]
+  }
+}
+
+interface SiteFooterProps {
+  sections: FooterSection[]
+}
+
+export default function Footer({ sections }: SiteFooterProps) {
+  const [categories, setCategories] = useState<ServiceCategory[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchCategories = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL
+
+        if (!baseUrl) {
+          throw new Error('API URL is not configured')
+        }
+
+        const response = await fetch(
+          `${baseUrl.replace(/\/$/, '')}/api/v1/customer/service_category`,
+          { signal: controller.signal }
+        )
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch service categories')
+        }
+
+        const result: CategoryApiResponse = await response.json()
+
+        if (result.success) {
+          setCategories(result.data.data)
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name !== 'AbortError') {
+          console.error('Footer categories error:', error)
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false)
+        }
+      }
+    }
+
+    fetchCategories()
+
+    return () => controller.abort()
   }, [])
+
+  // Generate category navigation links
+  const categoryLinks: FooterLink[] = categories.map((category) => ({
+    label: category.name,
+    href: `/customer/service_category/${category.serviceCategoryId}`,
+  }))
+
+  // Replace the Explore Services section with API data
+  const footerSections = sections.map((section) => {
+    if (section.title.toLowerCase() === 'explore services') {
+      return {
+        ...section,
+        links: categoryLinks,
+      }
+    }
+
+    return section
+  })
+
+  // Add Explore Services if it doesn't exist in config
+  const hasExploreServices = footerSections.some(
+    (section) => section.title.toLowerCase() === 'explore services'
+  )
+
+  if (!hasExploreServices) {
+    footerSections.splice(1, 0, {
+      title: 'Explore Services',
+      links: categoryLinks,
+    })
+  }
+
   return (
-    <footer className='bg-gray-900 text-gray-300 pt-10 pb-6 mt-10'>
-      <div className='max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8'>
-        {/* Brand Section */}
-        <div>
-          <h2 className='text-2xl font-bold text-white'>Fixora</h2>
-          <p className='text-sm mt-3'>
-            Your trusted partner for all home & office services. Book
-            professionals in just a few clicks.
-          </p>
-        </div>
+    <footer className="bg-gray-950 text-gray-300">
+      <div className="mx-auto max-w-7xl px-6 py-12">
 
-        {/* Quick Links */}
-        <div>
-          <h3 className='text-lg font-semibold text-white mb-3'>Quick Links</h3>
-          <ul className='space-y-2 text-sm'>
-            <li>
-              <Link href='/' className='hover:text-white'>
-                Home
-              </Link>
-            </li>
-            <li>
-              <a href='/about' className='hover:text-white'>
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href='/services' className='hover:text-white'>
-                Services
-              </a>
-            </li>
-            <li>
-              <a href='/contact' className='hover:text-white'>
-                Contact
-              </a>
-            </li>
-          </ul>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-        {/* Services */}
-        <div>
-          <h3 className='text-lg font-semibold text-white mb-3'>
-            Our Services
-          </h3>
-          <ul className='space-y-2 text-sm'>
-            <li>Plumbing</li>
-            <li>Electrical</li>
-            <li>AC Repair</li>
-            <li>Cleaning</li>
-            <li>Renovation</li>
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div>
-          <h3 className='text-lg font-semibold text-white mb-3'>Contact Us</h3>
-          <p className='text-sm flex flex-row place-items-center gap-3'>
-            <FaLocationArrow /> Kochi, Kerala, India
-          </p>
-          <p className='text-sm'>📞 +91 98765 43210</p>
-          <p className='text-sm'>✉️ support@fixora.com</p>
-          <div className='flex space-x-4 mt-3'>
-            <a href='#' className='hover:text-white'>
-              <FaFacebook />
-            </a>
-            <a href='#' className='hover:text-white'>
-              <FaTwitter />
-            </a>
-            <a href='#' className='hover:text-white'>
-              <FaInstagram />
-            </a>
-            <a href='#' className='hover:text-white'>
-              <FaLinkedin />
-            </a>
+          {/* Brand column */}
+          <div>
+            <h2 className="text-2xl font-bold text-white">Fixora</h2>
+            <p className="mt-3 text-sm">
+              Your trusted partner for home and office services.
+            </p>
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div
-        className='text-center text-xs text-gray-400 mt-8 border-t border-gray-700 pt-4'
-        suppressHydrationWarning
-      >
-        © {year} Fixora. All rights reserved.
+          {/* Dynamic sections */}
+          {footerSections.map((section) => (
+            <div key={section.title}>
+              <h3 className="text-lg font-semibold text-white mb-3">
+                {section.title}
+              </h3>
+
+              <ul className="space-y-3 text-sm">
+                {section.title.toLowerCase() === 'explore services' &&
+                  loading && (
+                    <li className="text-gray-500">
+                      Loading services...
+                    </li>
+                  )}
+
+                {!loading && section.links.length === 0 &&
+                  section.title.toLowerCase() === 'explore services' && (
+                    <li className="text-gray-500">
+                      No services available
+                    </li>
+                  )}
+
+                {section.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+        </div>
+
+        <div className="border-t border-gray-800 mt-10 pt-6 text-center text-xs">
+          © {new Date().getFullYear()} Fixora. All rights reserved.
+        </div>
+
       </div>
     </footer>
   )
 }
-
-export default Footer
